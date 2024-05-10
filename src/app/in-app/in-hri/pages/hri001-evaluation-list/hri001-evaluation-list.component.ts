@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
+import { DTOStatus } from '../shared/dtos/DTOStatus.dto';
 
 @Component({
   selector: 'app-hri001-evaluation-list',
@@ -8,4 +10,41 @@ import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@ang
 })
 export class Hri001EvaluationListComponent {
   constructor() { }
+
+  // Variables
+  collapseMode: BreadCrumbCollapseMode = 'none';
+
+
+  // List
+  defaultItemsBreadCrumb: BreadCrumbItem[] = [
+    {
+      text: "Đánh giá nhân sự",
+    },
+    {
+      text: "Đợt đánh giá",
+    }
+  ];
+  itemsBreadCrumb: BreadCrumbItem[] = [...this.defaultItemsBreadCrumb];
+  listCheckBoxStatus: DTOStatus[] = [
+    {
+      id: 1,
+      status: "Đang soạn thảo"
+    },
+    {
+      id: 2,
+      status: "Trả về"
+    },
+    {
+      id: 3,
+      status: "Gửi duyệt"
+    },
+    {
+      id: 4,
+      status: "Đã duyệt"
+    },
+    {
+      id: 5,
+      status: "Ngưng đánh giá"
+    }
+  ]
 }
