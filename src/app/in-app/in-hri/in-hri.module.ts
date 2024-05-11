@@ -24,6 +24,7 @@ import { StatusColorPipe } from './pages/shared/pipes/StatusColorPipe';
 import { DialogComponent } from './pages/shared/components/dialog/dialog.component';
 import { DialogDirective } from './pages/shared/directives/dialog.directive';
 import { Hri001EvaluationListComponent } from './pages/hri001-evaluation-list/hri001-evaluation-list.component';
+import { CheckboxlistComponent } from './pages/shared/components/checkboxlist/checkboxlist.component';
 
 
 
@@ -45,6 +46,7 @@ import { Hri001EvaluationListComponent } from './pages/hri001-evaluation-list/hr
     StatusColorPipe,
     DialogComponent,
     DialogDirective,
+    CheckboxlistComponent,
   ],
   imports: [
     PHriRoutingModule,

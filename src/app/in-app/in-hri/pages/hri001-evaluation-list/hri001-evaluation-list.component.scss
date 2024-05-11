@@ -1,20 +1,19 @@
 @import '../../../../../styles.scss';
 
-app-hri001-evaluation-list{
-    .block-breadcrumb-status-button{
-        display: flex;
-        justify-content: space-between;
+.block-breadcrumb-status-button {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
 
-        &_breadcrumb{
-
-        }
-
-        &_status{
-            
-        }
-
-        &_button-group{
-            
+    &_breadcrumb {
+        .k-breadcrumb-item-text{
+            font-size: 13px !important;
         }
     }
+
+    &_status {
+        font-size: 14px;
+    }
+
+    &_button-group {}
 }
