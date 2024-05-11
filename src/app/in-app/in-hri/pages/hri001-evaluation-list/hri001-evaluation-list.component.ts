@@ -47,4 +47,27 @@ export class Hri001EvaluationListComponent {
       status: "Ngưng đánh giá"
     }
   ]
+  listCheckBoxStatusDefault: DTOStatus[] = [
+    {
+      id: 1,
+      status: 'Đang soạn thảo'
+    },
+    {
+      id: 2,
+      status: "Trả về"
+    },
+    {
+      id: 3,
+      status: "Gửi duyệt"
+    },
+    {
+      id: 4,
+      status: "Đã duyệt"
+    },
+  ]
+
+
+  getListCheckBoxChecked(listCheckBox: any){
+    console.log(listCheckBox)
+  }
 }

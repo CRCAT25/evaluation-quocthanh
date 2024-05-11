@@ -6,11 +6,11 @@
     </div>
 
     <div class="block-breadcrumb-status-button_status">
-        <app-checkboxlist [listCheckBox]="listCheckBoxStatus"></app-checkboxlist>
+        <app-checkboxlist (listChecked)="getListCheckBoxChecked($event)" [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus"></app-checkboxlist>
     </div>
 
     <div class="block-breadcrumb-status-button_button-group">
-        <kendo-breadcrumb [collapseMode]="collapseMode" [items]="itemsBreadCrumb" SetClassSVGIcon HamperBreadcrumb />
+
     </div>
 
 </div>

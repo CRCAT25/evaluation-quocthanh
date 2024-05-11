@@ -7,6 +7,7 @@
 }
 
 .checkboxlist-container {
+    box-sizing: border-box;
     display: flex;
     gap: 10px;
 
@@ -22,10 +23,14 @@
         box-shadow: none;
     }
 
+    .k-checkbox{
+        border: 1px solid $dark-green;
+    }
+
     .checkbox {
         padding: 4px 8px;
         border-radius: 18px;
-        border: 1px solid $dark-green;
+        border: 1px solid #fff;
         display: flex;
         gap: 8px;
         align-items: center;
@@ -33,5 +38,17 @@
         background-color: #fff;
         color: #000;
         box-shadow: 1px 3px 6px 1px #8f9ba633;
+    }
+
+    .checkbox:hover{
+        border: 1px solid $dark-green;
+    }
+
+    .checkbox:hover > .k-checkbox{
+        background-color: $dark-green;
+    }
+
+    .checked{
+        border: 1px solid $dark-green;
     }
 }
