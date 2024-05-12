@@ -1,0 +1,41 @@
+@import '../../../../../../../styles.scss';
+
+::ng-deep{
+    .kendo-datepicker{
+        width: 100px;
+    }
+
+    .k-datepicker{
+        display: flex;
+        flex-direction: row-reverse;
+        box-shadow: $box-shadow5;
+    }
+
+    #datepicker-1{
+        text-align: center;
+        width: 110px;
+    }
+
+    .k-input-solid:focus, .k-input-solid.k-focus {
+        border: 1px solid #fff;
+        box-shadow: $box-shadow5;
+    }
+    
+    .k-input-button{
+        border: none;
+    }
+
+    .k-input-solid{
+        border-color: rgba(0, 0, 0, 0);
+    }
+
+}
+
+.component-datepicker{
+    display: inline-block;
+
+
+    .k-dateinput{
+        display: inline-block;
+    }
+}

@@ -6,8 +6,8 @@
     </div>
 
     <div class="block-breadcrumb-status-button_status">
-        <app-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
-            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus"></app-checkboxlist>
+        <component-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
+            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus"></component-checkboxlist>
     </div>
 
     <div class="block-breadcrumb-status-button_button-group">
@@ -16,4 +16,18 @@
         <component-button type="success" classIcon="k-i-plus" nameButton="Thêm mới"></component-button>
     </div>
 
+</div>
+
+
+<div class="block-list-evaluation">
+    <app-datepicker></app-datepicker>
+    <!-- <kendo-grid
+  >
+    <kendo-grid-column field="Id" title="ID"> </kendo-grid-column
+    ><kendo-grid-column field="CompanyName" title="Company name">
+    </kendo-grid-column>
+    <kendo-grid-column field="ContactName" title="Contact name">
+    </kendo-grid-column>
+    <kendo-grid-column field="Address" title="Address"> </kendo-grid-column>
+  </kendo-grid> -->
 </div>

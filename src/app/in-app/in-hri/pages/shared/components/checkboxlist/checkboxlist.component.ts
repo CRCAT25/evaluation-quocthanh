@@ -12,7 +12,7 @@ class statusCheckObj {
  * - Having 1 output: listChecked: DTOStatus[]
  */
 @Component({
-  selector: 'app-checkboxlist',
+  selector: 'component-checkboxlist',
   templateUrl: './checkboxlist.component.html',
   styleUrls: ['./checkboxlist.component.scss']
 })

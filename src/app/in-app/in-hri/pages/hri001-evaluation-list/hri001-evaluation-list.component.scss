@@ -5,6 +5,13 @@
     justify-content: space-between;
     padding: 15px 0;
     border-bottom: 1px solid $grey;
+    overflow-x: auto;
+    text-wrap: nowrap;
+
+    &_status,
+    &_button-group{
+        padding-inline: 8px;
+    }
 
     &_breadcrumb {
         .k-breadcrumb-item-text{
@@ -17,8 +24,14 @@
     }
 
     &_button-group {
-        font-size: 14px;
+        font-size: 13px;
         display: flex;
         gap: 10px;
     }
+}
+
+.block-list-evaluation{
+    padding: 15px 0;
+    width: 100%;
+    height: 100%;
 }

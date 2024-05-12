@@ -26,6 +26,8 @@ import { DialogDirective } from './pages/shared/directives/dialog.directive';
 import { Hri001EvaluationListComponent } from './pages/hri001-evaluation-list/hri001-evaluation-list.component';
 import { CheckboxlistComponent } from './pages/shared/components/checkboxlist/checkboxlist.component';
 import { ButtonComponent } from './pages/shared/components/button/button.component';
+import { DatepickerComponent } from './pages/shared/components/datepicker/datepicker.component';
+import { DatepickerKendo } from './pages/shared/directives/datepicker-kendo.directive';
 
 
 
@@ -49,6 +51,8 @@ import { ButtonComponent } from './pages/shared/components/button/button.compone
     DialogDirective,
     CheckboxlistComponent,
     ButtonComponent,
+    DatepickerComponent,
+    DatepickerKendo
   ],
   imports: [
     PHriRoutingModule,
