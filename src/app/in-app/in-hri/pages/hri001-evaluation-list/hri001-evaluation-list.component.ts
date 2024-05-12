@@ -70,4 +70,14 @@ export class Hri001EvaluationListComponent {
   getListCheckBoxChecked(listCheckBox: any){
     console.log(listCheckBox)
   }
+
+
+  getDate(date: string, index: string){
+    if(index === 'Start'){
+      console.log(index + ': ' + date)
+    }
+    if(index === 'End'){
+      console.log(index + ': ' + date)
+    }
+  }
 }
