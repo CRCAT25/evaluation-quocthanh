@@ -25,6 +25,7 @@ import { DialogComponent } from './pages/shared/components/dialog/dialog.compone
 import { DialogDirective } from './pages/shared/directives/dialog.directive';
 import { Hri001EvaluationListComponent } from './pages/hri001-evaluation-list/hri001-evaluation-list.component';
 import { CheckboxlistComponent } from './pages/shared/components/checkboxlist/checkboxlist.component';
+import { ButtonComponent } from './pages/shared/components/button/button.component';
 
 
 
@@ -47,6 +48,7 @@ import { CheckboxlistComponent } from './pages/shared/components/checkboxlist/ch
     DialogComponent,
     DialogDirective,
     CheckboxlistComponent,
+    ButtonComponent,
   ],
   imports: [
     PHriRoutingModule,

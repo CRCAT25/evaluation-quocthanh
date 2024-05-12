@@ -11,7 +11,6 @@ class statusCheckObj {
  * - Having 2 inputs: listCheckBox: DTOStatus[], listCheckBoxDefault: DTOStatus[], 
  * - Having 1 output: listChecked: DTOStatus[]
  */
-
 @Component({
   selector: 'app-checkboxlist',
   templateUrl: './checkboxlist.component.html',

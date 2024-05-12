@@ -6,11 +6,14 @@
     </div>
 
     <div class="block-breadcrumb-status-button_status">
-        <app-checkboxlist (listChecked)="getListCheckBoxChecked($event)" [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus"></app-checkboxlist>
+        <app-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
+            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus"></app-checkboxlist>
     </div>
 
     <div class="block-breadcrumb-status-button_button-group">
-
+        <component-button classIcon="k-i-export"></component-button>
+        <component-button type="default" classIcon="k-i-import" nameButton="Template"></component-button>
+        <component-button type="success" classIcon="k-i-plus" nameButton="Thêm mới"></component-button>
     </div>
 
 </div>
