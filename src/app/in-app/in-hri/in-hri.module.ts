@@ -23,6 +23,7 @@ import { ButtonComponent } from './pages/shared/components/button/button.compone
 import { DatepickerComponent } from './pages/shared/components/datepicker/datepicker.component';
 import { DatepickerKendo } from './pages/shared/directives/datepicker-kendo.directive';
 import { SearchFilterGroupComponent } from './pages/shared/components/search-filter-group/search-filter-group.component';
+import { EvaluationService } from './pages/shared/services/evaluation.service';
 
 
 
@@ -41,7 +42,7 @@ import { SearchFilterGroupComponent } from './pages/shared/components/search-fil
     ButtonComponent,
     DatepickerComponent,
     DatepickerKendo,
-    SearchFilterGroupComponent
+    SearchFilterGroupComponent,
   ],
   imports: [
     PHriRoutingModule,
@@ -55,6 +56,7 @@ import { SearchFilterGroupComponent } from './pages/shared/components/search-fil
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
   ],
+  providers: [EvaluationService],
 
 })
 export class InHriModule {}

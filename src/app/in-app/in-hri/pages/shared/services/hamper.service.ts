@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { DTOHamper } from '../dtos/DTOHamper.dto';
-import { DTOProduct } from '../dtos/DTOProduct.dto';
+import { DTOHamper } from 'src/app/in-app/in-config/pages/shared/dtos/DTOHamper.dto';
+import { DTOProduct } from 'src/app/in-app/in-config/pages/shared/dtos/DTOProduct.dto';
 
 @Injectable({
   providedIn: 'root',

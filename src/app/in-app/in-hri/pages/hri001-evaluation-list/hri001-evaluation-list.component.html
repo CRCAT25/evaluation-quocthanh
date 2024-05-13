@@ -44,11 +44,19 @@
 </div>
 
 
-<!-- <div class="block-list-evaluation">
-    <kendo-grid>
-        <kendo-grid-column field="Id" title="ID" />
-        <kendo-grid-column field="CompanyName" title="Company name" />
-        <kendo-grid-column field="ContactName" title="Contact name" />
-        <kendo-grid-column field="Address" title="Address" />
+<div class="block-list-evaluation">
+    <kendo-grid [pageable]="true" [selectable]="true" [data]="view | async" [loading]="service.loading">
+        <kendo-grid-checkbox-column
+        [showSelectAll]="true"
+        [width]="40"
+      ></kendo-grid-checkbox-column>
+        <kendo-grid-column field="code" title="code" />
+        <kendo-grid-column field="name" title="name" />
+        <kendo-grid-column field="category" title="category" />
+        <kendo-grid-column field="dateStart" title="dateStart" />
+        <kendo-grid-column field="dateEnd" title="dateEnd" />
+        <kendo-grid-column field="countMember" title="countMember" />
+        <kendo-grid-column field="status" title="status" />
+        <kendo-grid-column field="stage" title="stage" />
     </kendo-grid>
-</div> -->
+</div>

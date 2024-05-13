@@ -1,6 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
 import { DTOStatus } from '../shared/dtos/DTOStatus.dto';
+import { EvaluationService } from '../shared/services/evaluation.service';
+import { DTOEvaluation } from '../shared/dtos/DTOEvaluation.dto';
+import { Observable } from 'rxjs';
+import { State } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-hri001-evaluation-list',
@@ -9,8 +13,6 @@ import { DTOStatus } from '../shared/dtos/DTOStatus.dto';
   encapsulation: ViewEncapsulation.None
 })
 export class Hri001EvaluationListComponent {
-  constructor() { }
-
   // Variables
   collapseMode: BreadCrumbCollapseMode = 'none';
   currentDate: Date = new Date();
@@ -18,6 +20,8 @@ export class Hri001EvaluationListComponent {
   dateEndPicked: Date = new Date(this.currentDate.getFullYear() + 50, 12, 30);
   minDate: Date = new Date(1900, 1, 1);
   maxDate: Date = new Date(this.currentDate.getFullYear() + 50, 12, 30);
+  public view: Observable<DTOEvaluation[]>;
+  public state: State = { skip: 0, take: 5 };
 
 
   // List
@@ -82,12 +86,15 @@ export class Hri001EvaluationListComponent {
   ]
 
 
+  constructor(public service: EvaluationService) {
+    this.view = service;
+    this.service.query(this.state);
+  }
+
+
   getListCheckBoxChecked(listCheckBox: any) {
     console.log(listCheckBox)
   }
-
-  // FUNCITON FOR DATEPICKER
-  
 
   /**
    * This funciton help us tranform type date has type Date() to string
@@ -105,12 +112,12 @@ export class Hri001EvaluationListComponent {
 
   getDate(date: Date, index: string) {
     if (index === 'Start') {
-      this.dateStartPicked =  date;
+      this.dateStartPicked = date;
     }
     else if (index === 'End') {
       this.dateEndPicked = date;
     }
-    else{
+    else {
       console.error('Do not found date!');
     }
   }
