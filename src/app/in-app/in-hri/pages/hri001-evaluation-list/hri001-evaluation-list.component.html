@@ -24,7 +24,9 @@
     <app-search-filter-group (getValue)="handleSearch($event)"></app-search-filter-group>
 
     <div class="filter-date">
+
         <div class="label">Lọc theo thời gian mở đợt kiểm tra</div>
+        
         <div class="date">
 
             <app-datepicker [minDate]="minDate" [maxDate]="dateEndPicked" (datePicked)="getDate($event, 'Start')" />
