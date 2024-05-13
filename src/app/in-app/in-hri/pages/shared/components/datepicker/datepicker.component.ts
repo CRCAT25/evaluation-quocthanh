@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-datepicker',
@@ -8,9 +8,17 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class DatepickerComponent {
   // public value: Date = new Date(yyyy, MM, dd);
   @Output() datePicked = new EventEmitter();
-  public value: Date = new Date();
+  @Input() value: Date = new Date();
+  
+  // format date dd/MM/yyyy
+  formatDate(date: Date) {
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    return new Date(year, month, day).toLocaleDateString('en-CA');
+  }
 
   public onChange(value: Date): void {
-    this.datePicked.emit(value);
+    this.datePicked.emit(this.formatDate(value));
   }
 }

@@ -9,7 +9,7 @@
     text-wrap: nowrap;
 
     &_breadcrumb {
-        .k-breadcrumb-item-text{
+        .k-breadcrumb-item-text {
             font-size: 13px !important;
         }
     }
@@ -26,14 +26,53 @@
 }
 
 
-.block-filter-evaluation{
+.block-filter-evaluation {
     padding: 15px;
     width: 100%;
     height: auto;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+
+    .filter-date {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 11px;
+
+        .label {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #5c6873;
+            font-size: 13px;
+        }
+
+        .date{
+            display: flex;
+            gap: 10px;
+            height: auto;
+
+            app-datepicker{
+                height: 32px !important;
+            }
+
+            .line{
+                display: flex;
+                align-items: center;
+                font-size: 13px;
+            }
+
+            .checkbox{
+                height: 33px !important;
+            }
+        }
+        
+    }
 }
 
 
-.block-list-evaluation{
+.block-list-evaluation {
     padding: 15px 0;
     width: 100%;
     height: 100%;

@@ -65,23 +65,34 @@ export class Hri001EvaluationListComponent {
       status: "Đã duyệt"
     },
   ]
+  listCheckBoxNearSearchBox: DTOStatus[] = [
+    {
+      id: 1,
+      status: 'Hoàn tất'
+    },
+    {
+      id: 2,
+      status: "Phúc khảo"
+    }
+  ]
 
 
-  getListCheckBoxChecked(listCheckBox: any){
+  getListCheckBoxChecked(listCheckBox: any) {
     console.log(listCheckBox)
   }
 
 
-  getDate(date: string, index: string){
-    if(index === 'Start'){
+  getDate(date: string, index: string) {
+    if (index === 'Start') {
       console.log(index + ': ' + date)
     }
-    if(index === 'End'){
+    if (index === 'End') {
       console.log(index + ': ' + date)
     }
   }
 
-  handleSearch(textboxValue: string){
+
+  handleSearch(textboxValue: string) {
     console.log('textbox value: ' + textboxValue);
   }
 }

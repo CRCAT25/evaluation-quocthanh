@@ -7,22 +7,37 @@
 
     <div class="block-breadcrumb-status-button_status">
         <component-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
-            [listCheckBoxDefault]="listCheckBoxStatusDefault"
-            [listCheckBox]="listCheckBoxStatus"></component-checkboxlist>
+            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus" />
     </div>
 
     <div class="block-breadcrumb-status-button_button-group">
-        <component-button classIcon="k-i-export"></component-button>
-        <component-button type="default" classIcon="k-i-import" nameButton="Template"></component-button>
-        <component-button type="success" classIcon="k-i-plus" nameButton="Thêm mới"></component-button>
+        <component-button classIcon="k-i-export" />
+        <component-button type="default" classIcon="k-i-import" nameButton="Template" />
+        <component-button type="success" classIcon="k-i-plus" nameButton="Thêm mới" />
     </div>
 
 </div>
 
 
 <div class="block-filter-evaluation">
+
     <app-search-filter-group (getValue)="handleSearch($event)"></app-search-filter-group>
-    <!-- <app-datepicker (datePicked)="getDate($event, 'Start')"></app-datepicker> -->
+
+    <div class="filter-date">
+        <div class="label">Lọc theo thời gian mở đợt kiểm tra</div>
+        <div class="date">
+
+            <app-datepicker (datePicked)="getDate($event, 'Start')" />
+
+            <div class="line"> - </div>
+
+            <app-datepicker (datePicked)="getDate($event, 'End')" />
+
+            <component-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
+                [listCheckBox]="listCheckBoxNearSearchBox" />
+
+        </div>
+    </div>
 
 </div>
 

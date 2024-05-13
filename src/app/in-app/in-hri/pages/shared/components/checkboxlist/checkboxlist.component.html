@@ -1,6 +1,6 @@
 <div class="checkboxlist-container" style="font-size: 14px;">
     <ng-container *ngFor="let checkbox of currentListCheckBoxStatus">
-        <div class="checkbox" *ngIf="(checkbox.statusObj).status !== 'Trả về'" [ngClass]="{'checked' : checkbox.isChecked}" (click)="onChangeCheckBox(checkbox)">
+        <div [title]="(checkbox.statusObj).status" class="checkbox" *ngIf="(checkbox.statusObj).status !== 'Trả về'" [ngClass]="{'checked' : checkbox.isChecked}" (click)="onChangeCheckBox(checkbox)">
             <kendo-label class="k-checkbox-label" [for]="(checkbox.statusObj).status"
                 [text]="(checkbox.statusObj).status"></kendo-label>
             <input type="checkbox" [checked]="checkbox.isChecked" status={{checkbox.statusObj}} kendoCheckBox />
