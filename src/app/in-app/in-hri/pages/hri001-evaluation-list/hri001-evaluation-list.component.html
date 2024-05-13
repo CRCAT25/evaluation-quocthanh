@@ -20,12 +20,18 @@
 </div>
 
 
-<div class="block-list-evaluation">
-    <app-datepicker (datePicked)="getDate($event, 'Start')"></app-datepicker>
+<div class="block-filter-evaluation">
+    <app-search-filter-group (getValue)="handleSearch($event)"></app-search-filter-group>
+    <!-- <app-datepicker (datePicked)="getDate($event, 'Start')"></app-datepicker> -->
+
+</div>
+
+
+<!-- <div class="block-list-evaluation">
     <kendo-grid>
         <kendo-grid-column field="Id" title="ID" />
         <kendo-grid-column field="CompanyName" title="Company name" />
         <kendo-grid-column field="ContactName" title="Contact name" />
         <kendo-grid-column field="Address" title="Address" />
     </kendo-grid>
-</div>
+</div> -->

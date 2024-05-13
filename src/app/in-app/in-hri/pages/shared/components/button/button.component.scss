@@ -6,7 +6,7 @@
     gap: 8px;
     cursor: pointer;
     padding: 4px 8px;
-    border-radius: 4px;
+    border-radius: 3px;
     align-items: center;
     text-transform: uppercase;
     font-weight: 600;
@@ -17,16 +17,22 @@
         display: flex;
         align-items: center;
     }
+
+    .component-button_name{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 }
 
 .component-button:hover{
-    opacity: 0.8;
+    filter: brightness(110%);
 }
 
 .success{
     background-color: $dark-green;
     color: #fff;
-    box-shadow: $box-shadow-blue;
+    box-shadow: $box-shadow5;
 }
 
 .default{

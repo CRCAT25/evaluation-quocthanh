@@ -80,4 +80,8 @@ export class Hri001EvaluationListComponent {
       console.log(index + ': ' + date)
     }
   }
+
+  handleSearch(textboxValue: string){
+    console.log('textbox value: ' + textboxValue);
+  }
 }

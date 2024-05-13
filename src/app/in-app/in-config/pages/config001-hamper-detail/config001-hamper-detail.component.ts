@@ -12,7 +12,6 @@ import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 import { company3PS, companyMotThanhVien, companyVietHaTri } from '../config004-hamper-detail/data-test';
 import { NotifiService } from '../shared/services/notifi.service';
-import { text } from '@fortawesome/fontawesome-svg-core';
 
 class Button {
   svgClassIcon: SVGIcon

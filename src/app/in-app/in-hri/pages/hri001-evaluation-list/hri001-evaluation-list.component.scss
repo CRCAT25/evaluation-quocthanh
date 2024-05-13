@@ -3,15 +3,10 @@
 .block-breadcrumb-status-button {
     display: flex;
     justify-content: space-between;
-    padding: 15px 0;
+    padding: 15px;
     border-bottom: 1px solid $grey;
     overflow-x: auto;
     text-wrap: nowrap;
-
-    &_status,
-    &_button-group{
-        padding-inline: 8px;
-    }
 
     &_breadcrumb {
         .k-breadcrumb-item-text{
@@ -24,11 +19,19 @@
     }
 
     &_button-group {
-        font-size: 13px;
+        font-size: 14px;
         display: flex;
         gap: 10px;
     }
 }
+
+
+.block-filter-evaluation{
+    padding: 15px;
+    width: 100%;
+    height: auto;
+}
+
 
 .block-list-evaluation{
     padding: 15px 0;

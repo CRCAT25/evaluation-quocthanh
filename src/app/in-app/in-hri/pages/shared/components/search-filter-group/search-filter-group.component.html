@@ -1,0 +1,25 @@
+<div class="component-search-filter-group-container">
+    <div class="component-search-filter-group">
+        <div class="block-icon-reset-filter">
+            <div class="block-icon">
+                <div class="k-icon k-font-icon k-i-filter"></div>
+                <div class="label">Lọc dữ liệu</div>
+            </div>
+            <div class="reset-filter">
+                Reset bộ lọc
+            </div>
+        </div>
+        <div class="block-search-input">
+            <div class="label">Tìm kiếm</div>
+            <div style="display: flex; gap: 5px;">
+                <div class="input-search-button">
+                    <div class="icon" (click)="getInputValue()">
+                        <span class="k-icon k-font-icon k-i-search"></span>
+                    </div>
+                    <kendo-textbox (valueChange)="onChangeTextBox($event)" (click)="onClickInput()" placeholder="Tìm theo đợt đánh giá"></kendo-textbox>
+                </div>
+                <component-button (click)="getInputValue()" type="success" classIcon="k-i-search" nameButton="Tìm"></component-button>
+            </div>
+        </div>
+    </div>
+</div>
