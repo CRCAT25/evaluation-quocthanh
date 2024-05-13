@@ -10,8 +10,7 @@
         border: 1px solid rgba(148, 140, 140, 0.2) !important;
     }
 
-    .k-datepicker:hover,
-    .k-input-solid.k-focus:hover {
+    .k-datepicker:hover{
         border: 1px solid $dark-green !important;
         box-shadow: $box-shadow3;
     }
@@ -20,14 +19,7 @@
         text-align: center;
         pointer-events: none;
         cursor: default;
-        background-color: #c8ced36b !important;
-    }
-
-
-    .k-input-solid:focus,
-    .k-input-solid.k-focus {
-        border: 1px solid rgba(148, 140, 140, 0.2) !important;
-        box-shadow: $box-shadow3 !important;
+        background-color: #bfc4c96b !important;
     }
 
     .k-input-button {
@@ -48,6 +40,17 @@
 .component-datepicker {
     display: inline-block;
     height: 32px;
+
+    .k-input-solid.k-focus:hover {
+        border: 1px solid $dark-green !important;
+        box-shadow: $box-shadow3;
+    }
+
+    .k-input-solid:focus,
+    .k-input-solid.k-focus {
+        border: 1px solid rgba(148, 140, 140, 0.2) !important;
+        box-shadow: $box-shadow3 !important;
+    }
 
     .k-dateinput {
         display: inline-block;

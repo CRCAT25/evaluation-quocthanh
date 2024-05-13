@@ -13,6 +13,11 @@ export class Hri001EvaluationListComponent {
 
   // Variables
   collapseMode: BreadCrumbCollapseMode = 'none';
+  currentDate: Date = new Date();
+  dateStartPicked: Date = new Date(1900, 1, 1);
+  dateEndPicked: Date = new Date(this.currentDate.getFullYear() + 50, 12, 30);
+  minDate: Date = new Date(1900, 1, 1);
+  maxDate: Date = new Date(this.currentDate.getFullYear() + 50, 12, 30);
 
 
   // List
@@ -81,13 +86,32 @@ export class Hri001EvaluationListComponent {
     console.log(listCheckBox)
   }
 
+  // FUNCITON FOR DATEPICKER
+  
 
-  getDate(date: string, index: string) {
+  /**
+   * This funciton help us tranform type date has type Date() to string
+   * @param date has type Date()
+   * @returns string has type yyyy - MM - dd
+   * - Example: '2024-05-16'
+   */
+  formatDate(date: Date) {
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    return new Date(year, month, day).toLocaleDateString('en-CA');
+  }
+
+
+  getDate(date: Date, index: string) {
     if (index === 'Start') {
-      console.log(index + ': ' + date)
+      this.dateStartPicked =  date;
     }
-    if (index === 'End') {
-      console.log(index + ': ' + date)
+    else if (index === 'End') {
+      this.dateEndPicked = date;
+    }
+    else{
+      console.error('Do not found date!');
     }
   }
 
