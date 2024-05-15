@@ -26,7 +26,7 @@
     <div class="filter-date">
 
         <div class="label">Lọc theo thời gian mở đợt kiểm tra</div>
-        
+
         <div class="date">
 
             <app-datepicker [minDate]="minDate" [maxDate]="dateEndPicked" (datePicked)="getDate($event, 'Start')" />
@@ -45,18 +45,58 @@
 
 
 <div class="block-list-evaluation">
-    <kendo-grid [pageable]="true" [selectable]="true" [data]="view | async" [loading]="service.loading">
-        <kendo-grid-checkbox-column
-        [showSelectAll]="true"
-        [width]="40"
-      ></kendo-grid-checkbox-column>
-        <kendo-grid-column field="code" title="code" />
-        <kendo-grid-column field="name" title="name" />
-        <kendo-grid-column field="category" title="category" />
-        <kendo-grid-column field="dateStart" title="dateStart" />
-        <kendo-grid-column field="dateEnd" title="dateEnd" />
-        <kendo-grid-column field="countMember" title="countMember" />
-        <kendo-grid-column field="status" title="status" />
-        <kendo-grid-column field="stage" title="stage" />
+    <kendo-grid [resizable]="true" [pageable]="true" [selectable]="{ checkboxOnly: true }" [data]="view | async" [loading]="service.loading">
+
+        <kendo-grid-checkbox-column [showSelectAll]="true" [width]="60"></kendo-grid-checkbox-column>
+
+        <kendo-grid-column [width]="600" class="col-1" title="Đợt đánh giá">
+            <ng-template kendoGridCellTemplate let-dataItem>
+
+                <div class="field-code-name">
+                    <div class="field-code-name_code">
+                        {{ dataItem.code }}
+                    </div>
+                    <div class="field-code-name_line"></div>           
+                    <div class="field-code-name_name">
+                        {{ dataItem.name }}
+                    </div>
+                </div>
+
+                <div class="field-category">
+                    <div class="field-category_title">
+                        Phân loại
+                    </div>
+                    <div class="field-category_line"></div>    
+                    <div class="field-category_category">
+                        {{ dataItem.category }}
+                    </div>
+                </div>
+            
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column title="Thời gian bắt đầu">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div>
+                    {{ dataItem.dateStart }}
+                </div>
+                <div>
+                    {{ dataItem.dateStart }}
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="countMember" title="SL nhân sự tham gia" />
+
+        <kendo-grid-column title="Tình trạng">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div [style.color]="dataItem.status | statusColor">
+                    {{ dataItem.status }}
+                </div>
+                <div>
+                    {{ dataItem.stage }}
+                </div>
+            </ng-template>
+        </kendo-grid-column>
     </kendo-grid>
 </div>

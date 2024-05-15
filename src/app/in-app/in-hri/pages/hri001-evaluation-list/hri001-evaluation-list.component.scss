@@ -1,5 +1,6 @@
 @import '../../../../../styles.scss';
 
+
 .block-breadcrumb-status-button {
     display: flex;
     justify-content: space-between;
@@ -33,6 +34,7 @@
     display: flex;
     gap: 10px;
     overflow-x: auto;
+    border-bottom: 1px solid $grey;
 
     .filter-date {
         display: flex;
@@ -48,32 +50,159 @@
             font-size: 13px;
         }
 
-        .date{
+        .date {
             display: flex;
             gap: 10px;
             height: auto;
 
-            app-datepicker{
+            app-datepicker {
                 height: 32px !important;
             }
 
-            .line{
+            .line {
                 display: flex;
                 align-items: center;
                 font-size: 13px;
             }
 
-            .checkbox{
+            .checkbox {
                 height: 33px !important;
             }
         }
-        
+
     }
 }
 
 
 .block-list-evaluation {
-    padding: 15px 0;
+    padding-top: 15px;
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 50px - 62.9px - 94.39px);
+
+
+    .k-grid,
+    .k-grid-md {
+        background-color: #fff !important;
+        border: none !important;
+        height: 100%;
+    }
+
+    .k-grid-header,
+    .k-table-alt-row {
+        border: none !important;
+        background-color: #fff !important;
+    }
+
+    [id^="k-grid0-checkbox"],
+    #k-grid0-select-all {
+        border: 1px solid black !important;
+        border-radius: 3px;
+    }
+
+    .k-grid-container {
+        overflow-y: auto;
+    }
+
+    .k-grid-header-wrap,
+    .k-table-th,
+    .k-table-td {
+        border: none !important;
+    }
+
+    .k-table-td {
+        color: #000 !important;
+    }
+
+    .k-table-thead {
+
+        .k-table-row {
+            background-color: #F0F3F5 !important;
+            border: none !important;
+            font-weight: 600;
+            color: #5c6873;
+            font-size: 14px;
+        }
+
+        #k-grid0-select-all {
+            margin-top: 2px;
+        }
+
+    }
+
+    .k-table-tbody {
+
+        .k-table-row {
+            max-height: 58px;
+        }
+
+        .k-table-row:hover {
+            background-color: #1a663466 !important;
+        }
+    }
+
+    .k-checkbox:checked,
+    .k-checkbox.k-checked {
+        border: none;
+        box-shadow: none;
+    }
+
+
+    .k-grid td.k-selected,
+    .k-grid .k-table-row.k-selected>td,
+    .k-grid .k-table-td.k-selected,
+    .k-grid .k-table-row.k-selected>.k-table-td {
+        background: none;
+    }
+
+    tr[aria-selected="true"] {
+        background: none;
+        background-color: #1a6634cc !important;
+    }
+
+    // .k-grid-table{
+    //     border-spacing: 0 4px ;
+    // }
+
+    th.k-header[aria-colindex="1"],
+    td.k-table-td[aria-colindex="1"] {
+        text-align: center;
+    }
+
+    .col-1 {
+        text-wrap: nowrap;
+        width: 100%;
+
+        .field-code-name,
+        .field-category {
+            display: flex;
+            gap: 8px;
+            height: auto;
+            align-items: center;
+
+            &_line {
+                width: 2px;
+                display: block;
+                height: 14px;
+                background-color: #000;
+            }
+
+            &_code,
+            &_title{
+                width: 62px;
+            }
+        }
+
+        .field-code-name{
+            font-size: 13px !important;
+            font-weight: 600;
+        }
+
+        .field-category{
+
+            &_line{
+                background-color: #808080;
+            }
+        }
+    }
+
 }
