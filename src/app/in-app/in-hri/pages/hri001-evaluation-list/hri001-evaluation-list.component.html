@@ -45,7 +45,7 @@
 
 
 <div class="block-list-evaluation">
-    <kendo-grid [resizable]="true" [pageable]="true" [selectable]="{ checkboxOnly: true }" [data]="view | async" [loading]="service.loading">
+    <kendo-grid [pageable]="true" [selectable]="{ checkboxOnly: true }" [data]="view | async" [loading]="service.loading">
 
         <kendo-grid-checkbox-column [showSelectAll]="true" [width]="60"></kendo-grid-checkbox-column>
 
@@ -75,20 +75,20 @@
             </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column title="Thời gian bắt đầu">
+        <kendo-grid-column [width]="220" class="col-2" title="Thời gian bắt đầu">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div>
-                    {{ dataItem.dateStart }}
+                <div class="date-start">
+                    {{ displayDate(dataItem.dateStart) }}
                 </div>
-                <div>
-                    {{ dataItem.dateStart }}
+                <div class="date-end">
+                    {{ displayDate(dataItem.dateStart) }}
                 </div>
             </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column field="countMember" title="SL nhân sự tham gia" />
+        <kendo-grid-column [width]="300" class="col-3" field="countMember" title="SL nhân sự tham gia" />
 
-        <kendo-grid-column title="Tình trạng">
+        <kendo-grid-column class="col-4" title="Tình trạng">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <div [style.color]="dataItem.status | statusColor">
                     {{ dataItem.status }}

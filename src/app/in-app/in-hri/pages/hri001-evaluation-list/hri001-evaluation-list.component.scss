@@ -168,6 +168,15 @@
         text-align: center;
     }
 
+    th.k-table-th[aria-colindex="4"] {
+        justify-content: center;
+    }
+
+    th.k-table-th[aria-colindex="5"] {
+        justify-content: end;
+    }
+
+
     .col-1 {
         text-wrap: nowrap;
         width: 100%;
@@ -187,22 +196,38 @@
             }
 
             &_code,
-            &_title{
+            &_title {
                 width: 62px;
             }
         }
 
-        .field-code-name{
+        .field-code-name {
             font-size: 13px !important;
             font-weight: 600;
         }
 
-        .field-category{
+        .field-category {
 
-            &_line{
+            &_line {
                 background-color: #808080;
             }
         }
     }
 
+    .col-2 {
+
+        .date-start {
+            font-size: 13px !important;
+            font-weight: 600;
+        }
+    }
+
+    .col-3 {
+        text-align: center;
+    }
+
+    .col-4{
+        text-align: right;
+        text-wrap: nowrap;
+    }
 }

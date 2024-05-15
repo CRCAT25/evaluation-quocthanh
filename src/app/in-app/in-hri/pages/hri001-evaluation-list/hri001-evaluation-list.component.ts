@@ -99,7 +99,7 @@ export class Hri001EvaluationListComponent {
   /**
    * This funciton help us tranform type date has type Date() to string
    * @param date has type Date()
-   * @returns string has type yyyy - MM - dd
+   * @returns string has type 'yyyy-MM-dd'
    * - Example: '2024-05-16'
    */
   formatDate(date: Date) {
@@ -107,6 +107,20 @@ export class Hri001EvaluationListComponent {
     const month = date.getMonth();
     const year = date.getFullYear();
     return new Date(year, month, day).toLocaleDateString('en-CA');
+  }
+
+
+  /**
+   * this function help us tranform type date to string 'dd/MM/yyyy'
+   * @param date string has type 'yyyy-MM-dd'
+   * @returns 'dd/MM/yyyy'
+   */
+  displayDate(date: string){
+    const arrDateSplit = date.split('-');
+    const day: string = arrDateSplit[2];
+    const month: string = arrDateSplit[1];
+    const year: string = arrDateSplit[0];
+    return `${day}/${month}/${year}`;
   }
 
 
