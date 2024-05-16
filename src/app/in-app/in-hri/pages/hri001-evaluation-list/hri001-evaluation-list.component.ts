@@ -1,10 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
 import { DTOStatus } from '../shared/dtos/DTOStatus.dto';
 import { EvaluationService } from '../shared/services/evaluation.service';
 import { DTOEvaluation } from '../shared/dtos/DTOEvaluation.dto';
 import { Observable } from 'rxjs';
 import { State } from '@progress/kendo-data-query';
+import { GridComponent } from '@progress/kendo-angular-grid';
 
 @Component({
   selector: 'app-hri001-evaluation-list',
@@ -12,7 +13,7 @@ import { State } from '@progress/kendo-data-query';
   styleUrls: ['./hri001-evaluation-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class Hri001EvaluationListComponent {
+export class Hri001EvaluationListComponent implements OnInit {
   // Variables
   collapseMode: BreadCrumbCollapseMode = 'none';
   currentDate: Date = new Date();
@@ -20,8 +21,10 @@ export class Hri001EvaluationListComponent {
   dateEndPicked: Date = new Date(this.currentDate.getFullYear() + 50, 12, 30);
   minDate: Date = new Date(1900, 1, 1);
   maxDate: Date = new Date(this.currentDate.getFullYear() + 50, 12, 30);
-  public view: Observable<DTOEvaluation[]>;
-  public state: State = { skip: 0, take: 5 };
+  view: Observable<DTOEvaluation[]>;
+  state: State = { skip: 0, take: 5 };
+  toolBoxSeleted: string = '';
+
 
 
   // List
@@ -91,6 +94,9 @@ export class Hri001EvaluationListComponent {
     this.service.query(this.state);
   }
 
+  ngOnInit(): void {
+  }
+
 
   getListCheckBoxChecked(listCheckBox: any) {
     console.log(listCheckBox)
@@ -111,7 +117,7 @@ export class Hri001EvaluationListComponent {
 
 
   /**
-   * this function help us tranform type date to string 'dd/MM/yyyy'
+   * This function help us tranform type date to string 'dd/MM/yyyy'
    * @param date string has type 'yyyy-MM-dd'
    * @returns 'dd/MM/yyyy'
    */
@@ -124,6 +130,11 @@ export class Hri001EvaluationListComponent {
   }
 
 
+  /**
+   * This function help us get date start or end
+   * @param date type Date()
+   * @param index 'Start' | 'End'
+   */
   getDate(date: Date, index: string) {
     if (index === 'Start') {
       this.dateStartPicked = date;
@@ -134,6 +145,53 @@ export class Hri001EvaluationListComponent {
     else {
       console.error('Do not found date!');
     }
+  }
+
+
+  /**
+   * This function make display list of actions that we can perform some action to change status or change content
+   * @param status Status of evaluation
+   * @param stage Current stage of evaluation
+   * @returns 
+   */
+  getListActions(status: string, stage: string): string[]{
+    if(status === 'Ngưng áp dụng'){
+      return ['Xem chi tiết đợt đánh giá', 'Phê duyệt'];
+    }
+    else if(status === 'Đang soạn thảo'){
+      return['Thiết lập đợt đánh giá', 'Gửi duyệt', 'Xóa đợt đánh giá'];
+    }
+    else if(status === 'Trả về'){
+      return['Thiết lập đợt đánh giá', 'Gửi duyệt'];
+    }
+    else if(status === 'Gởi duyệt'){
+      return['Xem chi tiết đợt đánh giá', 'Phê duyệt', 'Trả về'];
+    }
+    else if(status === 'Duyệt áp dụng'){
+      if(stage === 'Hoàn tất'){
+        return ['Xem chi tiết đợt đánh giá', 'Giám sát đợt đánh giá', 'Chấm điểm câu tự luận', 'Tính điểm đợt đánh giá'];
+      }
+      if(stage === 'Hoàn tất phúc khảo'){
+        return ['Xem chi tiết đợt đánh giá', 'Giám sát đợt đánh giá', 'Chấm điểm câu tự luận', 'Chấm phúc khảo', 'Ngưng đợt đánh giá']
+      }
+    }
+    return [];
+  }
+
+
+  /**
+   * When function is called, toolBox will be displayed
+   * @param code code of Item of list
+   */
+  toggleToolBox(code: string, event: any){
+    if(code === this.toolBoxSeleted){
+      this.toolBoxSeleted = '';
+    }
+    else{
+      this.toolBoxSeleted = '';
+      this.toolBoxSeleted = code;
+    }
+    event.view.document.querySelector('.col-5').style.zIndex = '3';
   }
 
 

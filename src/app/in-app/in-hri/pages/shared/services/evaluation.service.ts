@@ -8,7 +8,7 @@ import { State, toODataString } from '@progress/kendo-data-query';
 export class EvaluationMainService extends BehaviorSubject<Array<any>> {
     public loading: boolean = false;
 
-    private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/1051dd23cf7430fe89ee55659c8a7e2420f1bae1/evaluationData";
+    private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/99df59a2d74d420da6c75b7e8a9036f385b3f65a/evaluationData";
 
     constructor(private http: HttpClient) {
         super([]);
