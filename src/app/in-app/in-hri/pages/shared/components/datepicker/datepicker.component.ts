@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 /**
  * This component provide user a customized datepicker from kendo
@@ -10,7 +10,7 @@ import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outp
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss']
 })
-export class DatepickerComponent implements OnInit, AfterViewInit {
+export class DatepickerComponent implements OnInit {
   // public value: Date = new Date(yyyy, MM, dd);
   @Output() datePicked = new EventEmitter();
   @Input() minDate: Date = new Date();
@@ -20,20 +20,7 @@ export class DatepickerComponent implements OnInit, AfterViewInit {
     
   }
 
-  constructor(private renderer: Renderer2) {}
-
   public onChange(value: Date): void {
     this.datePicked.emit(value);
-  }
-  
-  @ViewChild('datePicker') datePicker: ElementRef;
-
-  ngAfterViewInit() {
-    const inputElement = this.datePicker.nativeElement.querySelector('input');
-    if (inputElement) {
-      this.renderer.listen(inputElement, 'keydown', (event: KeyboardEvent) => {
-        event.preventDefault();
-      });
-    }
   }
 }

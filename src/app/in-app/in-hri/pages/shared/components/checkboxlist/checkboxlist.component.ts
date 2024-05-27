@@ -92,4 +92,9 @@ export class CheckboxlistComponent implements OnInit {
       this.listChecked.emit(listTemp);
     }
   }
+
+
+  unDisplayStatus(statusID: number) {
+    return !(statusID === 1 || statusID === 6 || statusID === 7 || statusID === 8 || statusID === 9 || statusID === 10 || statusID === 11);
+  }  
 }

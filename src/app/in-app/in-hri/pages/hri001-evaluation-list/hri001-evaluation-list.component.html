@@ -37,7 +37,7 @@
             <app-datepicker [minDate]="dateStartPicked" [maxDate]="maxDate" (datePicked)="getDate($event, 'End')" />
 
             <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'stage')"
-                [listCheckBox]="listCheckBoxNearSearchBox" />
+                [listCheckBox]="listCheckBoxStage" />
 
         </div>
     </div>
@@ -46,11 +46,20 @@
 
 
 <div class="block-list-evaluation">
-    <kendo-grid SetClassSVGIcon [kendoGridBinding]="gridData" [pageable]="{
+    <kendo-grid 
+        SetClassSVGIcon 
+        [data]="originData" 
+        [skip]="state.skip"
+        [pageSize]="state.take"
+        (pageChange)="onPageChange($event)"
+        [pageable]="{
             type: 'numeric',
             info: true,
             pageSizes: true,
-        }" [pageSize]="pageSizes[0]" [loading]="this.service.loading"  [selectable]="{ checkboxOnly: true }">
+        }" 
+        [pageSize]="pageSizes[0]" 
+        [loading]="loading"  
+        [selectable]="{ checkboxOnly: true }">
         <kendo-grid-checkbox-column [showSelectAll]="true" [width]="60"></kendo-grid-checkbox-column>
 
         <kendo-grid-column [resizable]="true" [width]="640" class="col-1" title="Đợt đánh giá">
@@ -58,11 +67,11 @@
 
                 <div class="field-code-name">
                     <div class="field-code-name_code">
-                        {{ dataItem.code }}
+                        {{ dataItem.SessionID }}
                     </div>
                     <div class="field-code-name_line"></div>
                     <div class="field-code-name_name">
-                        {{ dataItem.name }}
+                        {{ dataItem.SessionName }}
                     </div>
                 </div>
 
@@ -72,7 +81,7 @@
                     </div>
                     <div class="field-category_line"></div>
                     <div class="field-category_category">
-                        {{ dataItem.category }}
+                        {{ dataItem.TypeOfSessionName }}
                     </div>
                 </div>
 
@@ -82,35 +91,35 @@
         <kendo-grid-column [resizable]="true" [width]="220" class="col-2" title="Thời gian bắt đầu">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <div class="date-start">
-                    {{ displayDate(dataItem.dateStart) }}
+                    {{ displayDate(dataItem.StartDate) }}
                 </div>
                 <div class="date-end">
-                    {{ displayDate(dataItem.dateEnd) }}
+                    {{ displayDate(dataItem.EndDate) }}
                 </div>
             </ng-template>
         </kendo-grid-column>
 
-        <kendo-grid-column [resizable]="true" [width]="300" class="col-3" field="countMember"
+        <kendo-grid-column [resizable]="true" [width]="300" class="col-3" field="NoOfEmployee"
             title="SL nhân sự tham gia" />
 
         <kendo-grid-column [resizable]="true" [width]="345" class="col-4" title="Tình trạng">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="status" [style.color]="dataItem.status | statusColor">
-                    {{ dataItem.status }}
+                <div class="status" [style.color]="dataItem.StatusName | statusColor">
+                    {{ dataItem.StatusName }}
                 </div>
                 <div class="stage">
-                    {{ dataItem.stage }}
+                    {{ dataItem.SessionStatusName }}
                 </div>
             </ng-template>
         </kendo-grid-column>
 
         <kendo-grid-column [sticky]="true" [resizable]="true" [width]="58" class="col-5">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="tool-box" [id]="dataItem.code" [ngClass]="{'active' : toolBoxSeleted === dataItem.code}"
-                    (click)="toggleToolBox(dataItem.code, $event)">
+                <div class="tool-box" [id]="dataItem.Code"
+                    (click)="toggleToolBox(dataItem.Code, $event)">
                     <span class="k-icon k-font-icon k-i-more-horizontal"></span>
-                    <div class="action-list-box" *ngIf="toolBoxSeleted === dataItem.code">
-                        <div class="action" *ngFor="let action of getListActions(dataItem.status, dataItem.stage)">
+                    <div class="action-list-box" *ngIf="toolBoxSeleted === dataItem.Code">
+                        <div class="action" *ngFor="let action of getListActions(dataItem.StatusName, dataItem.SessionStatusName)">
                             {{action}}
                         </div>
                     </div>

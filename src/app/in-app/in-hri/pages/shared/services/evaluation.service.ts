@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { DTOEvaluation } from '../dtos/DTOEvaluation.dto';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { DTOSession } from '../dtos/DTOSession.dto';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
+import { State, toDataSourceRequest } from '@progress/kendo-data-query';
 
 @Injectable()
-export class EvaluationService extends BehaviorSubject<DTOEvaluation[]> {
+export class EvaluationService extends BehaviorSubject<DTOSession[]> {
     public loading: boolean = false;
     private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/6a5201e936f360ef5b0e9cf3fdb3e6207f2aff16/evaluationData";
+    apiUrl: string = 'http://172.16.10.86:75/qc/api/quiz/GetListQuizSession'
+
 
     constructor(private http: HttpClient) {
         super([]);
@@ -21,9 +25,43 @@ export class EvaluationService extends BehaviorSubject<DTOEvaluation[]> {
         });
     }
 
-    private fetch(): Observable<DTOEvaluation[]> {
+    private fetch(): Observable<DTOSession[]> {
         return this.http
             .get(`${this.BASE_URL}`)
-            .pipe(map((data: any) => <DTOEvaluation[]>data["data"]));
+            .pipe(map((data: any) => <DTOSession[]>data["data"]));
+    }
+
+
+    getData(token: string) {
+        const headers = new HttpHeaders({
+            Authorization: `Bearer ${token}`
+        });
+
+        return this.http.post('/api/quiz/GetListQuizSession', { localERP: localStorage.getItem('tokenLogin') }, { headers });
+    }
+
+
+    getHttpOptions() {
+        const token = localStorage.getItem('tokenLogin');
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                'Company': 1
+            })
+        };
+    }
+
+
+    getListQuesionSesstion(state: State): Observable<DTOResponse> {
+        const httpOptions = this.getHttpOptions();
+
+        return this.http.post<DTOResponse>(this.apiUrl, toDataSourceRequest(state), httpOptions)
+            .pipe(
+                catchError(error => {
+                    console.error('Error retrieving quiz sessions:', error);
+                    return throwError(error);
+                })
+            );
     }
 }

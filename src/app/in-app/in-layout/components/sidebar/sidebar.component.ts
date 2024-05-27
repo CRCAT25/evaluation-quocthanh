@@ -40,9 +40,11 @@ export class SidebarComponent implements OnInit {
         const navigatedModule = segments[2];
         this.removeAllPrevSelected(false);
         const item = this.listMenu.find(item => item.Code === navigatedModule);
-        const parentItem = this.listMenu.find(parent => parent.Name === item.Parent);
-        item.Actived = true;
-        if(parentItem) parentItem.Actived = true;
+        if(item){
+          const parentItem = this.listMenu.find(parent => parent.Name === item.Parent);
+          item.Actived = true;
+          if(parentItem) parentItem.Actived = true;
+        }
         
       }
     });

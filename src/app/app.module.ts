@@ -15,6 +15,7 @@ import 'hammerjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { NotificationService } from '@progress/kendo-angular-notification';
+import { AuthorizationService } from './in-app/in-hri/shared/services/authorization.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { NotificationService } from '@progress/kendo-angular-notification';
       useClass: HashLocationStrategy
     },
     NotificationService,
+    AuthorizationService
   ],
   bootstrap: [AppComponent]
 })

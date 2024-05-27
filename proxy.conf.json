@@ -1,0 +1,8 @@
+{
+    "/qc/*": {
+      "target": "http://172.16.10.86:75",
+      "secure": false,
+      "logLevel": "debug"
+    }
+  }
+  

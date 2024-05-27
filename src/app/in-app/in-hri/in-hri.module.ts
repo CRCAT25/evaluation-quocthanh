@@ -25,6 +25,7 @@ import { DatepickerKendo } from './pages/shared/directives/datepicker-kendo.dire
 import { SearchFilterGroupComponent } from './pages/shared/components/search-filter-group/search-filter-group.component';
 import { EvaluationService } from './pages/shared/services/evaluation.service';
 import { ListItemDirective } from './pages/shared/directives/ListItem.directive';
+import { UserLoginComponent } from './shared/components/user-login/user-login.component';
 
 
 
@@ -44,7 +45,8 @@ import { ListItemDirective } from './pages/shared/directives/ListItem.directive'
     DatepickerComponent,
     DatepickerKendo,
     SearchFilterGroupComponent,
-    ListItemDirective
+    ListItemDirective,
+    UserLoginComponent
   ],
   imports: [
     PHriRoutingModule,
