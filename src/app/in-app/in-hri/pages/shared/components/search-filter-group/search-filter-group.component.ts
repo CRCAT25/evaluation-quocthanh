@@ -11,6 +11,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Output } from '@angu
 })
 export class SearchFilterGroupComponent {
   @Output() getValue = new EventEmitter<string>();
+  @Output() resetValue = new EventEmitter<string>();
   textboxValue: string = '';
 
   element = this.elementRef.nativeElement as HTMLElement;
@@ -28,6 +29,10 @@ export class SearchFilterGroupComponent {
   onClickInput() {
     const inputElement = this.element.querySelector('.input-search-button');
     inputElement.classList.add('focus');
+  }
+
+  resetFilter(){
+    this.resetValue.emit('reset');
   }
 
   // Sự kiện khi click ra ngoài màn hình

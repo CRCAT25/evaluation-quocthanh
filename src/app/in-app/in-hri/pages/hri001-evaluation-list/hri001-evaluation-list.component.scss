@@ -78,11 +78,26 @@
     width: 100%;
     height: calc(100vh - 50px - 62.9px - 94.39px);
 
+    .k-pager-info.k-label, .k-dropdown-list{
+        display: none !important;
+    }
+
+    .k-pager-sizes{
+        .k-label{
+            display: none;
+        }
+    }
+
+    .k-grid-content{
+        background-color: #F0F3F5;
+    }
 
     .k-master-row.k-table-alt-row .k-grid-content-sticky,
     .k-master-row.k-table-alt-row .k-grid-row-sticky {
         background-color: white;
     }
+
+    
 
     .k-master-row.k-table-row.k-selected td.k-grid-content-sticky,
     .k-master-row.k-table-row.k-selected .k-table-td.k-grid-row-sticky,
@@ -336,6 +351,135 @@
         .tool-box.active{
             background-color: #D0D5E7;
             border: 1px solid #3d3d3d;
+        }
+
+    }
+
+    .col-5.tool-box-active{
+        z-index: 1000;
+    }
+
+    .pagination{
+        height: 50px;
+        align-items: center;
+        width: 100%;
+        padding: 0;
+        background-color: #fafafa;
+        justify-content: space-between;
+        .page-size{
+            display: flex;
+            kendo-pager-page-sizes{
+                border: 0px solid transparent;
+                display: flex;
+                flex-direction: row-reverse;
+                kendo-dropdownlist{
+                    background-color: white !important;
+                    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                    .k-input-button{
+                        kendo-icon-wrapper{
+                         .k-button-icon::before{
+                            content: "\e013";
+                         }
+                       }
+                    }
+                }
+            }
+            kendo-label{
+                order: 1;
+                .k-label{
+                  display: none;
+                }
+
+                &::before{
+                    content: "Hiển thị mỗi trang";
+                    font-weight: bold;
+                }
+         
+            }
+
+       
+
+        }
+
+        .aria-pagin{
+            padding-left: 10px;
+            display: flex;
+
+            .k-pager-nav{
+                border-radius: 3px;
+                font-weight: 500;
+                &:hover{
+                    background-color: #45494d !important;
+                    color: white !important;
+                }
+                &.k-selected{
+                    color: white !important;
+                    background-color: #45494d !important;
+                }
+            }
+
+            kendo-pager-prev-buttons{
+                .k-pager-first{
+                    kendo-icon-wrapper{
+                        display: none;
+                    }
+                    .k-button-text::after {
+                        content: "Đầu";
+                      }
+                }
+                .k-icon-button{
+                    .k-icon-wrapper-host{
+
+                        .k-button-icon::before {
+                            content: "\e016"; 
+                          }
+
+                        .k-i-caret-alt-right::before{
+                            content: "\e016"; 
+                        }
+                    }
+                }
+            }
+
+            kendo-pager-next-buttons{
+                .k-pager-last{
+                    
+                    kendo-icon-wrapper{
+                        display: none;
+                        
+                    }
+                    .k-button-text::after {
+                        content: "Cuối";
+                      }
+                }
+                .k-icon-button{
+                    .k-icon-wrapper-host{
+                        .k-button{
+                            padding: 5px;
+                            margin: 0px;
+                        }
+
+                        .k-button-icon::before {
+                            content: "\e014"; 
+                          }
+                    }
+                }
+  
+            }
+            
+            .k-pager-numbers{
+                button{
+                    margin-right: 2px;
+                    width: 20px !important;
+                    padding: 0;
+                    min-width: auto;
+                    padding-inline: 5px;
+                }
+            }
+
+            .k-dropdown-list{
+                display: none;
+            }
         }
     }
 }

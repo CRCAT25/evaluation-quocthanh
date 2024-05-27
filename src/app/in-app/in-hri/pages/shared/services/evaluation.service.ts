@@ -2,37 +2,28 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { DTOEvaluation } from '../dtos/DTOEvaluation.dto';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
-import { State, toODataString } from '@progress/kendo-data-query';
+import { map } from 'rxjs/operators';
 
-export class EvaluationMainService extends BehaviorSubject<Array<any>> {
+@Injectable()
+export class EvaluationService extends BehaviorSubject<DTOEvaluation[]> {
     public loading: boolean = false;
-
-    private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/99df59a2d74d420da6c75b7e8a9036f385b3f65a/evaluationData";
+    private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/6a5201e936f360ef5b0e9cf3fdb3e6207f2aff16/evaluationData";
 
     constructor(private http: HttpClient) {
         super([]);
     }
 
-    public query(state: State): void {
-        this.fetch(state).subscribe((x) => super.next(x));
-    }
-
-    protected fetch(state: State): Observable<DTOEvaluation[]> {
-        const queryStr = `${toODataString(state)}&$count=true`;
+    public read(): void {
         this.loading = true;
-        console.log(queryStr);
-
-        return this.http.get(`${this.BASE_URL}?${queryStr}`).pipe(
-            map((response: any) => <DTOEvaluation[]>response["data"]),
-            tap(() => (this.loading = false))
-        );
+        this.fetch().subscribe((data) => {
+            super.next(data);
+            this.loading = false;
+        });
     }
-}
 
-@Injectable()
-export class EvaluationService extends EvaluationMainService {
-    constructor(http: HttpClient) {
-        super(http);
+    private fetch(): Observable<DTOEvaluation[]> {
+        return this.http
+            .get(`${this.BASE_URL}`)
+            .pipe(map((data: any) => <DTOEvaluation[]>data["data"]));
     }
 }

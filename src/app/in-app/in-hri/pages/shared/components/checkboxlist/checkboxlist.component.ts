@@ -56,6 +56,14 @@ export class CheckboxlistComponent implements OnInit {
       this.currentListCheckBoxStatus.forEach(status => {
         if ((status.statusObj).status === (objStatus.statusObj).status) {
           objStatus.isChecked = !objStatus.isChecked;
+           // If the status is "đang soạn thảo", update the related statuses
+        if ((objStatus.statusObj).status === 'Đang soạn thảo') {
+          this.currentListCheckBoxStatus.forEach(s => {
+            if ((s.statusObj).status === 'Trả về') {
+              s.isChecked = objStatus.isChecked;
+            }
+          });
+        }
           this.pushListCheckBoxChecked();
         }
       })

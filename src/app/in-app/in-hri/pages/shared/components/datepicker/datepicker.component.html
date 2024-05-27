@@ -1,9 +1,11 @@
 <div class="component-datepicker">
     <kendo-datepicker 
+        #datePicker
+        calendarType="classic"
         (valueChange)="onChange($event)" 
         format="dd/MM/yyyy" 
         formatPlaceholder="formatPattern" 
-        datepicker-kendo calendarType="infinite"
+        datepicker-kendo 
         [min]="minDate"
         [max]="maxDate"
         />

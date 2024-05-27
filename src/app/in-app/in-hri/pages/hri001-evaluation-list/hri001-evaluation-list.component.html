@@ -6,7 +6,7 @@
     </div>
 
     <div class="block-breadcrumb-status-button_status">
-        <component-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
+        <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'status')"
             [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus" />
     </div>
 
@@ -21,7 +21,8 @@
 
 <div class="block-filter-evaluation">
 
-    <app-search-filter-group (getValue)="handleSearch($event)"></app-search-filter-group>
+    <app-search-filter-group (resetValue)="resetFilter($event)"
+        (getValue)="handleSearch($event)"></app-search-filter-group>
 
     <div class="filter-date">
 
@@ -35,7 +36,7 @@
 
             <app-datepicker [minDate]="dateStartPicked" [maxDate]="maxDate" (datePicked)="getDate($event, 'End')" />
 
-            <component-checkboxlist (listChecked)="getListCheckBoxChecked($event)"
+            <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'stage')"
                 [listCheckBox]="listCheckBoxNearSearchBox" />
 
         </div>
@@ -45,8 +46,11 @@
 
 
 <div class="block-list-evaluation">
-    <kendo-grid [pageable]="true" [selectable]="{ checkboxOnly: true }" [data]="view | async"
-        [loading]="service.loading">
+    <kendo-grid SetClassSVGIcon [kendoGridBinding]="gridData" [pageable]="{
+            type: 'numeric',
+            info: true,
+            pageSizes: true,
+        }" [pageSize]="pageSizes[0]" [loading]="this.service.loading"  [selectable]="{ checkboxOnly: true }">
         <kendo-grid-checkbox-column [showSelectAll]="true" [width]="60"></kendo-grid-checkbox-column>
 
         <kendo-grid-column [resizable]="true" [width]="640" class="col-1" title="Đợt đánh giá">
@@ -81,7 +85,7 @@
                     {{ displayDate(dataItem.dateStart) }}
                 </div>
                 <div class="date-end">
-                    {{ displayDate(dataItem.dateStart) }}
+                    {{ displayDate(dataItem.dateEnd) }}
                 </div>
             </ng-template>
         </kendo-grid-column>
@@ -102,7 +106,8 @@
 
         <kendo-grid-column [sticky]="true" [resizable]="true" [width]="58" class="col-5">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="tool-box" [ngClass]="{'active' : toolBoxSeleted === dataItem.code}" (click)="toggleToolBox(dataItem.code, $event)">
+                <div class="tool-box" [id]="dataItem.code" [ngClass]="{'active' : toolBoxSeleted === dataItem.code}"
+                    (click)="toggleToolBox(dataItem.code, $event)">
                     <span class="k-icon k-font-icon k-i-more-horizontal"></span>
                     <div class="action-list-box" *ngIf="toolBoxSeleted === dataItem.code">
                         <div class="action" *ngFor="let action of getListActions(dataItem.status, dataItem.stage)">
@@ -112,5 +117,22 @@
                 </div>
             </ng-template>
         </kendo-grid-column>
+        
+        <ng-template kendoPagerTemplate>
+            <div class="pagination">
+                <div class="page-size">
+                    <kendo-pager-page-sizes class="k-pager-sizes" [pageSizes]="pageSizes">
+                        <kendo-label>
+                            <label>Hiển thị mỗi trang</label>
+                        </kendo-label>
+                    </kendo-pager-page-sizes>
+                </div>
+                <div class="aria-pagin">
+                    <kendo-pager-prev-buttons></kendo-pager-prev-buttons>
+                    <kendo-pager-numeric-buttons [buttonCount]="4"></kendo-pager-numeric-buttons>
+                    <kendo-pager-next-buttons></kendo-pager-next-buttons>
+                </div>
+            </div>
+        </ng-template>
     </kendo-grid>
 </div>
