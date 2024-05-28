@@ -1,13 +1,15 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
 import { dataStage, dataStatus, DTOStatus } from '../shared/dtos/DTOStatus.dto';
 import { EvaluationService } from '../shared/services/evaluation.service';
 import { Observable } from 'rxjs';
-import { CompositeFilterDescriptor, State, filterBy } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor, State } from '@progress/kendo-data-query';
 import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
 import { HttpClient } from '@angular/common/http';
 import { DTOSession } from '../shared/dtos/DTOSession.dto';
 import { GridDataResult } from '@progress/kendo-angular-grid';
+import { CheckboxlistComponent } from '../shared/components/checkboxlist/checkboxlist.component';
+import { DatepickerComponent } from '../shared/components/datepicker/datepicker.component';
 
 @Component({
   selector: 'app-hri001-evaluation-list',
@@ -26,7 +28,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   view: Observable<DTOSession[]>;
   toolBoxSeleted: number = -1;
   dataSearch: string = '';
-  loading: boolean = false;
+  isLoading: boolean = false;
 
 
 
@@ -41,7 +43,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   ];
   itemsBreadCrumb: BreadCrumbItem[] = [...this.defaultItemsBreadCrumb];
   listCheckBoxStatus: DTOStatus[] = dataStatus;
-  listCheckBoxStatusDefault: DTOStatus[] = this.listCheckBoxStatus.filter(item => item.id !== 4);
+  listCheckBoxStatusDefault: DTOStatus[] = this.listCheckBoxStatus.filter(item => item.id !== 3);
   listCheckBoxStage: DTOStatus[] = dataStage;
   pageSizes = [25, 50, 75, 100];
   listStatus: DTOStatus[] = this.listCheckBoxStatusDefault;
@@ -54,19 +56,14 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
   // Object
-  state: State = {
-    skip: 1,
-    take: 25,
-    filter: {
-      logic: 'and',
-      filters: [
-      ],
-    },
-    sort: [{field: 'LastModifiedTime', dir: 'desc'}]
-  };
+  state: State = {};
+  @ViewChild('checkboxlistStage') childCheckBoxListStage!: CheckboxlistComponent;
+  @ViewChild('checkboxlistStatus') childCheckboxListStatus!: CheckboxlistComponent;
+  @ViewChild('datepickerStart') childDatePickerStart!: DatepickerComponent;
+  @ViewChild('datepickerEnd') childDatePickerEnd!: DatepickerComponent;
 
 
-  constructor(public service: EvaluationService, private http: HttpClient) { }
+  constructor(public service: EvaluationService) { }
 
 
   // Hàm chạy khi destroy trang
@@ -79,23 +76,49 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   // Hàm chạy khi khởi tạo trang
   public ngOnInit(): void {
     localStorage.getItem('tokenLogin');
-
+    this.initState();
     this.getData();
+    this.filterData();
   }
 
 
 
   // Sự kiện get Data bằng state
   getData() {
-    this.loading = true;
+    this.isLoading = true;
     this.service.getListQuesionSesstion(this.state).subscribe((res: DTOResponse) => {
-      if(res.ObjectReturn){
-        this.originData = {data: [...((res.ObjectReturn).Data)], total: res.ObjectReturn.Total};
-        this.loading = false;
+      if (res.ObjectReturn) {
+        this.originData = { data: [...((res.ObjectReturn).Data)], total: res.ObjectReturn.Total };
+        this.isLoading = false;
       }
     }, (resError => {
       console.log(resError);
     }));
+  }
+
+
+
+  // Khởi tạo state: State
+  initState() {
+    this.state = {
+      skip: 1,
+      take: 25,
+      filter: {
+        logic: 'and',
+        filters: [
+          {
+            logic: 'or',
+            filters: [
+              { field: 'StatusID', operator: 'eq', value: '0' },
+              { field: 'StatusID', operator: 'eq', value: '1' },
+              { field: 'StatusID', operator: 'eq', value: '2' },
+              { field: 'StatusID', operator: 'eq', value: '4' },
+            ]
+          }
+        ],
+      },
+      sort: [{ field: 'LastModifiedTime', dir: 'desc' }]
+    };
   }
 
 
@@ -145,8 +168,6 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
       if (statusName === 'Gửi duyệt') statusName = 'Gởi duyệt';
       filterStatus.filters.push({ field: 'StatusName', operator: 'eq', value: statusName })
     })
-
-
     return filterStatus;
   }
 
@@ -164,45 +185,74 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
+  // Sự kiện được gọi dùng để filter Session theo textBox tìm kiếm
   filterSearch(): CompositeFilterDescriptor {
     let filterSearch: CompositeFilterDescriptor = { logic: 'or', filters: [] }
-    filterSearch.filters.push({ field: 'code', operator: 'contains', value: this.dataSearch })
-    filterSearch.filters.push({ field: 'name', operator: 'contains', value: this.dataSearch })
+    if (this.dataSearch !== '') {
+      filterSearch.filters.push({ field: 'SessionID', operator: 'contains', value: this.dataSearch })
+      filterSearch.filters.push({ field: 'SessionName', operator: 'contains', value: this.dataSearch })
+    }
     return filterSearch;
   }
 
 
 
+  // Sự kiện được gọi dùng để filter Session theo ngày
   filterDate(): CompositeFilterDescriptor {
     let filterDate: CompositeFilterDescriptor = { logic: 'and', filters: [] }
-    filterDate.filters.push({ field: 'dateStart', operator: 'gte', value: this.dateStartPicked })
-    filterDate.filters.push({ field: 'dateEnd', operator: 'lte', value: this.dateEndPicked })
+    filterDate.filters.push({ field: 'StartDate', operator: 'gte', value: this.formatDateToCompare(this.dateStartPicked) })
+    filterDate.filters.push({ field: 'EndDate', operator: 'lte', value: this.formatDateToCompare(this.dateEndPicked) })
     return filterDate;
   }
 
 
 
+  /**
+   * Chứa toàn bộ các filter: status, stage, search, date
+   */
   filterData() {
     const filterStatus = this.filterStatus();
     const filterStage = this.filterStage();
-    const filterDate = this.filterDate();
     const filterSearch = this.filterSearch();
+    const filterDate = this.filterDate();
+
+    // Gán filters bằng rỗng
+    this.resetFilterOfState();
 
 
-    if(filterStatus.filters.length > 0 && filterStage.filters.length > 0){
+    // Thực hiện khi có cả 2 filterStatus và filterStage
+    if (filterStatus.filters.length > 0 && filterStage.filters.length > 0) {
       this.pushFilter(this.state, {
         logic: 'and',
         filters: [filterStatus, filterStage]
       })
     }
-    else{
-      if(filterStatus.filters.length > 0){
+    // Thực hiện khi có 1 trong 2 filterStatus và filterStage
+    else {
+      if (filterStatus.filters.length > 0) {
         this.pushFilter(this.state, filterStatus);
       }
-      if(filterStage.filters.length > 0){
+      if (filterStage.filters.length > 0) {
         this.pushFilter(this.state, filterStage);
       }
     }
+
+
+    // Thực hiện khi có filterSearch
+    if (filterSearch.filters.length > 0) {
+      if (this.dataSearch !== '') {
+        this.pushFilter(this.state, filterSearch);
+      }
+    }
+
+
+    // Thực hiện khi có filterDate
+    if (filterDate.filters.length > 0) {
+      this.pushFilter(this.state, filterDate);
+    }
+
+
+    // Gọi lại API
     this.getData();
   }
 
@@ -213,28 +263,50 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
    * @param state
    * @param filter
    */
-  pushFilter(state: State, filter: CompositeFilterDescriptor){
-    this.resetFilterOfState();
+  pushFilter(state: State, filter: CompositeFilterDescriptor) {
     state.filter.filters.push(filter);
   }
 
 
 
   // Sự kiện được gọi khi cần reset filter của state
-  resetFilterOfState(){
+  resetFilterOfState() {
     this.state.filter.filters.length = 0;
   }
 
 
 
-  resetFilter(noti: any) {
-    if (noti === 'reset') {
-      window.location.reload();
-    }
+  /**
+   * Sự kiện được gọi khi người dùng muốn reset bộ lọc
+   */
+  resetFilter() {
+    // Reset checklist Stage
+    this.childCheckBoxListStage.resetCheckList();
+    this.listStage = [];
+
+    // Reset checklist Status
+    this.childCheckboxListStatus.resetCheckList();
+    this.listStatus = this.listCheckBoxStatusDefault;
+
+    // Reset start date
+    this.childDatePickerStart.resetDate();
+    this.dateStartPicked = this.minDate;
+
+    // Reset end date
+    this.childDatePickerEnd.resetDate();
+    this.dateEndPicked = this.maxDate;7
+
+    // Fetch lại data
+    this.filterData();
   }
 
 
 
+  /**
+   * Sự kiện được gọi dùng để format ngày
+   * @param date Date
+   * @returns Ngày có format dd/MM/yyyy
+   */
   displayDate(date: any) {
     date = new Date(date);
     const day = date.getDate().toString().padStart(2, '0');
@@ -246,21 +318,32 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
   /**
+   * 
+   * @param date Date
+   * @returns Ngày có dạng 2023-11-01T00:00:00
+   */
+  formatDateToCompare(date: Date){
+    return date.toISOString().split('.')[0];
+  }
+
+
+
+  /**
    * Sự kiện lấy ngày bắt đầu và ngày kết thúc của datepicker
    * @param date type Date()
    * @param index 'Start' | 'End'
    */
   getDate(date: Date, index: string) {
     if (index === 'Start') {
-      this.dateStartPicked = this.parseDateInTimeZone(date, 7);
+      this.dateStartPicked = date;
     }
     else if (index === 'End') {
-      this.dateEndPicked = this.parseDateInTimeZone(date, 7);
+      this.dateEndPicked = date;
     }
     else {
       console.error('Do not found date!');
     }
-    // this.filterData();
+    this.filterData();
   }
 
 
@@ -340,15 +423,23 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  onPageChange(value: any){
+  /**
+   * Sự kiện được gọi khi thực hiện chuyển trang hay hiện thị item mỗi trang
+   * @param value Giá trị của paging
+   */
+  onPageChange(value: any) {
     this.state.skip = value.skip;
     this.state.take = value.take;
     this.getData();
-    console.log(value);
   }
 
 
 
+  /**
+   * - Sự kiện được gọi khi người dùng tìm kiếm đợt đánh giá
+   * - Gán giá trị được nhập ở textbox cho dataSearch
+   * @param textboxValue Giá trị được nhập vào textbox search
+   */
   handleSearch(textboxValue: string) {
     this.dataSearch = textboxValue;
     this.filterData();

@@ -16,7 +16,7 @@
                     <div class="icon" (click)="getInputValue()">
                         <span class="k-icon k-font-icon k-i-search"></span>
                     </div>
-                    <kendo-textbox title="Tìm theo đợt đánh giá" (valueChange)="onChangeTextBox($event)" (click)="onClickInput()" placeholder="Tìm theo đợt đánh giá"></kendo-textbox>
+                    <kendo-textbox [value]="textboxValue" title="Tìm theo đợt đánh giá" (valueChange)="onChangeTextBox($event)" (click)="onClickInput()" placeholder="Tìm theo đợt đánh giá"></kendo-textbox>
                 </div>
                 <component-button (click)="getInputValue()" type="success" classIcon="k-i-search" nameButton="Tìm"></component-button>
             </div>

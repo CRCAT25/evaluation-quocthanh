@@ -32,7 +32,8 @@ export class SearchFilterGroupComponent {
   }
 
   resetFilter(){
-    this.resetValue.emit('reset');
+    this.textboxValue = ''
+    this.resetValue.emit('');
   }
 
   // Sự kiện khi click ra ngoài màn hình

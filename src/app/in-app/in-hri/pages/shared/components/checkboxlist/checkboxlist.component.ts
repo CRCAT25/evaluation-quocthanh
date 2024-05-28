@@ -74,6 +74,16 @@ export class CheckboxlistComponent implements OnInit {
   }
 
 
+  
+  resetCheckList(){
+    this.currentListCheckBoxStatus.length = 0;
+    this.currentListCheckBoxStatus = this.listCheckBox.map(statusObj => ({
+      statusObj,
+      isChecked: this.containsObjectStatus(this.listCheckBoxDefault, statusObj)
+    }))
+  }
+
+
 
   /**
    * This funciton help us emit list status is checked on type DTOStatus to its parent component
@@ -92,9 +102,10 @@ export class CheckboxlistComponent implements OnInit {
       this.listChecked.emit(listTemp);
     }
   }
+  
 
 
   unDisplayStatus(statusID: number) {
-    return !(statusID === 1 || statusID === 6 || statusID === 7 || statusID === 8 || statusID === 9 || statusID === 10 || statusID === 11);
+    return !(statusID === 4 || statusID === 6 || statusID === 7 || statusID === 8 || statusID === 9 || statusID === 10 || statusID === 11);
   }  
 }

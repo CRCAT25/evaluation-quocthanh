@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { DatePickerComponent } from '@progress/kendo-angular-dateinputs';
 
 /**
  * This component provide user a customized datepicker from kendo
@@ -15,6 +16,8 @@ export class DatepickerComponent implements OnInit {
   @Output() datePicked = new EventEmitter();
   @Input() minDate: Date = new Date();
   @Input() maxDate: Date = new Date();
+  @ViewChild('datePicker', { static: false }) datePicker!: DatePickerComponent;
+  valueDate: Date = null;
 
   ngOnInit(): void {
     
@@ -23,4 +26,10 @@ export class DatepickerComponent implements OnInit {
   public onChange(value: Date): void {
     this.datePicked.emit(value);
   }
+
+  resetDate(){
+    this.valueDate = null
+    this.datePicker.writeValue(null);
+  }
+
 }

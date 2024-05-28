@@ -10,19 +10,19 @@ export const dataStatus: DTOStatus[] = [
     },
     {
         id: 1,
-        status: "Trả về"
-    },
-    {
-        id: 2,
         status: "Gửi duyệt"
     },
     {
-        id: 3,
+        id: 2,
         status: "Đã duyệt"
     },
     {
-        id: 4,
+        id: 3,
         status: "Ngưng đánh giá"
+    },
+    {
+        id: 4,
+        status: "Trả về"
     }
 ]
 

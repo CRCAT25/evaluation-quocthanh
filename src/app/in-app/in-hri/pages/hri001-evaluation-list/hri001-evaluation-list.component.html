@@ -7,7 +7,7 @@
 
     <div class="block-breadcrumb-status-button_status">
         <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'status')"
-            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus" />
+            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus" #checkboxlistStatus/>
     </div>
 
     <div class="block-breadcrumb-status-button_button-group">
@@ -19,9 +19,10 @@
 </div>
 
 
+<!-- Filter -->
 <div class="block-filter-evaluation">
 
-    <app-search-filter-group (resetValue)="resetFilter($event)"
+    <app-search-filter-group (resetValue)="resetFilter()"
         (getValue)="handleSearch($event)"></app-search-filter-group>
 
     <div class="filter-date">
@@ -30,14 +31,14 @@
 
         <div class="date">
 
-            <app-datepicker [minDate]="minDate" [maxDate]="dateEndPicked" (datePicked)="getDate($event, 'Start')" />
+            <app-datepicker [minDate]="minDate" [maxDate]="dateEndPicked" (datePicked)="getDate($event, 'Start')" #datepickerStart/>
 
             <div class="line"> - </div>
 
-            <app-datepicker [minDate]="dateStartPicked" [maxDate]="maxDate" (datePicked)="getDate($event, 'End')" />
+            <app-datepicker [minDate]="dateStartPicked" [maxDate]="maxDate" (datePicked)="getDate($event, 'End')" #datepickerEnd/>
 
             <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'stage')"
-                [listCheckBox]="listCheckBoxStage" />
+                [listCheckBox]="listCheckBoxStage" #checkboxlistStage/>
 
         </div>
     </div>
@@ -58,7 +59,7 @@
             pageSizes: true,
         }" 
         [pageSize]="pageSizes[0]" 
-        [loading]="loading"  
+        [loading]="isLoading"  
         [selectable]="{ checkboxOnly: true }">
         <kendo-grid-checkbox-column [showSelectAll]="true" [width]="60"></kendo-grid-checkbox-column>
 
