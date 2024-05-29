@@ -46,6 +46,7 @@
 </div>
 
 
+<!-- Danh sách Session -->
 <div class="block-list-evaluation">
     <kendo-grid 
         SetClassSVGIcon 
@@ -53,6 +54,8 @@
         [skip]="state.skip"
         [pageSize]="state.take"
         (pageChange)="onPageChange($event)"
+        kendoGridSelectBy="Code"
+        [(selectedKeys)]="listCheckedSession"
         [pageable]="{
             type: 'numeric',
             info: true,
@@ -67,11 +70,11 @@
             <ng-template kendoGridCellTemplate let-dataItem>
 
                 <div class="field-code-name">
-                    <div class="field-code-name_code">
+                    <div class="field-code-name_code" [title]="dataItem.SessionID">
                         {{ dataItem.SessionID }}
                     </div>
                     <div class="field-code-name_line"></div>
-                    <div class="field-code-name_name">
+                    <div class="field-code-name_name" [title]="dataItem.SessionName">
                         {{ dataItem.SessionName }}
                     </div>
                 </div>
@@ -81,7 +84,7 @@
                         Phân loại
                     </div>
                     <div class="field-category_line"></div>
-                    <div class="field-category_category">
+                    <div class="field-category_category" [title]="dataItem.TypeOfSessionName">
                         {{ dataItem.TypeOfSessionName }}
                     </div>
                 </div>
@@ -91,10 +94,10 @@
 
         <kendo-grid-column [resizable]="true" [width]="220" class="col-2" title="Thời gian bắt đầu">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="date-start">
+                <div class="date-start" [title]="displayDate(dataItem.StartDate)">
                     {{ displayDate(dataItem.StartDate) }}
                 </div>
-                <div class="date-end">
+                <div class="date-end" [title]="displayDate(dataItem.EndDate)">
                     {{ displayDate(dataItem.EndDate) }}
                 </div>
             </ng-template>
@@ -105,10 +108,10 @@
 
         <kendo-grid-column [resizable]="true" [width]="345" class="col-4" title="Tình trạng">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="status" [style.color]="dataItem.StatusName | statusColor">
+                <div class="status" [style.color]="dataItem.StatusName | statusColor" [title]="dataItem.StatusName">
                     {{ dataItem.StatusName }}
                 </div>
-                <div class="stage">
+                <div class="stage" [title]="dataItem.SessionStatusName">
                     {{ dataItem.SessionStatusName }}
                 </div>
             </ng-template>
@@ -151,4 +154,24 @@
             </div>
         </ng-template>
     </kendo-grid>
+</div>
+
+
+<!-- Popup nhiều action -->
+<div class="popup-multi-action" *ngIf="listCheckedSession.length > 0">
+    <div class="popup-multi-action_count">
+        <div class="count">{{listCheckedSession.length}}</div>
+        <div class="label">Đã chọn</div>
+    </div>
+
+    <div class="popup-multi-action_listAction" *ngFor="let action of getMultiAction()">
+        <div class="icon">
+            <span [className]="'k-icon k-font-icon ' + getIconByAction(action)"></span>
+        </div>
+        <div class="action">{{action}}</div>
+    </div>
+
+    <div class="diviver"></div>
+
+    <div class="popup-multi-action_close" (click)="closePopup()">X</div>
 </div>

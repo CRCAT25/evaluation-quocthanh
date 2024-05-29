@@ -66,6 +66,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   listStage: DTOStatus[] = [];
   tempList: DTOSession[] = [];
   listOriginAction: Action[] = dataActions;
+  listCheckedSession: number[] = [];
 
 
 
@@ -199,6 +200,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
     let filterStage: CompositeFilterDescriptor = { logic: 'or', filters: [] }
     this.listStage.forEach(stage => {
       let stageName = stage.status;
+      if(stageName === 'Phúc khảo') stageName = 'Hoàn tất phúc khảo'
       filterStage.filters.push({ field: 'SessionStatusName', operator: 'eq', value: stageName })
     })
     return filterStage;
@@ -315,7 +317,11 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
     // Reset end date
     this.childDatePickerEnd.resetDate();
-    this.dateEndPicked = this.maxDate; 7
+    this.dateEndPicked = this.maxDate;
+
+    // Reset paging
+    this.state.skip = 1;
+    this.state.take = 25;
 
     // Fetch lại data
     this.filterData();
@@ -443,7 +449,8 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   @HostListener('document:click', ['$event'])
   onClick(event: MouseEvent) {
     if (!(event.target as HTMLElement).closest('.col-5')) {
-      this.toolBoxSeleted = -1
+      this.toolBoxSeleted = -1;
+      console.log(this.listCheckedSession);
     }
   }
 
@@ -473,6 +480,11 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
+  /**
+   * Sự kiện được gọi khi muốn cập nhật trạng thái của Session
+   * @param quizSession là 1 object DTOSession
+   * @param newStatus là object action được thực hiện
+   */
   updateStatus(quizSession: any, newStatus: any) {
     // Khởi tạo 1 object SessionUpdate để lưu trữ đối tượng và trạng thái mới cần cập nhật
     let sessionUpdate: SessionUpdate = {
@@ -487,7 +499,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
       // Gọi API Update bên service
       this.evaluationService.updateQuizSessionStatus(sessionUpdate).subscribe(response => {
-        this.notifi.message('Cập nhật trạng thái đợt đánh giá thành công!', "success");
+        this.notifi.message(`${newStatus.action} thành công`, "success");
         this.getData();
       }, error => {
         console.error('Error:', error);
@@ -496,5 +508,80 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
     else {
       console.error('Không tìm thấy câu hỏi hoặc action');
     }
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi cần lấy những action khả dụng của 1 session khi thực hiện chọn nhiều
+   * @param statusID 
+   * @returns 
+   */
+  getListActionOneSession(statusID: number): string[] {
+    if (statusID === 0 || statusID === 4) {
+      return ['Gửi duyệt'];
+    }
+    else if (statusID === 1 || statusID === 3) {
+      return ['Phê duyệt'];
+    }
+    else if (statusID === 2) {
+      return ['Ngưng đợt đánh giá'];
+    }
+    return [];
+  }
+
+
+
+  /**
+   * Sự kiện được gọi dùng để lấy danh sách các action của nhiều session khi thực hiện chọn nhiều
+   */
+  getMultiAction() {
+    let listMultiAction: string[] = [];
+    this.listCheckedSession.forEach(code => {
+      this.originData.data.forEach((session: DTOSession) => {
+        if (session) {
+          if (session.Code === code) {
+            listMultiAction.push(...this.getListActionOneSession(session.StatusID));
+          }
+        }
+      })
+    })
+    const customOrder = ['Gửi duyệt', 'Phê duyệt', 'Ngưng đợt đánh giá'];
+    const uniqueListAction = Array.from(new Set(listMultiAction));
+    const sortedList = uniqueListAction.sort((a, b) => {
+      return customOrder.indexOf(a) - customOrder.indexOf(b);
+    });
+    return sortedList;
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi cần lấy icon theo action bất kỳ
+   * @param actionName 
+   * @returns 
+   */
+  getIconByAction(actionName: string): string {
+    if (actionName) {
+      if (actionName === 'Gửi duyệt') {
+        return 'k-i-redo'
+      }
+      else if (actionName === 'Phê duyệt') {
+        return 'k-i-check-outline'
+      }
+      else if (actionName === 'Ngưng đợt đánh giá') {
+        return 'k-i-minus-outline'
+      }
+    }
+    return '';
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi cần đóng popup chọn nhiều session
+   */
+  closePopup(){
+    this.listCheckedSession = [];
   }
 }
