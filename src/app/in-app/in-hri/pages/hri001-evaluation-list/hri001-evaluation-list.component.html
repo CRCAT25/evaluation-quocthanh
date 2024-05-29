@@ -120,8 +120,14 @@
                     (click)="toggleToolBox(dataItem.Code, $event)">
                     <span class="k-icon k-font-icon k-i-more-horizontal"></span>
                     <div class="action-list-box" *ngIf="toolBoxSeleted === dataItem.Code">
-                        <div class="action" *ngFor="let action of getListActions(dataItem.StatusName, dataItem.SessionStatusName)">
-                            {{action}}
+                        <div 
+                            class="action-box" 
+                            *ngFor="let action of getListActions(dataItem.StatusName, dataItem.SessionStatusName)"
+                            (click)="updateStatus(dataItem, action)">
+                            <div class="action-box_icon">
+                                <span [className]="'k-icon k-font-icon ' + action.classIcon"></span>
+                            </div>
+                            <div class="action-box_icon">{{action.action}}</div>
                         </div>
                     </div>
                 </div>

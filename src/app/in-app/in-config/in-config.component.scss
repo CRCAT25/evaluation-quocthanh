@@ -41,8 +41,9 @@
       border: 0px;
       .k-notification-content {
         max-width: 247px;
-        word-wrap: break-word;
-        overflow-wrap: break-word;
+        // word-wrap: break-word;
+        // overflow-wrap: break-word;
+        text-wrap: nowrap;
         font-size: 13px;
         line-height: 22px;
       }

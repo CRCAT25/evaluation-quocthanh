@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
-import { dataStage, dataStatus, DTOStatus } from '../shared/dtos/DTOStatus.dto';
+import { dataActions, dataStage, dataStatus, DTOStatus } from '../shared/dtos/DTOStatus.dto';
 import { EvaluationService } from '../shared/services/evaluation.service';
 import { Observable } from 'rxjs';
 import { CompositeFilterDescriptor, State } from '@progress/kendo-data-query';
@@ -10,6 +10,20 @@ import { DTOSession } from '../shared/dtos/DTOSession.dto';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { CheckboxlistComponent } from '../shared/components/checkboxlist/checkboxlist.component';
 import { DatepickerComponent } from '../shared/components/datepicker/datepicker.component';
+import { Router } from '@angular/router';
+import { NotifiService } from 'src/app/in-app/in-config/pages/shared/services/notifi.service';
+
+interface Action {
+  id: number
+  action: string
+  classIcon: string
+}
+
+
+interface SessionUpdate {
+  ListDTO: DTOSession[]
+  StatusID: number
+}
 
 @Component({
   selector: 'app-hri001-evaluation-list',
@@ -51,6 +65,8 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   gridData: DTOSession[] = [];
   listStage: DTOStatus[] = [];
   tempList: DTOSession[] = [];
+  listOriginAction: Action[] = dataActions;
+
 
 
 
@@ -63,7 +79,11 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   @ViewChild('datepickerEnd') childDatePickerEnd!: DatepickerComponent;
 
 
-  constructor(public service: EvaluationService) { }
+  constructor(
+    public evaluationService: EvaluationService,
+    private router: Router,
+    private notifi: NotifiService
+  ) { }
 
 
   // Hàm chạy khi destroy trang
@@ -86,12 +106,13 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   // Sự kiện get Data bằng state
   getData() {
     this.isLoading = true;
-    this.service.getListQuesionSesstion(this.state).subscribe((res: DTOResponse) => {
+    this.evaluationService.getListQuesionSesstion(this.state).subscribe((res: DTOResponse) => {
       if (res.ObjectReturn) {
         this.originData = { data: [...((res.ObjectReturn).Data)], total: res.ObjectReturn.Total };
         this.isLoading = false;
       }
     }, (resError => {
+      this.router.navigateByUrl('/user-login');
       console.log(resError);
     }));
   }
@@ -294,7 +315,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
     // Reset end date
     this.childDatePickerEnd.resetDate();
-    this.dateEndPicked = this.maxDate;7
+    this.dateEndPicked = this.maxDate; 7
 
     // Fetch lại data
     this.filterData();
@@ -322,7 +343,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
    * @param date Date
    * @returns Ngày có dạng 2023-11-01T00:00:00
    */
-  formatDateToCompare(date: Date){
+  formatDateToCompare(date: Date) {
     return date.toISOString().split('.')[0];
   }
 
@@ -354,34 +375,39 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
    * @param stage Current stage of evaluation
    * @returns 
    */
-  getListActions(status: string, stage: string): string[] {
-    if (status === 'Ngưng áp dụng') {
-      return ['Xem chi tiết đợt đánh giá', 'Phê duyệt'];
-    }
-    else if (status === 'Đang soạn thảo') {
-      return ['Thiết lập đợt đánh giá', 'Gửi duyệt', 'Xóa đợt đánh giá'];
-    }
-    else if (status === 'Trả về') {
-      if (stage === 'Đang diễn ra') {
-        return ['Xem chi tiết đợt đánh giá', 'Gửi duyệt'];
+  getListActions(status: string, stage: string): Action[] {
+    let listActionFromStatus: Action[] = [];
+
+    if (status) {
+      if (status === 'Đang soạn thảo') {
+        listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 0 || item.id === 1 || item.id === 9));
       }
-      else if (stage === 'Chưa mở') {
-        return ['Thiết lập đợt đánh giá', 'Gửi duyệt'];
+      else if (status === 'Gởi duyệt') {
+        if (stage === 'Chưa mở') {
+          listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 0 || item.id === 2 || item.id === 4));
+        }
+        else {
+          listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 6 || item.id === 2 || item.id === 4));
+        }
       }
-    }
-    else if (status === 'Gởi duyệt') {
-      return ['Xem chi tiết đợt đánh giá', 'Phê duyệt', 'Trả về'];
-    }
-    else if (status === 'Duyệt áp dụng') {
-      if (stage === 'Hoàn tất') {
-        return ['Xem chi tiết đợt đánh giá', 'Giám sát đợt đánh giá', 'Chấm điểm câu tự luận', 'Tính điểm đợt đánh giá'];
+      else if (status === 'Ngưng áp dụng') {
+        listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 6 || item.id === 2));
       }
-      if (stage === 'Hoàn tất phúc khảo') {
-        return ['Xem chi tiết đợt đánh giá', 'Giám sát đợt đánh giá', 'Chấm điểm câu tự luận', 'Chấm phúc khảo', 'Ngưng đợt đánh giá']
+      else if (status === 'Trả về') {
+        listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 0 || item.id === 1));
       }
-      if (stage === 'Đang diễn ra') {
-        return ['Xem chi tiết đợt đánh giá', 'Giám sát đợt đánh giá', 'Kết thúc làm bài']
+      else if (status === 'Duyệt áp dụng') {
+        if (stage === 'Hoàn tất') {
+          listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 6 || item.id === 7 || item.id === 8 || item.id === 5));
+        }
+        else if (stage === 'Hoàn tất phúc khảo') {
+          listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 6 || item.id === 7 || item.id === 8 || item.id === 11 || item.id === 3));
+        }
+        else if (stage === 'Đang diễn ra') {
+          listActionFromStatus.push(...this.listOriginAction.filter(item => item.id === 6 || item.id === 7 || item.id === 10));
+        }
       }
+      return listActionFromStatus
     }
     return [];
   }
@@ -447,7 +473,28 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  updateStatus(evaluator: DTOSession) {
+  updateStatus(quizSession: any, newStatus: any) {
+    // Khởi tạo 1 object SessionUpdate để lưu trữ đối tượng và trạng thái mới cần cập nhật
+    let sessionUpdate: SessionUpdate = {
+      ListDTO: [],
+      StatusID: null
+    };
 
+    // Truyền quizSession và trạng thái mới vào object
+    if (quizSession && newStatus && newStatus.id >= 1 && newStatus.id <= 4) {
+      sessionUpdate.ListDTO.push(quizSession);
+      sessionUpdate.StatusID = newStatus.id;
+
+      // Gọi API Update bên service
+      this.evaluationService.updateQuizSessionStatus(sessionUpdate).subscribe(response => {
+        this.notifi.message('Cập nhật trạng thái đợt đánh giá thành công!', "success");
+        this.getData();
+      }, error => {
+        console.error('Error:', error);
+      });
+    }
+    else {
+      console.error('Không tìm thấy câu hỏi hoặc action');
+    }
   }
 }

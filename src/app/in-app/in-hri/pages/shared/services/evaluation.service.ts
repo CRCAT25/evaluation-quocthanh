@@ -10,7 +10,8 @@ import { State, toDataSourceRequest } from '@progress/kendo-data-query';
 export class EvaluationService extends BehaviorSubject<DTOSession[]> {
     public loading: boolean = false;
     private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/6a5201e936f360ef5b0e9cf3fdb3e6207f2aff16/evaluationData";
-    apiUrl: string = 'http://172.16.10.86:75/qc/api/quiz/GetListQuizSession'
+    private apiUrlGetSession: string = 'http://172.16.10.86:75/qc/api/quiz/GetListQuizSession'
+    private apiUrlUpdateSession: string = 'http://172.16.10.86:75/qc/api/quiz/UpdateQuizSessionStatus';
 
 
     constructor(private http: HttpClient) {
@@ -56,10 +57,22 @@ export class EvaluationService extends BehaviorSubject<DTOSession[]> {
     getListQuesionSesstion(state: State): Observable<DTOResponse> {
         const httpOptions = this.getHttpOptions();
 
-        return this.http.post<DTOResponse>(this.apiUrl, toDataSourceRequest(state), httpOptions)
+        return this.http.post<DTOResponse>(this.apiUrlGetSession, toDataSourceRequest(state), httpOptions)
             .pipe(
                 catchError(error => {
                     console.error('Error retrieving quiz sessions:', error);
+                    return throwError(error);
+                })
+            );
+    }
+
+
+    updateQuizSessionStatus(sessionData: any): Observable<any> {
+        const httpOptions = this.getHttpOptions();
+        return this.http.post(this.apiUrlUpdateSession, sessionData, httpOptions)
+            .pipe(
+                catchError(error => {
+                    console.error('Error updating quiz session:', error);
                     return throwError(error);
                 })
             );
