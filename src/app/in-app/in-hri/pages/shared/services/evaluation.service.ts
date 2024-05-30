@@ -12,6 +12,7 @@ export class EvaluationService extends BehaviorSubject<DTOSession[]> {
     private BASE_URL = "https://gist.githubusercontent.com/CRCAT25/36ad75e88e4e98774a5b7338e943ff81/raw/6a5201e936f360ef5b0e9cf3fdb3e6207f2aff16/evaluationData";
     private apiUrlGetSession: string = 'http://172.16.10.86:75/qc/api/quiz/GetListQuizSession'
     private apiUrlUpdateSession: string = 'http://172.16.10.86:75/qc/api/quiz/UpdateQuizSessionStatus';
+    private apiUrlDeleteSession: string = 'http://172.16.10.86:75/qc/api/quiz/DeleteQuizSession';
 
 
     constructor(private http: HttpClient) {
@@ -73,6 +74,17 @@ export class EvaluationService extends BehaviorSubject<DTOSession[]> {
             .pipe(
                 catchError(error => {
                     console.error('Error updating quiz session:', error);
+                    return throwError(error);
+                })
+            );
+    }
+
+    deleteQuizSession(sessionData: any): Observable<any> {
+        const httpOptions = this.getHttpOptions();
+        return this.http.post(this.apiUrlDeleteSession, sessionData, httpOptions)
+            .pipe(
+                catchError(error => {
+                    console.error('Error delete quiz session:', error);
                     return throwError(error);
                 })
             );

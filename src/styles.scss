@@ -70,3 +70,9 @@ $box-shadow-green: rgba(26, 102, 52, 0.4) 0px 7px 15px 0px;
   }
 }
 
+
+.disabled-block{
+  pointer-events: none;
+  opacity: 0.6;
+}
+

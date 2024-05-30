@@ -43,6 +43,8 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   toolBoxSeleted: number = -1;
   dataSearch: string = '';
   isLoading: boolean = false;
+  isOpenConfirmDelete: boolean = false;
+  sessionDelete: {Code: number, SessionName: string} = {Code: null, SessionName: null};
 
 
 
@@ -61,14 +63,13 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   listCheckBoxStage: DTOStatus[] = dataStage;
   pageSizes = [25, 50, 75, 100];
   listStatus: DTOStatus[] = this.listCheckBoxStatusDefault;
-  originData: GridDataResult;
-  gridData: DTOSession[] = [];
+  listFilterData: GridDataResult;
+  listOriginSession: GridDataResult;
   listStage: DTOStatus[] = [];
-  tempList: DTOSession[] = [];
   listOriginAction: Action[] = dataActions;
   listCheckedSession: number[] = [];
-
-
+  listAction: string[] = [];
+  listCheckedFullSession: DTOSession[] = [];
 
 
 
@@ -80,11 +81,13 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   @ViewChild('datepickerEnd') childDatePickerEnd!: DatepickerComponent;
 
 
+
   constructor(
     public evaluationService: EvaluationService,
     private router: Router,
     private notifi: NotifiService
   ) { }
+
 
 
   // Hàm chạy khi destroy trang
@@ -97,25 +100,41 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   // Hàm chạy khi khởi tạo trang
   public ngOnInit(): void {
     localStorage.getItem('tokenLogin');
+    this.getOriginSessionData();
     this.initState();
-    this.getData();
+    this.getDataAfterFilter();
     this.filterData();
   }
 
 
 
-  // Sự kiện get Data bằng state
-  getData() {
+  /**
+   * Sự kiện get danh sách session bằng state sau khi được filter
+   */
+  getDataAfterFilter() {
+    // Lấy danh sách session được filter mặc định
     this.isLoading = true;
     this.evaluationService.getListQuesionSesstion(this.state).subscribe((res: DTOResponse) => {
       if (res.ObjectReturn) {
-        this.originData = { data: [...((res.ObjectReturn).Data)], total: res.ObjectReturn.Total };
+        this.listFilterData = { data: [...((res.ObjectReturn).Data)], total: res.ObjectReturn.Total };
         this.isLoading = false;
       }
     }, (resError => {
       this.router.navigateByUrl('/user-login');
       console.log(resError);
     }));
+  }
+
+
+
+  // Lấy danh sách session gốc không filter
+  getOriginSessionData() {
+    this.evaluationService.getListQuesionSesstion({}).subscribe((res: DTOResponse) => {
+      if (res.ObjectReturn) {
+        this.listOriginSession = { data: [...((res.ObjectReturn).Data)], total: res.ObjectReturn.Total };
+        this.isLoading = false;
+      }
+    })
   }
 
 
@@ -200,7 +219,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
     let filterStage: CompositeFilterDescriptor = { logic: 'or', filters: [] }
     this.listStage.forEach(stage => {
       let stageName = stage.status;
-      if(stageName === 'Phúc khảo') stageName = 'Hoàn tất phúc khảo'
+      if (stageName === 'Phúc khảo') stageName = 'Hoàn tất phúc khảo'
       filterStage.filters.push({ field: 'SessionStatusName', operator: 'eq', value: stageName })
     })
     return filterStage;
@@ -276,7 +295,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
     // Gọi lại API
-    this.getData();
+    this.getDataAfterFilter();
   }
 
 
@@ -365,6 +384,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
       this.dateStartPicked = date;
     }
     else if (index === 'End') {
+      date.setDate(date.getDate() + 2);
       this.dateEndPicked = date;
     }
     else {
@@ -450,7 +470,10 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   onClick(event: MouseEvent) {
     if (!(event.target as HTMLElement).closest('.col-5')) {
       this.toolBoxSeleted = -1;
-      console.log(this.listCheckedSession);
+    }
+    // Mỗi khi chọn vào input gọi hàm getListCheckedSession
+    if ((event.target as HTMLElement).closest('input')) {
+      this.getListCheckedSession();
     }
   }
 
@@ -463,7 +486,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   onPageChange(value: any) {
     this.state.skip = value.skip;
     this.state.take = value.take;
-    this.getData();
+    this.getDataAfterFilter();
   }
 
 
@@ -499,15 +522,81 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
       // Gọi API Update bên service
       this.evaluationService.updateQuizSessionStatus(sessionUpdate).subscribe(response => {
-        this.notifi.message(`${newStatus.action} thành công`, "success");
-        this.getData();
+        if (response.ErrorString) {
+          this.notifi.message(response.ErrorString, "error");
+        }
+        else {
+          this.notifi.message(`${newStatus.action} thành công`, "success");
+          this.getDataAfterFilter();
+          this.getOriginSessionData();
+        }
       }, error => {
         console.error('Error:', error);
       });
     }
+    else if(newStatus.id === 9){
+      this.openDialogDelete(quizSession.SessionName, quizSession.Code)
+    }
     else {
       console.error('Không tìm thấy câu hỏi hoặc action');
     }
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi thực hiện update trạng thái cho cùng lúc nhiều session
+   * @param newStatus Trạng thái cần update sang 
+   */
+  updateStatusMultiSession(newStatus: any) {
+    let updateableList: DTOSession[] = [];
+    let statusID: number = -1;
+    if (newStatus === 'Gửi duyệt') {
+      statusID = 1;
+      this.listCheckedFullSession.forEach(session => {
+        if (session.StatusID === 0 || session.StatusID === 4) {
+          updateableList.push(session);
+        }
+      })
+    }
+    else if (newStatus === 'Phê duyệt') {
+      statusID = 1;
+      this.listCheckedFullSession.forEach(session => {
+        if (session.StatusID === 1 || session.StatusID === 3) {
+          updateableList.push(session);
+        }
+      })
+    }
+    else if (newStatus === 'Ngưng đợt đánh giá') {
+      statusID = 3;
+      this.listCheckedFullSession.forEach(session => {
+        if (session.StatusID === 2) {
+          updateableList.push(session);
+        }
+      })
+    }
+    else {
+      console.log('Không có session được update');
+    }
+
+    let sessionUpdate: SessionUpdate = {
+      ListDTO: updateableList,
+      StatusID: statusID
+    };
+
+    this.evaluationService.updateQuizSessionStatus(sessionUpdate).subscribe((response: DTOResponse) => {
+      if (response.ErrorString) {
+        this.notifi.message(response.ErrorString, "error");
+      }
+      else {
+        this.notifi.message(`${newStatus} thành công`, "success");
+        this.getDataAfterFilter();
+        this.getOriginSessionData();
+      }
+    }, error => {
+      console.error('Error:', error);
+    });
+    this.closePopup();
   }
 
 
@@ -527,7 +616,9 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
     else if (statusID === 2) {
       return ['Ngưng đợt đánh giá'];
     }
-    return [];
+    else {
+      return [];
+    }
   }
 
 
@@ -538,7 +629,7 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   getMultiAction() {
     let listMultiAction: string[] = [];
     this.listCheckedSession.forEach(code => {
-      this.originData.data.forEach((session: DTOSession) => {
+      this.listOriginSession.data.forEach((session: DTOSession) => {
         if (session) {
           if (session.Code === code) {
             listMultiAction.push(...this.getListActionOneSession(session.StatusID));
@@ -552,6 +643,24 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
       return customOrder.indexOf(a) - customOrder.indexOf(b);
     });
     return sortedList;
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi cần lấy danh sách các session được chọn
+   */
+  getListCheckedSession() {
+    this.listCheckedFullSession = [];
+    this.listCheckedSession.forEach(code => {
+      this.listOriginSession.data.forEach((session: DTOSession) => {
+        if (session) {
+          if (session.Code === code) {
+            this.listCheckedFullSession.push(session);
+          }
+        }
+      })
+    })
   }
 
 
@@ -581,7 +690,53 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
   /**
    * Sự kiện được gọi khi cần đóng popup chọn nhiều session
    */
-  closePopup(){
+  closePopup() {
     this.listCheckedSession = [];
+    this.listCheckedFullSession = [];
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi cần xóa 1 session nào đó
+   * @param code Code của session
+   */
+  deleteSession(code: number){
+    const objDelete: {Code: number} = {Code: code};
+    this.evaluationService.deleteQuizSession(objDelete).subscribe((response: DTOResponse) => {
+      if (response.ErrorString) {
+        console.log(response.ErrorString);
+        this.notifi.message(response.ErrorString, "error");
+      }
+      else {
+        this.notifi.message(`Xóa thành công`, "success");
+        this.getDataAfterFilter();
+        this.getOriginSessionData();
+        this.closeDialogDelete();
+      }
+    }, error => {
+      console.error('Error:', error);
+    });
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi muốn đóng dialog confirm delete
+   */
+  closeDialogDelete(){
+    this.sessionDelete = {Code: null, SessionName: null};
+    this.isOpenConfirmDelete = false;
+  }
+
+
+
+  /**
+   * Sự kiện được gọi khi mở dialog confirm delete
+   * @param sessionName name của session
+   */
+  openDialogDelete(sessionName: string, sessionID: number){
+    this.isOpenConfirmDelete = true;
+    this.sessionDelete = {Code: sessionID, SessionName: sessionName};
   }
 }

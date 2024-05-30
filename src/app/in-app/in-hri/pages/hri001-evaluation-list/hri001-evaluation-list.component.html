@@ -1,5 +1,5 @@
 <!-- Breadcumb and buttons -->
-<div class="block-breadcrumb-status-button">
+<div class="block-breadcrumb-status-button" [ngClass]="{'disabled-block': listCheckedFullSession.length > 0}">
 
     <div class="block-breadcrumb-status-button_breadcrumb">
         <kendo-breadcrumb [collapseMode]="collapseMode" [items]="itemsBreadCrumb" SetClassSVGIcon HamperBreadcrumb />
@@ -7,7 +7,7 @@
 
     <div class="block-breadcrumb-status-button_status">
         <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'status')"
-            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus" #checkboxlistStatus/>
+            [listCheckBoxDefault]="listCheckBoxStatusDefault" [listCheckBox]="listCheckBoxStatus" #checkboxlistStatus />
     </div>
 
     <div class="block-breadcrumb-status-button_button-group">
@@ -20,10 +20,9 @@
 
 
 <!-- Filter -->
-<div class="block-filter-evaluation">
+<div class="block-filter-evaluation" [ngClass]="{'disabled-block': listCheckedFullSession.length > 0}">
 
-    <app-search-filter-group (resetValue)="resetFilter()"
-        (getValue)="handleSearch($event)"></app-search-filter-group>
+    <app-search-filter-group (resetValue)="resetFilter()" (getValue)="handleSearch($event)"></app-search-filter-group>
 
     <div class="filter-date">
 
@@ -31,14 +30,16 @@
 
         <div class="date">
 
-            <app-datepicker [minDate]="minDate" [maxDate]="dateEndPicked" (datePicked)="getDate($event, 'Start')" #datepickerStart/>
+            <app-datepicker [minDate]="minDate" [maxDate]="dateEndPicked" (datePicked)="getDate($event, 'Start')"
+                #datepickerStart />
 
             <div class="line"> - </div>
 
-            <app-datepicker [minDate]="dateStartPicked" [maxDate]="maxDate" (datePicked)="getDate($event, 'End')" #datepickerEnd/>
+            <app-datepicker [minDate]="dateStartPicked" [maxDate]="maxDate" (datePicked)="getDate($event, 'End')"
+                #datepickerEnd />
 
             <component-checkboxlist (listChecked)="getListCheckBoxChecked($event, 'stage')"
-                [listCheckBox]="listCheckBoxStage" #checkboxlistStage/>
+                [listCheckBox]="listCheckBoxStage" #checkboxlistStage />
 
         </div>
     </div>
@@ -48,22 +49,12 @@
 
 <!-- Danh sách Session -->
 <div class="block-list-evaluation">
-    <kendo-grid 
-        SetClassSVGIcon 
-        [data]="originData" 
-        [skip]="state.skip"
-        [pageSize]="state.take"
-        (pageChange)="onPageChange($event)"
-        kendoGridSelectBy="Code"
-        [(selectedKeys)]="listCheckedSession"
-        [pageable]="{
+    <kendo-grid SetClassSVGIcon [data]="listFilterData" [skip]="state.skip" [pageSize]="state.take"
+        (pageChange)="onPageChange($event)" kendoGridSelectBy="Code" [(selectedKeys)]="listCheckedSession" [pageable]="{
             type: 'numeric',
             info: true,
             pageSizes: true,
-        }" 
-        [pageSize]="pageSizes[0]" 
-        [loading]="isLoading"  
-        [selectable]="{ checkboxOnly: true }">
+        }" [pageSize]="pageSizes[0]" [loading]="isLoading" [selectable]="{ checkboxOnly: true }">
         <kendo-grid-checkbox-column [showSelectAll]="true" [width]="60"></kendo-grid-checkbox-column>
 
         <kendo-grid-column [resizable]="true" [width]="640" class="col-1" title="Đợt đánh giá">
@@ -119,12 +110,11 @@
 
         <kendo-grid-column [sticky]="true" [resizable]="true" [width]="58" class="col-5">
             <ng-template kendoGridCellTemplate let-dataItem>
-                <div class="tool-box" [id]="dataItem.Code"
-                    (click)="toggleToolBox(dataItem.Code, $event)">
+                <div class="tool-box" [id]="dataItem.Code" (click)="toggleToolBox(dataItem.Code, $event)"
+                    [ngClass]="{'disabled-block': listCheckedFullSession.length > 0}">
                     <span class="k-icon k-font-icon k-i-more-horizontal"></span>
                     <div class="action-list-box" *ngIf="toolBoxSeleted === dataItem.Code">
-                        <div 
-                            class="action-box" 
+                        <div class="action-box"
                             *ngFor="let action of getListActions(dataItem.StatusName, dataItem.SessionStatusName)"
                             (click)="updateStatus(dataItem, action)">
                             <div class="action-box_icon">
@@ -136,7 +126,7 @@
                 </div>
             </ng-template>
         </kendo-grid-column>
-        
+
         <ng-template kendoPagerTemplate>
             <div class="pagination">
                 <div class="page-size">
@@ -164,7 +154,8 @@
         <div class="label">Đã chọn</div>
     </div>
 
-    <div class="popup-multi-action_listAction" *ngFor="let action of getMultiAction()">
+    <div class="popup-multi-action_listAction" *ngFor="let action of getMultiAction()"
+        (click)="updateStatusMultiSession(action)">
         <div class="icon">
             <span [className]="'k-icon k-font-icon ' + getIconByAction(action)"></span>
         </div>
@@ -174,4 +165,34 @@
     <div class="diviver"></div>
 
     <div class="popup-multi-action_close" (click)="closePopup()">X</div>
+</div>
+
+
+<!-- Dialog xác nhận xóa -->
+<div class="bg-full-dark" *ngIf="isOpenConfirmDelete">
+</div>
+<div class="dialog" *ngIf="isOpenConfirmDelete">
+    <div class="header">
+        <span class="k-icon k-font-icon k-i-warning"></span>
+        <span>Xóa đợt đánh giá</span>
+    </div>
+    <div class="body">
+        <div>
+            <div class="title">Bạn chắc chắn muốn xóa đợt đánh giá</div>
+            <div class="content">{{sessionDelete.SessionName}}</div>
+        </div>
+        <div class="warning">
+            <span class="red">ĐỢT ĐÁNH GIÁ</span>
+            <span>bị xóa sẽ</span>
+            <span class="red">KHÔNG</span>
+            <span>thể khôi phục lại</span>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="cancel" (click)="closeDialogDelete()">Không xóa</div>
+        <div class="confirm" (click)="deleteSession(sessionDelete.Code)">
+            <span class="k-icon k-font-icon k-i-trash"></span>
+            <span>Xóa đợt đánh giá</span>
+        </div>
+    </div>
 </div>

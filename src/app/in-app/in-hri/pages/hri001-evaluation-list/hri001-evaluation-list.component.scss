@@ -1,9 +1,6 @@
 @import '../../../../../styles.scss';
 
 
-
-
-
 .block-breadcrumb-status-button {
     display: flex;
     justify-content: space-between;
@@ -82,12 +79,12 @@
     width: 100%;
     height: calc(100vh - 50px - 62.9px - 94.39px);
 
-    .k-pager-nav[aria-label = "Go to the previous page"],
-    .k-pager-nav[aria-label = "Go to the next page"]{
+    .k-pager-nav[aria-label="Go to the previous page"],
+    .k-pager-nav[aria-label="Go to the next page"] {
         width: 18px !important;
     }
 
-    .k-pager{
+    .k-pager {
         box-shadow: none !important;
     }
 
@@ -156,8 +153,8 @@
     .k-table-th,
     .k-table-td {
         border: none !important;
-        
-        input:hover{
+
+        input:hover {
             background-color: #1a6634;
         }
     }
@@ -180,7 +177,7 @@
         #k-grid0-select-all {
             margin-top: 2px;
 
-            &:hover{
+            &:hover {
                 background-color: #1a6634;
             }
         }
@@ -299,7 +296,7 @@
             font-weight: 700;
             color: #28262E !important;
 
-            &_name{
+            &_name {
                 min-width: 500px;
             }
         }
@@ -429,7 +426,8 @@
 
                 kendo-dropdownlist {
                     background-color: white !important;
-                    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+                    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+                    border: none !important;
 
                     .k-input-button {
                         kendo-icon-wrapper {
@@ -549,7 +547,7 @@
 }
 
 
-.popup-multi-action{
+.popup-multi-action {
     height: 68px;
     position: absolute;
     left: 50%;
@@ -564,7 +562,7 @@
     border-radius: 3px;
     gap: 0;
 
-    &_count{
+    &_count {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -575,16 +573,16 @@
         background-color: $dark-green;
         min-width: 68px;
 
-        .count{
+        .count {
             font-size: 30px;
         }
 
-        .label{
+        .label {
             font-size: 13px;
         }
     }
 
-    &_listAction{
+    &_listAction {
         background-color: #fff;
         height: 100%;
         display: flex;
@@ -594,30 +592,30 @@
         height: 100%;
         gap: 4px;
 
-        .action{
+        .action {
             font-size: 13px;
             padding: 2px 22px;
         }
 
-        &:hover{
+        &:hover {
             background-color: #8f9ba6;
             cursor: pointer;
         }
 
         &:hover>.action,
-        &:hover>.icon{
+        &:hover>.icon {
             color: #fff;
         }
     }
 
-    .diviver{
+    .diviver {
         height: 70%;
         width: 1px;
         background-color: $grey;
         margin: auto;
     }
 
-    &_close{
+    &_close {
         min-width: 68px;
         width: 68px;
         display: flex;
@@ -627,10 +625,136 @@
         font-size: 13px !important;
         border-radius: 0 3px 3px 0;
 
-        &:hover{
+        &:hover {
             background-color: #8f9ba6;
             cursor: pointer;
             color: #fff;
+        }
+    }
+}
+
+.bg-full-dark {
+    background-color: #000;
+    opacity: 0.5;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1001;
+}
+
+.dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1002;
+    min-width: 400px;
+    min-height: 250px;
+    max-width: 350px;
+    background-color: #fff;
+    opacity: 1.0 !important;
+
+    .header,
+    .body,
+    .footer {
+        background-color: #fff;
+    }
+
+    .header,
+    .footer {
+        height: 50px;
+    }
+
+    .body {
+        height: 150px;
+        padding: 22px 35px;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+
+        .title {
+            font-size: 14px;
+        }
+
+        .content {
+            text-wrap: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            color: #1a6634;
+            font-size: 17px;
+            text-transform: uppercase;
+        }
+
+        .warning {
+            display: flex;
+            gap: 4px;
+            font-size: 14px;
+
+            .red {
+                color: #d82c12;
+            }
+        }
+    }
+
+    .header {
+        background-color: #fd7676;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+
+        span {
+            display: flex;
+            height: 50px;
+            align-items: center;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .k-i-warning {
+            font-size: 25px;
+            font-weight: normal;
+        }
+    }
+
+    .footer {
+        display: flex;
+        border-top: 1px solid #868b86;
+
+        div {
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+
+            span {
+                display: flex;
+                align-items: center;
+                height: 50px;
+            }
+        }
+
+        .cancel {
+            display: flex;
+            align-items: center;
+        }
+
+        .confirm {
+            background-color: #fd7676;
+            gap: 2px;
+            color: #fff;
+        }
+
+        .cancel:hover,.confirm:hover{
+            cursor: pointer;
+            filter: brightness(120%);
         }
     }
 }
