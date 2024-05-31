@@ -127,7 +127,9 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Lấy danh sách session gốc không filter
+  /**
+   * Lấy danh sách session gốc không filter
+   */
   getOriginSessionData() {
     this.evaluationService.getListQuesionSesstion({}).subscribe((res: DTOResponse) => {
       if (res.ObjectReturn) {
@@ -139,7 +141,9 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Khởi tạo state: State
+  /**
+   * Khởi tạo state: State
+   */
   initState() {
     this.state = {
       skip: 1,
@@ -165,24 +169,6 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
   /**
-   * Sự kiện giúp trả về thời gian 00h
-   * @param dateString Date
-   * @param timeZoneOffset Múi giờ
-   * @returns 
-   */
-  parseDateInTimeZone(dateString: Date, timeZoneOffset: number): Date {
-    // Parse the date string as a UTC date
-    const dateObject = dateString;
-
-    // Adjust the date to the desired time zone by adding the offset in minutes
-    dateObject.setMinutes(dateObject.getMinutes() + timeZoneOffset * 60);
-
-    return dateObject;
-  }
-
-
-
-  /**
    * Sự kiện giúp lấy danh sách status sau khi thao tác chọn các status
    * @param listCheckBox list cần được truyền data vào
    * @param type loại list status cần truyền
@@ -199,7 +185,10 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Sự kiện được gọi dùng để filter Session theo status
+  /**
+   * Sự kiện được gọi dùng để filter Session theo status
+   * @returns CompositeFilterDescriptor
+   */
   filterStatus(): CompositeFilterDescriptor {
     let filterStatus: CompositeFilterDescriptor = { logic: 'or', filters: [] }
     this.listStatus.forEach(status => {
@@ -214,7 +203,10 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Sự kiện được gọi dùng để filter Session theo stage
+  /**
+   * Sự kiện được gọi dùng để filter Session theo stage
+   * @returns CompositeFilterDescriptor
+   */
   filterStage(): CompositeFilterDescriptor {
     let filterStage: CompositeFilterDescriptor = { logic: 'or', filters: [] }
     this.listStage.forEach(stage => {
@@ -227,7 +219,10 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Sự kiện được gọi dùng để filter Session theo textBox tìm kiếm
+  /**
+   * Sự kiện được gọi dùng để filter Session theo textBox tìm kiếm
+   * @returns CompositeFilterDescriptor
+   */
   filterSearch(): CompositeFilterDescriptor {
     let filterSearch: CompositeFilterDescriptor = { logic: 'or', filters: [] }
     if (this.dataSearch !== '') {
@@ -239,7 +234,10 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Sự kiện được gọi dùng để filter Session theo ngày
+  /**
+   * Sự kiện được gọi dùng để filter Session theo ngày
+   * @returns CompositeFilterDescriptor
+   */
   filterDate(): CompositeFilterDescriptor {
     let filterDate: CompositeFilterDescriptor = { logic: 'and', filters: [] }
     filterDate.filters.push({ field: 'StartDate', operator: 'gte', value: this.formatDateToCompare(this.dateStartPicked) })
@@ -311,7 +309,9 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
 
 
 
-  // Sự kiện được gọi khi cần reset filter của state
+  /**
+   * Sự kiện được gọi khi cần reset filter của state
+   */
   resetFilterOfState() {
     this.state.filter.filters.length = 0;
   }
