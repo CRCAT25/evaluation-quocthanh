@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { DatePickerComponent } from '@progress/kendo-angular-dateinputs';
 
 /**
@@ -19,6 +19,8 @@ export class DatepickerComponent implements OnInit {
   @ViewChild('datePicker', { static: false }) datePicker!: DatePickerComponent;
   valueDate: Date = null;
 
+  constructor(private renderer: Renderer2) { }
+
   ngOnInit(): void {
     
   }
@@ -30,6 +32,14 @@ export class DatepickerComponent implements OnInit {
   resetDate(){
     this.valueDate = null
     this.datePicker.writeValue(null);
+  }
+
+  onOpenDatePicker(){
+    const body = this.renderer.selectRootElement('body', true) as HTMLElement;
+    const rootElement = body.querySelector('app-root') as HTMLElement;
+    const popupElement = rootElement.querySelector('kendo-popup');
+    console.log(body);
+    console.log(popupElement);
   }
 
 }
