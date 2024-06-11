@@ -1,0 +1,35 @@
+@import '../../../../../styles.scss';
+
+::ng-deep {
+    app-ecom001-channel-group {
+        .app-ecom001-channel-group {
+            padding: 0 5px;
+
+            .header-1 {
+                display: flex;
+                justify-content: space-between;
+                height: 50px;
+                border-bottom: 1px solid rgba(143, 155, 166, .4);
+                
+                .breadcrumb {
+                    background: none;
+                    
+                    .k-breadcrumb-item-text{
+                        font-size: 13px !important;
+                    }
+
+                    .k-breadcrumb-link,
+                    .k-breadcrumb-root-link {
+                        padding-top: 8px;
+                    }
+                }
+
+                .button-group{
+                    display: flex;
+                    gap: 10px;
+                    padding: 9px 0;
+                }
+            }
+        }
+    }
+}

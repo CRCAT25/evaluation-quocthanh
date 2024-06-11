@@ -1,0 +1,61 @@
+@import '../../../../../../styles.scss';
+
+.component-button{
+    height: 32px;
+    display: flex;
+    gap: 8px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 3px;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    color: #fff;
+
+    .component-button_icon{
+        display: flex;
+        align-items: center;
+    }
+
+    .component-button_name{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+.component-button:hover{
+    filter: brightness(110%);
+}
+
+.success{
+    background-color: $dark-green;
+    color: #fff;
+    box-shadow: $box-shadow5;
+    font-size: 11px;
+}
+
+.default{
+    background-color: #fff;
+    color: #000;
+    font-weight: normal;
+    text-transform: none;
+    box-shadow: $box-shadow5;
+}
+
+.default:hover{
+    background-color: rgba($color: #727272, $alpha: 0.1);
+}
+
+.infor{
+    background-color: $primary;
+}
+
+.warning{
+    background-color: $warning;
+}
+
+.error{
+    background-color: $red;
+}

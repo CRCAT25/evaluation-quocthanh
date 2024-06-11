@@ -1,1 +1,19 @@
-<p>ecom001-channel-group works!</p>
+<div class="app-ecom001-channel-group">
+    <!-- Header1 -->
+    <div class="header-1">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <kendo-breadcrumb 
+                [collapseMode]="collapseMode" 
+                [items]="itemsBreadCrumb" 
+                SetClassSVGIcon
+                HamperBreadcrumb/>
+        </div>
+
+        <!-- Button -->
+        <div class="button-group">
+            <component-button type="success" [imageDirection]="imageSiteMapDirection" nameButton="Thêm mới nhóm" />
+            <component-button type="success" [imageDirection]="imageSiteMapDirection" nameButton="Thêm mới nhóm con" />
+        </div>
+    </div>
+</div>

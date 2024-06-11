@@ -13,5 +13,6 @@ import { Component, Input } from '@angular/core';
 export class ButtonComponent {
   @Input() classIcon: string = '';
   @Input() nameButton: string = '';
+  @Input() imageDirection: string = '';
   @Input() type: 'default' | 'success' | 'warning' | 'error' | 'infor' = 'default';
 }

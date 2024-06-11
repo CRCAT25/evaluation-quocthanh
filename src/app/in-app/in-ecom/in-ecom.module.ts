@@ -10,6 +10,9 @@ import { PEcomRoutingModule } from './in-ecom-routing.module';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
+import { HamperBreadcrumb } from '../in-config/pages/shared/directives/HamperBreadcrumb.directive';
+import { SetClassSVGIcon } from '../in-config/pages/shared/directives/SetClassSVGIcon.directive';
+import { ButtonComponent } from './shared/components/button/button.component';
 
 
 
@@ -17,6 +20,9 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
   declarations: [
     InEcomComponent,
     Ecom001ChannelGroupComponent,
+    HamperBreadcrumb,
+    SetClassSVGIcon,
+    ButtonComponent
   ],
   imports: [
     PEcomRoutingModule,
