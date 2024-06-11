@@ -342,6 +342,8 @@ export class Hri001EvaluationListComponent implements OnInit, OnDestroy {
     this.state.skip = 1;
     this.state.take = 25;
 
+    this.dataSearch = '';
+
     // Fetch lại data
     this.filterData();
   }

@@ -1,3 +1,4 @@
+import { InEcomComponent } from './../../in-ecom/in-ecom.component';
 import { LayoutDefaultComponent } from '../layout-default/layout-default.component';
 
 
@@ -118,6 +119,40 @@ export const ModuleDataAdmin: Array<any> = [
                         Type: 'function',
                         ModuleID: "hri001-evaluation-list",
                         Parent: "Đợt đánh giá",
+                        LstChild: [],
+                        Actived: false,
+                        disabled: false,
+                    }
+                ]
+                
+            },
+        ]
+    },
+    {
+        Code: 'ecom',
+        Name: 'ECOMMERCE',
+        Link: 'ecom/ecom001-channel-group',
+        Path: 'ecom',
+        LoadChildren: () => import('../../in-ecom/in-ecom.module').then(m => m.InEcomModule),
+        // component: LayoutDefaultComponent,
+        ListMenu: [
+            {
+                Name: "KÊNH BÁN HÀNG",
+                Code: "ecom001-channel",
+                Link: "/ecom/hri001-evaluation-list",
+                Type: 'group',
+                Icon:'k-i-files',
+                ModuleID: "ecom001-channel-group",
+                Actived: false,
+                disabled: false,
+                LstChild: [
+                    {
+                        Name: "Nhóm kênh bán hàng",
+                        Code: "ecom001-channel-group",
+                        Link: "/ecom/ecom001-channel-group",
+                        Type: 'function',
+                        ModuleID: "ecom001-channel-group",
+                        Parent: "KÊNH BÁN HÀNG",
                         LstChild: [],
                         Actived: false,
                         disabled: false,

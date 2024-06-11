@@ -7,7 +7,7 @@ import { ModuleDataAdmin } from './in-sitemaps/menu.data-admin';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'hri/hri001-evaluation-list',
+    redirectTo: 'ecom/ecom001-channel-group',
     pathMatch: 'full',
   },
   {
