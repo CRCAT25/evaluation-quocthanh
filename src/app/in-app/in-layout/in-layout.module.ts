@@ -2,7 +2,6 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { InLayoutRoutingModule } from './in-layout-routing.module';
 import { ButtonModule, DropDownButtonModule, ListModule } from '@progress/kendo-angular-buttons';
-import { IconsModule, ICON_SETTINGS, SVGIconModule } from '@progress/kendo-angular-icons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { DropDownsModule, DropDownListModule, DropDownTreesModule, MultiSelectModule } from '@progress/kendo-angular-dropdowns';
 import { PopupModule } from '@progress/kendo-angular-popup';
@@ -34,6 +33,7 @@ import { LayoutDefaultComponent } from './layout-default/layout-default.componen
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TextBoxModule } from '@progress/kendo-angular-inputs';
+import { ICON_SETTINGS, IconsModule, SVGIconModule } from '@progress/kendo-angular-icons';
 
 
 @NgModule({

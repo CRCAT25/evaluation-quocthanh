@@ -13,6 +13,7 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { HamperBreadcrumb } from '../in-config/pages/shared/directives/HamperBreadcrumb.directive';
 import { SetClassSVGIcon } from '../in-config/pages/shared/directives/SetClassSVGIcon.directive';
 import { ButtonComponent } from './shared/components/button/button.component';
+import { ChannelGroupService } from './shared/services/channel-group.service';
 
 
 
@@ -35,7 +36,7 @@ import { ButtonComponent } from './shared/components/button/button.component';
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
   ],
-  providers: [],
+  providers: [ChannelGroupService],
 
 })
 export class InEcomModule {}

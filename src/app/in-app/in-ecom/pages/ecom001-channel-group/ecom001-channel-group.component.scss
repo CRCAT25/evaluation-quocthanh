@@ -1,6 +1,12 @@
 @import '../../../../../styles.scss';
 
 ::ng-deep {
+    .k-i-caret-alt-down::before {
+        content: "\e015";
+    }
+    .k-i-caret-alt-right::before {
+        content: "\e014";
+    }
     app-ecom001-channel-group {
         .app-ecom001-channel-group {
             padding: 0 5px;
