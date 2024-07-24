@@ -14,6 +14,9 @@ import { HamperBreadcrumb } from '../in-config/pages/shared/directives/HamperBre
 import { SetClassSVGIcon } from '../in-config/pages/shared/directives/SetClassSVGIcon.directive';
 import { ButtonComponent } from './shared/components/button/button.component';
 import { ChannelGroupService } from './shared/services/channel-group.service';
+import { PagerGridDirective } from './shared/directives/pagergrid.directive';
+import { TextInputComponent } from './shared/components/text-input/text-input.component';
+import { SearchBarComponent } from './shared/components/search-bar/search-bar.component';
 
 
 
@@ -23,7 +26,10 @@ import { ChannelGroupService } from './shared/services/channel-group.service';
     SystemStructureComponent,
     HamperBreadcrumb,
     SetClassSVGIcon,
-    ButtonComponent
+    ButtonComponent,
+    PagerGridDirective,
+    TextInputComponent,
+    SearchBarComponent
   ],
   imports: [
     PEcomRoutingModule,

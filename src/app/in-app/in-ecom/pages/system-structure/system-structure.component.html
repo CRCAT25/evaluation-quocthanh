@@ -1,37 +1,47 @@
-<div class="app-ecom001-channel-group">
+<div class="app-system-structure">
     <!-- Header1 -->
     <div class="header-1">
         <!-- Breadcrumb -->
         <div class="breadcrumb">
-            <kendo-breadcrumb 
-                [collapseMode]="collapseMode" 
-                [items]="itemsBreadCrumb" 
-                SetClassSVGIcon
-                HamperBreadcrumb/>
+            <kendo-breadcrumb [collapseMode]="collapseMode" [items]="itemsBreadCrumb" SetClassSVGIcon
+                HamperBreadcrumb />
         </div>
         <!-- Button -->
         <div class="button-group">
-            <component-button type="success" [imageDirection]="imageSiteMapDirection" nameButton="Thêm mới nhóm" />
-            <component-button type="success" [imageDirection]="imageSiteMapDirection" nameButton="Thêm mới nhóm con" />
+            <!-- Thêm mới module -->
+            <component-button type="success" [imageDirection]="imageIconModule" nameButton="Thêm mới module" />
+
+            <!-- Thêm mới module con -->
+            <component-button type="success" [imageDirection]="imageIconModule" nameButton="Thêm mới module con" />
+
+            <!-- Thêm mới tính năng -->
+            <component-button type="success" [imageDirection]="imageSiteMapDirection" nameButton="Thêm mới tính năng" />
+
+            <!-- Thêm mới chức năng -->
+            <component-button type="success" [classIcon]="'k-i-share'" nameButton="Thêm mới chức năng" />
+
+            <!-- Thêm mới chức năng con -->
+            <component-button type="success" [classIcon]="'k-i-share'" nameButton="Thêm mới chức năng con" />
         </div>
     </div>
 
-    <!-- Body -->
-    <div class="list-channel-group">
-        <kendo-treelist 
-            [data]="listOriginChannelGroup" 
-            [fetchChildren]="fetchChildren"
-            [hasChildren]="hasChildren" 
-            [initiallyExpanded]="true"
-            kendoTreeListExpandable>
-
-            <kendo-treelist-column 
-                [expandable]="true"
-                [width]="350">
-                <ng-template kendoTreeListCellTemplate let-dataItem>
-                    {{dataItem.ChannelGroupName}}
-                </ng-template>
-            </kendo-treelist-column>
-        </kendo-treelist>
+    <!-- Header2 -->
+    <div class="header-2">
+        <div class="block-1">
+            <span class="k-icon k-font-icon k-i-filter"></span>
+        </div>
+        <div class="block-2">
+            <div class="text-filter">Lọc dữ liệu</div>
+            <div class="reset-filter">Xóa bộ lọc</div>
+        </div>
+        <div class="block-3">
+            <div class="text-search">Tìm kiếm</div>
+            <div class="box-search">
+                <div class="input-search-container">
+                    <component-search-bar [height]="32" [rounded]="5" [width]="400" [placeholder]="'Tìm theo mã, tên, module/tính năng'"></component-search-bar>
+                    <component-button type="success" [classIcon]="'k-i-search'" nameButton="Tìm" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>

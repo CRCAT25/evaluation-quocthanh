@@ -1,0 +1,177 @@
+@import '../../../../styles.scss';
+
+::ng-deep {
+
+    kendo-grid.k-grid .k-table-row.k-selected .k-grid-content-sticky::before,
+    kendo-grid.k-grid .k-selected.k-grid-row-sticky td::before,
+    kendo-grid.k-grid .k-grid-row-sticky td.k-selected::before,
+    kendo-grid.k-grid .k-selected.k-grid-row-sticky .k-table-td::before,
+    kendo-grid.k-grid .k-grid-row-sticky .k-table-td.k-selected::before,
+    kendo-grid.k-grid .k-selected.k-grid-content-sticky::before {
+        background-color: #fff;
+    }
+
+    th.k-grid-header-sticky{
+        background: none !important;
+    }
+
+    kendo-grid.k-grid .k-table-row.k-selected:hover .k-grid-content-sticky::before,
+    kendo-grid.k-grid .k-table-row.k-selected.k-hover .k-grid-content-sticky::before,
+    kendo-grid.k-grid .k-selected.k-grid-row-sticky:hover td::before,
+    kendo-grid.k-grid .k-selected.k-grid-row-sticky.k-hover td::before,
+    kendo-grid.k-grid .k-selected.k-table-alt-row.k-grid-row-sticky:hover td::before,
+    kendo-grid.k-grid .k-selected.k-table-alt-row.k-grid-row-sticky.k-hover td::before,
+    kendo-grid.k-grid .k-selected.k-grid-row-sticky:hover .k-table-td::before,
+    kendo-grid.k-grid .k-selected.k-grid-row-sticky.k-hover .k-table-td::before,
+    kendo-grid.k-grid .k-selected.k-table-alt-row.k-grid-row-sticky:hover .k-table-td::before,
+    kendo-grid.k-grid .k-selected.k-table-alt-row.k-grid-row-sticky.k-hover .k-table-td::before,
+    kendo-grid.k-grid .k-table-row.k-selected.k-table-alt-row:hover .k-grid-content-sticky::before,
+    kendo-grid.k-grid .k-table-row.k-selected.k-table-alt-row.k-hover .k-grid-content-sticky::before,
+    kendo-grid.k-grid .k-grid-row-sticky:hover td.k-selected::before,
+    kendo-grid.k-grid .k-grid-row-sticky.k-hover td.k-selected::before,
+    kendo-grid.k-grid .k-grid-row-sticky:hover .k-table-td.k-selected::before,
+    kendo-grid.k-grid .k-grid-row-sticky.k-hover .k-table-td.k-selected::before,
+    kendo-grid.k-grid .k-table-row:hover .k-grid-content-sticky.k-selected::before,
+    kendo-grid.k-grid .k-table-row.k-hover .k-grid-content-sticky.k-selected::before {
+        background-color: #fff;
+    }
+
+    kendo-grid.k-grid .k-table-row.k-selected.k-table-alt-row .k-grid-content-sticky::before,
+    kendo-grid.k-grid .k-selected.k-table-alt-row.k-grid-row-sticky td::before,
+    kendo-grid.k-grid .k-selected.k-table-alt-row.k-grid-row-sticky .k-table-td::before,
+    kendo-grid.k-grid .k-table-alt-row .k-selected.k-grid-content-sticky::before {
+        background-color: #fff;
+    }
+
+    .grid-custom-container {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+
+        .header-component-grid {
+            display: flex;
+            padding: 15px 0;
+            min-height: 50px;
+            gap: 20px;
+
+            .title-header {
+                @include center-vertical;
+                font-size: 15px;
+                text-transform: uppercase;
+                font-weight: 600;
+            }
+
+            .filter-header {
+                @include center-vertical;
+                font-size: 13px;
+            }
+        }
+
+        .k-grid-header,
+        .k-grid-header-wrap,
+        .k-grouping-header,
+        .k-grid .k-table-th,
+        .k-grid td,
+        .k-grid .k-table-td,
+        .k-grid-footer,
+        .k-grid-footer-wrap,
+        .k-grid-content-locked,
+        .k-grid-footer-locked,
+        .k-grid-header-locked,
+        .k-filter-row>.k-table-th,
+        .k-filter-row>td,
+        .k-filter-row>.k-table-td {
+            border: none !important;
+        }
+
+        .k-grid {
+            border: none;
+        }
+
+        kendo-grid {
+            height: 100%;
+
+            .k-grid-header {
+                border: none;
+                padding: 0;
+            }
+
+            table.k-grid-table {
+                border-spacing: 0 8px;
+            }
+
+            thead.k-table-thead {
+                color: #000;
+                th.k-header.k-table-th {
+                    border: none;
+                }
+
+                tr.k-table-row {
+                    font-weight: 600;
+                    background-color: #fff;
+                }
+            }
+
+            tbody.k-table-tbody {
+                tr.k-table-row {
+                    background-color: #fff;
+                    height: 50px;
+                    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+                }
+            }
+
+            .k-grid-content {
+                overflow-y: auto !important;
+            }
+
+            .k-grid-header {
+                // padding: 0 !important;
+            }
+
+            .k-checkbox:checked,
+            .k-checkbox.k-checked {
+                border: $color-main;
+                background-color: $color-main;
+            }
+
+            .k-checkbox:checked:focus,
+            .k-checkbox.k-checked.k-focus {
+                box-shadow: none;
+            }
+
+            .k-checkbox {
+                border: 1px solid $color-main
+            }
+
+            .k-table-tbody .k-table-row.k-selected>.k-table-td,
+            .k-table-list .k-table-row.k-selected {
+                background-color: $color-item-grid-selected;
+            }
+        }
+
+        kendo-pager-page-sizes {
+            flex-direction: row-reverse;
+        }
+
+        .pager-buttons {
+            display: flex;
+        }
+
+        kendo-resize-sensor {
+            display: none;
+        }
+
+        kendo-pager {
+            display: flex;
+            justify-content: space-between;
+            background: none;
+            border-top: 1px solid black;
+        }
+
+        kendo-pager-numeric-buttons {
+            select {
+                display: none;
+            }
+        }
+    }
+}

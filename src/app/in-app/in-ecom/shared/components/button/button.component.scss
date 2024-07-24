@@ -20,8 +20,9 @@
 
     .component-button_name{
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        align-items: center;
+        height: 100%;
+        font-size: 12px !important;
     }
 }
 
@@ -32,8 +33,9 @@
 .success{
     background-color: $dark-green;
     color: #fff;
-    box-shadow: $box-shadow5;
+    box-shadow: rgba(65, 179, 255, 0.4) 0px 3px 5px 0px;
     font-size: 11px;
+    align-items: center;
 }
 
 .default{

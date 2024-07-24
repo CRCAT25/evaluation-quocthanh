@@ -1,0 +1,26 @@
+<div class="component-text-input">
+    <kendo-label [ngStyle]="{
+    'width.px': widthBlock}" [text]="label">
+
+        <kendo-textbox 
+            [ngClass]="{'readonly': readOnly}"
+            [ngStyle]="{
+            'width.px': widthTextBox,
+            'height.px': heightTextBox,
+            'color': color,
+            'background-color': bgColor,
+            'border-radius.px': rounded,
+            'border-width.px': borderWidth,
+            'border-color': borderColor,
+            'padding-left.px': paddingLeft,
+            'padding-right.px': paddingRight,
+            'box-shadow': boxShadow,
+            'fontSize.px':size}"
+            [placeholder]="placeholder"
+            [(value)]="valueTextBox"
+            (blur)="sendValueTextBox()"
+            (keydown)="onKeyDown($event)"
+            [disabled]="disabled">
+        </kendo-textbox>
+    </kendo-label>
+</div>

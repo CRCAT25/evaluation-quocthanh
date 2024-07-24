@@ -4,23 +4,27 @@
     .k-i-caret-alt-down::before {
         content: "\e015";
     }
+
     .k-i-caret-alt-right::before {
         content: "\e014";
     }
-    app-ecom001-channel-group {
-        .app-ecom001-channel-group {
+
+    app-system-structure {
+
+        .app-system-structure {
             padding: 0 5px;
 
             .header-1 {
                 display: flex;
                 justify-content: space-between;
-                height: 50px;
+                align-items: center;
+                height: 60px;
                 border-bottom: 1px solid rgba(143, 155, 166, .4);
-                
+
                 .breadcrumb {
                     background: none;
-                    
-                    .k-breadcrumb-item-text{
+
+                    .k-breadcrumb-item-text {
                         font-size: 13px !important;
                     }
 
@@ -30,10 +34,69 @@
                     }
                 }
 
-                .button-group{
+                .button-group {
                     display: flex;
                     gap: 10px;
                     padding: 9px 0;
+                }
+            }
+
+            .header-2 {
+                padding: 10px 0;
+                display: flex;
+                gap: 15px;
+                font-size: 14px !important;
+                color: #000;
+
+                .block-1,
+                .block-2,
+                .block-3 {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    gap: 10px;
+                }
+
+                .block-1 {
+                    span{
+                        color: #5A6276;
+                    }
+                }
+
+                .block-2 {
+                    .text-filter {
+                        text-transform: uppercase;
+                        font-weight: 600;
+                        color: #5A6276;
+                    }
+
+                    .reset-filter {
+                        text-decoration: underline;
+                        color: #008000;
+                        cursor: pointer;
+                        height: 32px;
+                        display: flex;
+                        align-items: center;
+
+                        &:hover{
+                            filter: brightness(140%);
+                        }
+                    }
+                }
+
+                .block-3{
+                    .text-search{
+                        color: #5A6276;
+                        font-weight: 600;
+                    }
+
+                    .box-search{
+                        .input-search-container{
+                            display: flex;
+                            gap: 4px;
+                            align-items: center;
+                        }
+                    }
                 }
             }
         }

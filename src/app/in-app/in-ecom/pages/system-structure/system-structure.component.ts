@@ -13,35 +13,24 @@ import { Observable, of } from 'rxjs';
 export class SystemStructureComponent implements OnInit {
   // Variables
   collapseMode: BreadCrumbCollapseMode = 'none';
+  imageIconModule: string = '../../../../../assets/image-site-map.svg';
   imageSiteMapDirection: string = '../../../../../assets/image-site-map.svg';
   isLoading: boolean = true;
 
   // List
   defaultItemsBreadCrumb: BreadCrumbItem[] = [
     {
-      text: "Kênh bán hàng",
+      text: "Cấu trúc hệ thống",
     },
     {
-      text: "Nhóm kênh bán hàng",
+      text: "Cấu trúc hệ thống",
     }
   ];
   itemsBreadCrumb: BreadCrumbItem[] = [...this.defaultItemsBreadCrumb];
-  listOriginChannelGroup: DTOECOMChannelGroup[] = [];
 
-  constructor(private channelgroupService: ChannelGroupService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.getListOriginChannelGroup();
-  }
-
-  getListOriginChannelGroup() {
-    this.channelgroupService.GetListChannelGroup({}).subscribe((res: DTOResponse) => {
-      if (res.ObjectReturn) {
-        this.listOriginChannelGroup = [...res.ObjectReturn];
-        console.log(this.listOriginChannelGroup);
-        this.isLoading = false;
-      }
-    })
   }
 
   fetchChildren = (item: any): Observable<any[]> => {
@@ -55,5 +44,4 @@ export class SystemStructureComponent implements OnInit {
   hasChildren = (item: any): boolean => {
     return item.ListGroup?.length > 0;
   };
-
 }

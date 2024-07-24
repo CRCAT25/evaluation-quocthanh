@@ -1,0 +1,36 @@
+::ng-deep{
+    component-search-bar{
+        display: inline-block;
+        .componet-search-bar{
+            position: relative;
+        }
+
+        .icon-search{
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        .icon-search{
+            fill: #818181;
+        }
+        
+        .icon-delete{
+            width: 16px;
+            height: 16px;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            right: 14px;
+            z-index: 2;
+
+            &:hover{
+                fill: red;
+            }
+        }
+    }
+}
