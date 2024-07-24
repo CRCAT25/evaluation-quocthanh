@@ -5,7 +5,7 @@ export class DTOFunction {
     VietNamese: string
     ModuleID: number
     DLLPackage: string
-    imageSetting: string
+    ImageSetting: string
     TypeData: number
     OrderBy: number
     ListAction: DTOAction[]

@@ -1,4 +1,4 @@
-import { DTOFunction } from "./DTOGroup.dto"
+import { DTOFunction } from "./DTOFunction"
 
 export class DTOGroup {
     Code: number

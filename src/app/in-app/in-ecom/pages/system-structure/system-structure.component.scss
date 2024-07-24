@@ -10,7 +10,9 @@
     }
 
     app-system-structure {
+        background-color: #EDEFF3 !important;
         height: calc(100vh - 50px);
+
         .app-system-structure {
             height: 100%;
             padding: 0 5px;
@@ -22,6 +24,7 @@
                 align-items: center;
                 height: 60px;
                 border-bottom: 1px solid rgba(143, 155, 166, 0.4);
+                overflow-x: auto;
 
                 .breadcrumb {
                     background: none;
@@ -50,6 +53,7 @@
                 font-size: 14px !important;
                 color: #000;
                 border-bottom: 1px solid rgba(143, 155, 166, 0.4);
+                overflow-x: auto;
 
                 .block-1,
                 .block-2,
@@ -61,7 +65,7 @@
                 }
 
                 .block-1 {
-                    span{
+                    span {
                         color: #5A6276;
                     }
                 }
@@ -81,20 +85,20 @@
                         display: flex;
                         align-items: center;
 
-                        &:hover{
+                        &:hover {
                             filter: brightness(140%);
                         }
                     }
                 }
 
-                .block-3{
-                    .text-search{
+                .block-3 {
+                    .text-search {
                         color: #5A6276;
                         font-weight: 600;
                     }
 
-                    .box-search{
-                        .input-search-container{
+                    .box-search {
+                        .input-search-container {
                             display: flex;
                             gap: 4px;
                             align-items: center;
@@ -103,15 +107,74 @@
                 }
             }
 
-            .list-sys-structure-container{
+            .list-sys-structure-container {
                 position: absolute;
                 bottom: 0;
-                height: calc(100vh - 50px - 60px - 90px - 30px);
+                height: calc(100vh - 50px - 60px - 90px - 10px);
                 overflow-y: auto;
 
-                th.k-header, 
-                .k-grid-header{
+                th.k-header,
+                .k-grid-header {
                     display: none;
+                }
+
+                table {
+                    width: 100%;
+                    border-spacing: 0 4px;
+                    background-color: #EDEFF3;
+
+                    tr.k-table-row {
+                        height: 58px;
+                        background-color: #fff;
+                    }
+
+                    td.k-table-td {
+                        height: 42px;
+                    }
+
+                    td[aria-colindex="1"] {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .column-1 {
+                        display: flex;
+                        align-items: center;
+                        gap: 150px;
+
+                        .block-1 {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+
+                            .icon {
+                                display: flex;
+                                align-items: center;
+                            }
+                        }
+                    }
+
+                    .column-2{
+                        position: relative;
+                        .button-tool{
+                            width: 30px;
+                            height: 30px;
+                            border-radius: 4px;
+                            background-color: #fff;
+                            cursor: pointer;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            color: #BDC2D2;
+                            box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+                            &:hover{
+                                background-color: #BDC2D2;
+                                color: #fff;
+                                transition: 0.3s;
+                            }
+                        }
+                    }
                 }
             }
         }
