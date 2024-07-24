@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
-import { ChannelGroupService } from '../../shared/services/channel-group.service';
-import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
-import { DTOECOMChannelGroup } from '../../shared/dtos/DTOECOMChannelGroup';
 import { Observable, of } from 'rxjs';
+import { DTOGroup } from '../../shared/dtos/DTOModule.dto';
+import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
+import { listDataTemp } from '../../shared/services/datatemp';
 
 @Component({
   selector: 'app-system-structure',
@@ -12,9 +12,15 @@ import { Observable, of } from 'rxjs';
 })
 export class SystemStructureComponent implements OnInit {
   // Variables
+  // Chế độ của breadcrumb
   collapseMode: BreadCrumbCollapseMode = 'none';
-  imageIconModule: string = '../../../../../assets/image-site-map.svg';
-  imageSiteMapDirection: string = '../../../../../assets/image-site-map.svg';
+  // Icon group
+  imageIconGroup: string = '../../../../../assets/image-group.svg';
+  // Icon function
+  imageIconFunction: string = '../../../../../assets/image-function.svg';
+  // Icon action
+  imageIconAction: string = '../../../../../assets/image-action.svg';
+  // Loading của list
   isLoading: boolean = true;
 
   // List
@@ -27,13 +33,29 @@ export class SystemStructureComponent implements OnInit {
     }
   ];
   itemsBreadCrumb: BreadCrumbItem[] = [...this.defaultItemsBreadCrumb];
+  listSysStructure: DTOGroup[];
 
   constructor() { }
 
   ngOnInit(): void {
+    this.getListOriginSysStructure();
+  }
+
+  // Lấy danh sách cấu trúc hệ thống
+  getListOriginSysStructure() {
+    const data: any = listDataTemp;
+    if(data.StatusCode == 0){
+      this.listSysStructure = data.ObjectReturn;
+    }
   }
 
   fetchChildren = (item: any): Observable<any[]> => {
+    if (item.ListAction) {
+      return of(item.ListAction);
+    }
+    if (item.ListFunctions) {
+      return of(item.ListFunctions);
+    }
     if (item.ListGroup) {
       return of(item.ListGroup);
     }
@@ -42,6 +64,6 @@ export class SystemStructureComponent implements OnInit {
 
 
   hasChildren = (item: any): boolean => {
-    return item.ListGroup?.length > 0;
+    return item.ListGroup?.length > 0 || item.ListFunctions?.length > 0 || item.ListAction?.length > 0;
   };
 }

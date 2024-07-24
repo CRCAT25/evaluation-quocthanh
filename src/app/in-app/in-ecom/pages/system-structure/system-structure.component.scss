@@ -10,16 +10,18 @@
     }
 
     app-system-structure {
-
+        height: calc(100vh - 50px);
         .app-system-structure {
+            height: 100%;
             padding: 0 5px;
+            position: relative;
 
             .header-1 {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 height: 60px;
-                border-bottom: 1px solid rgba(143, 155, 166, .4);
+                border-bottom: 1px solid rgba(143, 155, 166, 0.4);
 
                 .breadcrumb {
                     background: none;
@@ -42,11 +44,12 @@
             }
 
             .header-2 {
-                padding: 10px 0;
+                padding: 10px 0 15px 0;
                 display: flex;
                 gap: 15px;
                 font-size: 14px !important;
                 color: #000;
+                border-bottom: 1px solid rgba(143, 155, 166, 0.4);
 
                 .block-1,
                 .block-2,
@@ -97,6 +100,18 @@
                             align-items: center;
                         }
                     }
+                }
+            }
+
+            .list-sys-structure-container{
+                position: absolute;
+                bottom: 0;
+                height: calc(100vh - 50px - 60px - 90px - 30px);
+                overflow-y: auto;
+
+                th.k-header, 
+                .k-grid-header{
+                    display: none;
                 }
             }
         }

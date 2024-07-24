@@ -9,19 +9,19 @@
         <!-- Button -->
         <div class="button-group">
             <!-- Thêm mới module -->
-            <component-button type="success" [imageDirection]="imageIconModule" nameButton="Thêm mới module" />
+            <component-button type="success" [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
 
             <!-- Thêm mới module con -->
-            <component-button type="success" [imageDirection]="imageIconModule" nameButton="Thêm mới module con" />
+            <component-button type="success" [imageDirection]="imageIconGroup" nameButton="Thêm mới module con" />
 
             <!-- Thêm mới tính năng -->
-            <component-button type="success" [imageDirection]="imageSiteMapDirection" nameButton="Thêm mới tính năng" />
+            <component-button type="success" [imageDirection]="imageIconFunction" nameButton="Thêm mới tính năng" />
 
             <!-- Thêm mới chức năng -->
-            <component-button type="success" [classIcon]="'k-i-share'" nameButton="Thêm mới chức năng" />
+            <component-button type="success" [imageDirection]="imageIconAction" nameButton="Thêm mới chức năng" />
 
             <!-- Thêm mới chức năng con -->
-            <component-button type="success" [classIcon]="'k-i-share'" nameButton="Thêm mới chức năng con" />
+            <component-button type="success" [imageDirection]="imageIconAction" nameButton="Thêm mới chức năng con" />
         </div>
     </div>
 
@@ -43,5 +43,25 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Body -->
+    <div class="list-sys-structure-container">
+        <kendo-treelist 
+            [kendoTreeListHierarchyBinding]="listSysStructure" 
+            [idField]="'Code'"
+            [fetchChildren]="fetchChildren"
+            [hasChildren]="hasChildren" 
+            [initiallyExpanded]="true"
+            kendoTreeListExpandable>
+
+            <kendo-treelist-column 
+                [expandable]="true"
+                [width]="350">
+                <ng-template kendoTreeListCellTemplate let-dataItem>
+                    {{dataItem.Vietnamese ? dataItem.Vietnamese : dataItem.ActionName}}
+                </ng-template>
+            </kendo-treelist-column>
+        </kendo-treelist>
     </div>
 </div>
