@@ -6,11 +6,11 @@ import { DTOECOMChannelGroup } from '../../shared/dtos/DTOECOMChannelGroup';
 import { Observable, of } from 'rxjs';
 
 @Component({
-  selector: 'app-ecom001-channel-group',
-  templateUrl: './ecom001-channel-group.component.html',
-  styleUrls: ['./ecom001-channel-group.component.scss']
+  selector: 'app-system-structure',
+  templateUrl: './system-structure.component.html',
+  styleUrls: ['./system-structure.component.scss']
 })
-export class Ecom001ChannelGroupComponent implements OnInit {
+export class SystemStructureComponent implements OnInit {
   // Variables
   collapseMode: BreadCrumbCollapseMode = 'none';
   imageSiteMapDirection: string = '../../../../../assets/image-site-map.svg';

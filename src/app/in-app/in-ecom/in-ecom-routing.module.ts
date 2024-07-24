@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InEcomComponent } from './in-ecom.component';
-import { Ecom001ChannelGroupComponent } from './pages/ecom001-channel-group/ecom001-channel-group.component';
+import { SystemStructureComponent } from './pages/system-structure/system-structure.component';
 
 const routes: Routes = [
   {
@@ -10,12 +10,12 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'ecom001-channel-group',
+        redirectTo: 'system-structure',
         pathMatch: 'full',
       },
       {
-        path: 'ecom001-channel-group',
-        component: Ecom001ChannelGroupComponent,
+        path: 'system-structure',
+        component: SystemStructureComponent,
       }
     ],
   },

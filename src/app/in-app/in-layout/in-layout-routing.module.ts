@@ -7,7 +7,7 @@ import { ModuleDataAdmin } from './in-sitemaps/menu.data-admin';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'ecom/ecom001-channel-group',
+    redirectTo: 'developer/system-structure',
     pathMatch: 'full',
   },
   {
