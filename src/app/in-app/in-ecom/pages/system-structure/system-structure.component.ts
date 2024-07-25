@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
-import { asapScheduler, from, Observable, of, scheduled } from 'rxjs';
+import { asapScheduler, from, Observable, of, ReplaySubject, scheduled } from 'rxjs';
 import { DTOGroup } from '../../shared/dtos/DTOGroup';
 import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
 import { listDataTemp } from '../../shared/services/datatemp';
 import { DTOAction } from '../../shared/dtos/DTOAction.dto';
 import { DTOFunction } from '../../shared/dtos/DTOFunction';
+import { DrawerComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
 
 interface ActionHandle {
   Code: number
@@ -19,6 +20,18 @@ interface ActionHandle {
   styleUrls: ['./system-structure.component.scss']
 })
 export class SystemStructureComponent implements OnInit {
+  // variable Subject
+  destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
+
+
+  // Chế độ hiển thị của drawer
+  expandMode: DrawerMode = 'overlay';
+  // Drawer đang được mở ngay ban đầu hay không
+  expanded = false;
+  // Chiều dài của drawer
+  widthDrawer: number = 550;
+  // Vị trị xuất hiện của drawer
+  positionDrawer: DrawerPosition = "end";
   // Chế độ của breadcrumb
   collapseMode: BreadCrumbCollapseMode = 'none';
   // Icon group
@@ -45,6 +58,8 @@ export class SystemStructureComponent implements OnInit {
   idField: string = 'Code';
   // Có thể mở rộng từng item hay không
   isExpanded: boolean = true;
+  // ToolBox nào đang được active
+  toolBoxActive: number = -1;
 
 
   // Danh sách breadcrumb
@@ -112,6 +127,7 @@ export class SystemStructureComponent implements OnInit {
     }
   ]
 
+  @ViewChild('drawer') childDrawer!: DrawerComponent;
 
   constructor() { }
 
@@ -165,27 +181,41 @@ export class SystemStructureComponent implements OnInit {
   }
 
   // Fetch data ra list
-  fetchChildren = (item: any): Observable<any[]> => {
-    if ((item.ListGroup?.length > 0 && item.ListFunctions?.length > 0)) {
-      return scheduled(of([...item.ListGroup, ...item.ListFunctions]), asapScheduler);
-    }
-    if (item.ListAction) {
-      return of(item.ListAction);
-    }
-    if (item.ListFunctions) {
-      return of(item.ListFunctions);
-    }
-    if (item.ListGroup) {
-      return of(item.ListGroup);
+  fetchChildren = (parent?: any): any[] => {
+    if (!parent) return this.listSysStructure;
+    let items: any[] = [];
+    // Xử lý các mục con dựa trên loại danh sách con
+    const processChildren = (children: any[] | undefined) => {
+      if (children) {
+        for (const child of children) {
+          // Thêm mục con vào danh sách items
+          items.push(child);
+          // Đệ quy xử lý danh sách con
+          if (child.ListGroup) {
+            items.push(...this.fetchChildren(child.ListGroup));
+          }
+          if (child.ListFunctions) {
+            items.push(...this.fetchChildren(child.ListFunctions))
+          }
+          if (child.ListAction) {
+            items.push(...this.fetchChildren(child.ListAction))
+          }
+        }
+      }
     }
 
+    // Xử lý danh sách con của mục hiện tại
+    processChildren(parent.ListGroup);
+    processChildren(parent.ListFunctions);
+    processChildren(parent.ListAction);
 
-    return of([]);
-  };
+    return items;
+  }
 
   // Kiểm tra xem item đó có item con hay không
   hasChildren = (item: any): boolean => {
-    return item.ListGroup?.length > 0 || item.ListFunctions?.length > 0 || item.ListAction?.length > 0;
+    const children = this.fetchChildren(item);
+    return children && children.length > 0;
   };
 
   /**
@@ -226,7 +256,7 @@ export class SystemStructureComponent implements OnInit {
   isActionAddable(currentAction: DTOAction, listAction: DTOAction[], level: number): boolean {
     let levelCheck = 1;
     while (currentAction.ParentID) {
-      const parentAction = listAction.find(a => a.Code === currentAction.ParentID);
+      const parentAction = listAction?.find(a => a.Code === currentAction.ParentID);
       if (parentAction) {
         levelCheck++;
         currentAction = parentAction;
@@ -242,8 +272,8 @@ export class SystemStructureComponent implements OnInit {
   isSubAddable(object: any): boolean {
     if (object.ActionName) {
       const group: DTOGroup = this.listSysStructure.find(group => group.Code === object.ModuleID);
-      const functionOfGroup: DTOFunction = group.ListFunctions.find(func => func.Code === object.FunctionID);
-      const listActionOfFunction: DTOAction[] = functionOfGroup.ListAction;
+      const functionOfGroup: DTOFunction = group?.ListFunctions?.find(func => func.Code === object.FunctionID);
+      const listActionOfFunction: DTOAction[] = functionOfGroup?.ListAction;
       return this.isActionAddable(object, listActionOfFunction, 3);
     }
     if (this.isGroup(object)) {
@@ -272,7 +302,7 @@ export class SystemStructureComponent implements OnInit {
     // Nếu là function
     if (object.DLLPackage) {
       const objFunction: DTOFunction = object;
-      let listFunction: ActionHandle[] = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 2 || action.Code === 4 || action.Code === 5);
+      let listFunction: ActionHandle[] = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 4 || action.Code === 7);
       // Kiểm tra có thể xóa
       if (!objFunction.ListAction) {
         listFunction.push(this.listActionHandle.find(action => action.Code === 9));
@@ -288,7 +318,10 @@ export class SystemStructureComponent implements OnInit {
       if (this.isSubAddable(objGroup)) {
         listGroup.push(this.listActionHandle.find(action => action.Code === 3));
       }
-      listGroup.push(this.listActionHandle.find(action => action.Code === 4));
+      else {
+        listGroup.push(this.listActionHandle.find(action => action.Code === 4));
+      }
+      listGroup.push(this.listActionHandle.find(action => action.Code === 5));
       // Kiểm tra có thể xóa
       if (!objGroup.ListFunctions && !objGroup.ListGroup) {
         listGroup.push(this.listActionHandle.find(action => action.Code === 8));
@@ -301,6 +334,27 @@ export class SystemStructureComponent implements OnInit {
 
   // Sự kiện được gọi khi click vào tool box
   handleToolBox(object: any) {
-    console.log(this.getListActionHandle(object));
+    this.toolBoxActive = object.Code;
+  }
+
+  /**
+   * Sự kiện được gọi khi click vào action trong action list
+   * @param actionHandle Nút action
+   * @param object Object cần handle
+   */
+  handleAction(actionHandle: ActionHandle, object: any) {
+    // Nếu là chỉnh sửa
+    if (actionHandle.Code === 1) {
+      this.childDrawer.toggle();
+    }
+    console.log(actionHandle);
+  }
+
+  // Sự kiện khi click ra ngoài màn hình
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    if (!(event.target as HTMLElement).closest('.button-tool')) {
+      this.toolBoxActive = -1;
+    }
   }
 }

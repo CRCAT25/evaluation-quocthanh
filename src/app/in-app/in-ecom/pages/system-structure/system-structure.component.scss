@@ -13,6 +13,10 @@
         background-color: #EDEFF3 !important;
         height: calc(100vh - 50px);
 
+        kendo-drawer-content{
+            height: calc(100vh - 50px);
+        }
+
         .app-system-structure {
             height: 100%;
             padding: 0 5px;
@@ -137,15 +141,19 @@
                         align-items: center;
                     }
 
+                    td[aria-colindex="2"] {
+                        overflow: visible;
+                    }
+
                     .column-1 {
                         display: flex;
                         align-items: center;
-                        gap: 150px;
 
                         .block-1 {
                             display: flex;
                             align-items: center;
                             gap: 10px;
+                            width: 500px;
 
                             .icon {
                                 display: flex;
@@ -167,11 +175,48 @@
                             align-items: center;
                             color: #BDC2D2;
                             box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+                            border: 1px solid #BDC2D2;
 
                             &:hover{
                                 background-color: #BDC2D2;
                                 color: #fff;
                                 transition: 0.3s;
+                            }
+                        }
+
+                        .button-tool-active{
+                            background-color: #BDC2D2;
+                            border-radius: 0 4px 4px 0;
+                            color: #fff;
+                        }
+
+                        .list-action{
+                            position: absolute;
+                            left: -206px;
+                            top: -1px;
+                            background-color: #BDC2D2;
+                            border: 1px solid #fff;
+
+                            .action{
+                                display: flex;
+                                padding: 8px;
+                                color: #fff;
+                                cursor: pointer;
+
+                                .icon{
+                                    width: 25px;
+                                    display: flex;
+                                    align-items: center;
+                                }
+
+                                .name{
+                                    text-wrap: nowrap;
+                                    width: 164px;
+                                }
+
+                                &:hover{
+                                    background-color: #959DB3;
+                                }
                             }
                         }
                     }
