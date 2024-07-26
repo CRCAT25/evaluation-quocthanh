@@ -21,7 +21,7 @@ export class TextInputComponent implements OnInit {
   @Input() placeholder: string = '';
   @Input() widthBlock: number = 400;
   @Input() widthTextBox: number = 400;
-  @Input() heightTextBox: number = 30;
+  @Input() heightTextBox: number = 34;
   @Input() bgColor: string = '#fff';
   @Input() color: string = '#000';
   @Input() rounded: number = 5;
@@ -36,7 +36,6 @@ export class TextInputComponent implements OnInit {
   @Input() value: any;
   @Output() getValue = new EventEmitter();
   valueTextBox: string = '';
-  @Input() disabled: boolean = false;
 
   ngOnInit(): void {
     if(this.value || this.value === 0){

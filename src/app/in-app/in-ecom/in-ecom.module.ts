@@ -1,3 +1,4 @@
+import { TextDropdownComponent } from './shared/components/text-dropdown/text-dropdown.component';
 import {
   CUSTOM_ELEMENTS_SCHEMA,
   NgModule,
@@ -28,7 +29,8 @@ import { SearchBarComponent } from './shared/components/search-bar/search-bar.co
     ButtonComponent,
     PagerGridDirective,
     TextInputComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    TextDropdownComponent
   ],
   imports: [
     PEcomRoutingModule,

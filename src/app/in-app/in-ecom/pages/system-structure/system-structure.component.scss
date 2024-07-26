@@ -42,7 +42,7 @@
             .header-drawer,
             .content-drawer,
             .footer-drawer {
-                padding: 10px;
+                padding: 10px 15px;
             }
 
             .header-drawer {
@@ -58,42 +58,100 @@
 
             .content-drawer {
                 color: #000 !important;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
 
-                .module-container {
-                    display: flex;
-                    justify-content: space-between;
+                .name-module,
+                .group-parent,
+                .id-module,
+                .api-package,
+                .font-icon,
+                .type-data,
+                .orderby{
+                    .text-container{
+                        font-weight: 600;
+                    }
+                }
 
-                    .block-1,
-                    .block-2{
+                .name-module {
+
+                    .text-container {
                         display: flex;
-                        align-items: center;
-                        gap: 4px;
+                        justify-content: space-between;
 
-                        .nessessary{
-                            color: rgb(206, 0, 0);
+                        .block-1,
+                        .block-2 {
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+
+                            .nessessary {
+                                color: rgb(206, 0, 0);
+                            }
+                        }
+
+                        .block-1 {
+                            .bar {
+                                width: 2px;
+                                height: 75%;
+                                background-color: #000;
+                            }
+                        }
+
+                        .block-2 {
+                            flex-direction: row-reverse;
+
+                            .k-checkbox:checked,
+                            .k-checkbox.k-checked {
+                                background-color: #1a6634;
+                                border-color: #1a6634;
+                            }
+
+                            .k-checkbox:focus,
+                            .k-checkbox.k-focus {
+                                box-shadow: none;
+                            }
                         }
                     }
+                }
+            }
 
-                    .block-1{
-                        .bar{
-                            width: 2px;
-                            height: 75%;
-                            background-color: #000;
+            .footer-drawer{
+                height: 60px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                .button-close{
+                    .component-button{
+                        text-align: center;
+                        width: 110px;
+                        display: flex;
+                        justify-content: center;
+                        box-shadow: $box-shadow-blue;
+                        height: 34px;
+
+                        .component-button_name{
+                            font-size: 13px !important;
+                            text-transform: uppercase;
+                            font-weight: 600 !important;
+                            color: #1a6634 !important;
                         }
                     }
+                }
 
-                    .block-2 {
-                        flex-direction: row-reverse;
+                .button-update,
+                .button-delete{
+                    .component-button{
+                        width: 110px;
+                        display: flex;
+                        justify-content: center;
 
-                        .k-checkbox:checked,
-                        .k-checkbox.k-checked {
-                            background-color: #1a6634;
-                            border-color: #1a6634;
-                        }
-
-                        .k-checkbox:focus,
-                        .k-checkbox.k-focus {
-                            box-shadow: none;
+                        .component-button_name{
+                            font-size: 13px !important;
+                            text-transform: uppercase;
+                            font-weight: 600 !important;
                         }
                     }
                 }
@@ -295,7 +353,7 @@
                             top: 0;
                             background-color: #BDC2D2;
                             border: 1px solid #fff;
-                            animation: fadeTopDown 200ms ease-in;
+                            animation: fadeTopDown 150ms ease-in;
 
                             .action {
                                 display: flex;

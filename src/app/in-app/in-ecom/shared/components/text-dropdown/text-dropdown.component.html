@@ -1,0 +1,28 @@
+<div
+    textDropDownDirective
+    class="text-dropdown" 
+    [ngStyle]="{
+    'width.px': widthBlock,
+    }">
+    <ng-content select=".text-container"></ng-content>
+    <kendo-dropdownlist
+    [defaultItem]="defaultItem"
+    [textField]="textField"
+    [valueField]="valueField"
+    [data]="listItem"
+    [(value)]="value"
+    (valueChange)="onClickItem($event)"
+    [disabled]="disabled"
+    [loading]="isLoading"
+    [ngStyle]="{
+    'width.px': widthTextBox,
+    'height.px': heightTextBox,
+    'background-color': bgColor,
+    'border-radius.px': rounded,
+    'border-width.px': borderWidth,
+    'border-color': borderColor,
+    'padding-left.px': paddingLeft,
+    'padding-right.px': paddingRight,
+    'box-shadow': boxShadow}">
+    </kendo-dropdownlist>
+</div>

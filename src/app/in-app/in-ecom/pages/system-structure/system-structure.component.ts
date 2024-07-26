@@ -28,7 +28,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   // Drawer đang được mở ngay ban đầu hay không
   expanded = false;
   // Chiều dài của drawer
-  widthDrawer: number = 420;
+  widthDrawer: number = 430;
   // Vị trị xuất hiện của drawer
   positionDrawer: DrawerPosition = "end";
   // Chế độ của breadcrumb
