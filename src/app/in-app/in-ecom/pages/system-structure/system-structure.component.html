@@ -28,11 +28,11 @@
                 <!-- Button -->
                 <div class="button-group">
                     <ng-container *ngIf="!itemSelectedTreeList">
-                        <component-button type="success" [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
+                        <component-button type="success" (click)="handleAction(listActionHandle[2], null)" [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
                     </ng-container>
                     <ng-container *ngIf="itemSelectedTreeList">
                         <ng-container *ngFor="let button of getListButtonAvailable()">
-                            <component-button type="success" [imageDirection]="button.Icon" [nameButton]="button.Name" />
+                            <component-button type="success" (click)="handleAction(button, itemSelectedTreeList)" [imageDirection]="button.Icon" [nameButton]="button.Name" />
                         </ng-container>
                     </ng-container>
                 </div>
@@ -67,7 +67,7 @@
                     [hasChildren]="hasChildren"
                     [initiallyExpanded]="initiallyExpanded" 
                     [loading]="isLoading" 
-                    (selectedItemsChange)="selectItemTreeList($event)"
+                    (selectedItemsChange)="onClickItemTreeList($event)"
                     kendoTreeListSelectable
                     kendoTreeListExpandable>
 

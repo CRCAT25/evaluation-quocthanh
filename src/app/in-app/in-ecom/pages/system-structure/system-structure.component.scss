@@ -1,5 +1,16 @@
 @import '../../../../../styles.scss';
 
+@keyframes fadeTopDown{
+    from{
+        top: -10px;
+        opacity: 0;
+    }
+    to{
+        top: 0;
+        opacity: 1;
+    }
+}
+
 ::ng-deep {
     .k-i-caret-alt-down::before {
         content: "\e015";
@@ -200,6 +211,11 @@
                                 color: #fff;
                                 transition: 0.3s;
                             }
+
+                            .k-icon{
+                                width: 100%;
+                                height: 100%;
+                            }
                         }
 
                         .button-tool-active {
@@ -215,6 +231,7 @@
                             top: 0;
                             background-color: #BDC2D2;
                             border: 1px solid #fff;
+                            animation: fadeTopDown 200ms ease-in;
 
                             .action {
                                 display: flex;

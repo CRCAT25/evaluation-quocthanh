@@ -1,13 +1,11 @@
-import { ChangeDetectionStrategy, Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
-import { asapScheduler, from, Observable, of, ReplaySubject, scheduled } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { DTOGroup } from '../../shared/dtos/DTOGroup';
-import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
 import { listDataTemp } from '../../shared/services/datatemp';
 import { DTOAction } from '../../shared/dtos/DTOAction.dto';
 import { DTOFunction } from '../../shared/dtos/DTOFunction';
 import { DrawerComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
-import { ColumnBase, SelectableSettings, SelectionChangeEvent, SelectionItem } from '@progress/kendo-angular-treelist';
 
 interface ActionHandle {
   Code: number
@@ -388,9 +386,8 @@ export class SystemStructureComponent implements OnInit {
   }
 
   // Sự kiện được gọi khi chọn item bất kỳ trên tree list
-  selectItemTreeList(item: any) {
+  onClickItemTreeList(item: any) {
     this.itemSelectedTreeList = item[0].itemKey;
-    console.log(this.itemSelectedTreeList);
   }
 
   // Lấy danh sách các button sẽ hiển thị khi chọn item bất kỳ
