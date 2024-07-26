@@ -5,9 +5,9 @@
                 <!-- Header của drawer -->
                 <div class="header-drawer">
                     <ng-container *ngIf="itemSelectedTreeList">
-                        <span *ngIf="isGroup(itemSelectedTreeList)">Thông tin module</span>
-                        <span *ngIf="isFunction(itemSelectedTreeList)">Thông tin tính năng</span>
-                        <span *ngIf="isAction(itemSelectedTreeList)">Thông tin chức năng</span>
+                        <span *ngIf="identifyDTO(itemSelectedTreeList) === 'DTOGroup'">Thông tin module</span>
+                        <span *ngIf="identifyDTO(itemSelectedTreeList) === 'DTOFunction'">Thông tin tính năng</span>
+                        <span *ngIf="identifyDTO(itemSelectedTreeList) === 'DTOAction'">Thông tin chức năng</span>
                     </ng-container>
                     <ng-container *ngIf="!itemSelectedTreeList">
                         <span>Thông tin module</span>
@@ -17,10 +17,10 @@
                 <!-- Content của drawer -->
                 <div class="content-drawer">
                     <!-- Nếu là module -->
-                    <div class="module-container" *ngIf="isGroup(itemSelectedTreeList)">
+                    <div class="module-container" *ngIf="identifyDTO(itemSelectedTreeList) === 'DTOGroup'">
                         <!-- Tên module -->
                         <div class="name-module">
-                            <component-text-input #nameModule [widthBlock]="400">
+                            <component-text-input #nameModule [widthBlock]="400" [value]="itemSelectedTreeList.Vietnamese">
                                 <div class="text-container">
                                     <div class="block-1">
                                         <span class="title-name" style="font-weight: 600;">Tên module</span>
@@ -58,7 +58,7 @@
 
                         <!-- API Package -->
                         <div class="api-package">
-                            <component-text-input #apiPackage [readOnly]="true" [widthTextBox]="400">
+                            <component-text-input #apiPackage [readOnly]="true" [widthTextBox]="400" [value]="itemSelectedTreeList.ModuleID">
                                 <div class="text-container">API Package</div>
                             </component-text-input>
                         </div>
@@ -86,7 +86,7 @@
                     </div>
 
                     <!-- Nếu là tính năng(Function) -->
-                    <div class="function-container" *ngIf="isFunction(itemSelectedTreeList)">
+                    <div class="function-container" *ngIf="identifyDTO(itemSelectedTreeList) === 'DTOFunction'">
                         <!-- Tên tính năng -->
                         <div class="name-function">
                             <component-text-input #nameFunction [widthBlock]="400">
@@ -141,7 +141,7 @@
                     </div>
 
                     <!-- Nếu là chức năng(Action) -->
-                    <div class="action-container" *ngIf="isAction(itemSelectedTreeList)">
+                    <div class="action-container" *ngIf="identifyDTO(itemSelectedTreeList) === 'DTOAction'">
                         <!-- Tên chức năng -->
                         <div class="name-action">
                             <component-text-input #nameAction [widthBlock]="400">
@@ -273,14 +273,14 @@
                                     <div class="icon">
                                         <img [src]="getIconOfObject(dataItem)" />
                                     </div>
-                                    <div class="name" [ngStyle]="{'font-weight': isGroup(dataItem) ? '600' : 'normal'}">
+                                    <div class="name" [ngStyle]="{'font-weight': identifyDTO(dataItem) === 'DTOGroup' ? '600' : 'normal'}">
                                         {{getNameObject(dataItem)}}
                                     </div>
                                 </div>
 
                                 <div class="block-2">
                                     <div class="id"
-                                        [ngStyle]="{'font-style': isAction(dataItem) ? 'italic' : 'normal'}">
+                                        [ngStyle]="{'font-style': identifyDTO(dataItem) === 'DTOAction' ? 'italic' : 'normal'}">
                                         {{getIdObject(dataItem)}}</div>
                                 </div>
                             </div>

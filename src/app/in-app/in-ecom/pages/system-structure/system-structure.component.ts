@@ -171,37 +171,21 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Kiểm tra xem object đó có phải là group hay không
-   * @param object Object cần kiểm tra
-   * @returns 
-   */
-  isGroup(object: any): boolean {
-    if (!object.DLLPackage && !object.ActionName && object.Vietnamese && object.Company >= 0) return true;
+  // Hàm dùng để nhận biết DTO là Group hay Function hay Action
+  identifyDTO(dto: any): string {
+    if (!dto) {
+      return 'Unknown';
+    }
 
-    return false;
-  }
+    if ('ListFunctions' in dto) {
+      return 'DTOGroup';
+    } else if ('ListAction' in dto && 'PermissionConf' in dto && 'ParentID' in dto) {
+      return 'DTOAction';
+    } else if ('ListAction' in dto && 'PermissionConf' in dto) {
+      return 'DTOFunction';
+    }
 
-  /**
- * Kiểm tra xem object đó có phải là function hay không
- * @param object Object cần kiểm tra
- * @returns 
- */
-  isFunction(object: any): boolean {
-    if (object.DLLPackage && !object.ActionName) return true;
-
-    return false;
-  }
-
-  /**
-  * Kiểm tra xem object đó có phải là action hay không
-  * @param object Object cần kiểm tra
-  * @returns 
-  */
-  isAction(object: any): boolean {
-    if (object.ActionName) return true;
-
-    return false;
+    return 'Unknown';
   }
 
   // Fetch data ra list
@@ -297,7 +281,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
       //   return this.isActionAddable(object, listActionOfFunction, 2);
       return true;
     }
-    if (this.isGroup(object)) {
+    if (this.identifyDTO(object) === 'DTOGroup') {
       if (!object.GroupID) return true;
     }
     return false;
@@ -305,53 +289,50 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
 
   // Lấy danh sách các action có thể handle
   getListActionHandle(object: any): ActionHandle[] {
-    // Nếu là action
-    if (object.ActionName) {
+    const dtoType = this.identifyDTO(object);
+    let listAction: ActionHandle[] = [];
+
+    // Đối với DTOAction
+    if (dtoType === 'DTOAction') {
       const objAction: DTOAction = object;
-      let listAction: ActionHandle[] = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 6);
-      // Kiểm tra có thể thêm con
+      listAction = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 6);
+
       if (this.isSubAddable(objAction)) {
         listAction.push(this.listActionHandle.find(action => action.Code === 7));
       }
-      // Kiểm tra có thể xóa
       if (!objAction.ListAction) {
         listAction.push(this.listActionHandle.find(action => action.Code === 10));
       }
-      return listAction;
-    }
-
-    // Nếu là function
-    if (object.DLLPackage) {
+    } 
+    // Đối với DTOFunction
+    else if (dtoType === 'DTOFunction') {
       const objFunction: DTOFunction = object;
-      let listFunction: ActionHandle[] = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 4 || action.Code === 7);
-      // Kiểm tra có thể xóa
+      listAction = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 4 || action.Code === 7);
+
       if (!objFunction.ListAction) {
-        listFunction.push(this.listActionHandle.find(action => action.Code === 9));
+        listAction.push(this.listActionHandle.find(action => action.Code === 9));
       }
-      return listFunction;
-    }
-
-    // Nếu là module
-    if (this.isGroup(object)) {
+    } 
+    // Đối với DTOGroup
+    else if (dtoType === 'DTOGroup') {
       const objGroup: DTOGroup = object;
-      let listGroup: ActionHandle[] = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 2);
-      // Kiểm tra có thể thêm con
+      listAction = this.listActionHandle.filter(action => action.Code === 1 || action.Code === 2);
+
       if (this.isSubAddable(objGroup)) {
-        listGroup.push(this.listActionHandle.find(action => action.Code === 3));
+        listAction.push(this.listActionHandle.find(action => action.Code === 3));
+      } else {
+        listAction.push(this.listActionHandle.find(action => action.Code === 4));
       }
-      else {
-        listGroup.push(this.listActionHandle.find(action => action.Code === 4));
-      }
-      listGroup.push(this.listActionHandle.find(action => action.Code === 5));
-      // Kiểm tra có thể xóa
+      listAction.push(this.listActionHandle.find(action => action.Code === 5));
+
       if (!objGroup.ListFunctions && !objGroup.ListGroup) {
-        listGroup.push(this.listActionHandle.find(action => action.Code === 8));
+        listAction.push(this.listActionHandle.find(action => action.Code === 8));
       }
-      return listGroup;
     }
 
-    return []
+    return listAction;
   }
+
 
   // Sự kiện được gọi khi click vào tool box
   handleToolBox(object: any) {
@@ -367,14 +348,14 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   handleAction(actionHandle: ActionHandle, object: any) {
     // Mở drawer
     this.childDrawer.toggle();
-
+    
     // Disable content đằng sau
     const drawercontent = document.querySelector('kendo-drawer-content') as HTMLElement;
     drawercontent.style.pointerEvents = 'none';
-
+    
     // Nếu là chỉnh sửa
     if (actionHandle.Code === 1) {
-      console.log(actionHandle);
+      this.bindDataToDrawer(object);
     }
   }
 
@@ -404,18 +385,35 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   }
 
   // Kiểm tra xem có thể hiện nút xóa khi xem chi tiết của từng item hay không
-  hasButtonDeleteDrawer(){
+  hasButtonDeleteDrawer() {
     const obj = this.itemSelectedTreeList;
-    if(this.isGroup(obj) && !obj.ListFunctions && !obj.ListGroup){
+    if (this.identifyDTO(obj) === 'DTOGroup' && !obj.ListFunctions && !obj.ListGroup) {
       return true;
     }
-    if(this.isFunction(obj) && !obj.ListAction){
+    if (this.identifyDTO(obj) === 'DTOFunction' && !obj.ListAction) {
       return true;
     }
-    if(this.isAction(obj) && !obj.ListAction){
+    if (this.identifyDTO(obj) === 'DTOAction' && !obj.ListAction) {
       return true;
     }
     return false;
+  }
+
+  // Bind dữ liệu của item được chọn ra drawer
+  bindDataToDrawer(obj: any) {
+    if (this.identifyDTO(obj) === 'DTOGroup') {
+      const objGroup: DTOGroup = obj;
+      // console.log(objGroup.Vietnamese);
+      return;
+    }
+    if (this.identifyDTO(obj) === 'DTOAction') {
+      console.log(obj);
+      return;
+    }
+    if (this.identifyDTO(obj) === 'DTOFunction') {
+      console.log(obj);
+      return;
+    }
   }
 
   ngOnDestroy(): void {
