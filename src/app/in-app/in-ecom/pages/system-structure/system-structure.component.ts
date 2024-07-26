@@ -1,11 +1,11 @@
-import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
 import { ReplaySubject } from 'rxjs';
 import { DTOGroup } from '../../shared/dtos/DTOGroup';
 import { listDataTemp } from '../../shared/services/datatemp';
 import { DTOAction } from '../../shared/dtos/DTOAction.dto';
 import { DTOFunction } from '../../shared/dtos/DTOFunction';
-import { DrawerComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
+import { DrawerComponent, DrawerContentComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
 
 interface ActionHandle {
   Code: number
@@ -18,7 +18,7 @@ interface ActionHandle {
   templateUrl: './system-structure.component.html',
   styleUrls: ['./system-structure.component.scss']
 })
-export class SystemStructureComponent implements OnInit {
+export class SystemStructureComponent implements OnInit, OnDestroy {
   // variable Subject
   destroy: ReplaySubject<any> = new ReplaySubject<any>(1);
 
@@ -28,7 +28,7 @@ export class SystemStructureComponent implements OnInit {
   // Drawer đang được mở ngay ban đầu hay không
   expanded = false;
   // Chiều dài của drawer
-  widthDrawer: number = 550;
+  widthDrawer: number = 420;
   // Vị trị xuất hiện của drawer
   positionDrawer: DrawerPosition = "end";
   // Chế độ của breadcrumb
@@ -56,7 +56,7 @@ export class SystemStructureComponent implements OnInit {
   // Có thể mở rộng từng item hay không
   isExpanded: boolean = true;
   // ToolBox nào đang được active
-  toolBoxActive: number = -1;
+  toolBoxActive: any;
   // Item đang được chọn trên tree list
   itemSelectedTreeList: any;
 
@@ -127,6 +127,7 @@ export class SystemStructureComponent implements OnInit {
   ]
 
   @ViewChild('drawer') childDrawer!: DrawerComponent;
+  @ViewChild('drawerContent') childDrawerContent!: DrawerContentComponent;
 
   constructor() { }
 
@@ -277,10 +278,12 @@ export class SystemStructureComponent implements OnInit {
   }
 
   // Hàm kiểm tra xem có thể thêm action tại function cụ thể hay không
-  isActionAddable(currentAction: DTOAction, listAction: DTOAction[], level: number): boolean {
+  isActionAddable(currentAction: DTOAction, listAction: DTOAction[], maxLevel: number): boolean {
     let levelCheck = 1;
+
+    // Tìm mức độ lồng nhau của action hiện tại
     while (currentAction.ParentID) {
-      const parentAction = listAction?.find(a => a.Code === currentAction.ParentID);
+      const parentAction = listAction?.find(a => a.ParentID === currentAction.ParentID);
       if (parentAction) {
         levelCheck++;
         currentAction = parentAction;
@@ -289,16 +292,18 @@ export class SystemStructureComponent implements OnInit {
       }
     }
 
-    return levelCheck !== level;
+    // Kiểm tra nếu mức độ lồng nhau đã đạt đến giới hạn
+    return levelCheck === maxLevel;
   }
 
   // Kiểm tra xem có thể thêm module con hoặc action con
   isSubAddable(object: any): boolean {
     if (object.ActionName) {
-      const group: DTOGroup = this.listSysStructure.find(group => group.Code === object.ModuleID);
-      const functionOfGroup: DTOFunction = group?.ListFunctions?.find(func => func.Code === object.FunctionID);
-      const listActionOfFunction: DTOAction[] = functionOfGroup?.ListAction;
-      return this.isActionAddable(object, listActionOfFunction, 3);
+      //   const group: DTOGroup = this.listSysStructure.find(group => group.Code === object.ModuleID);
+      //   const functionOfGroup: DTOFunction = group?.ListFunctions?.find(func => func.Code === object.FunctionID);
+      //   const listActionOfFunction: DTOAction[] = functionOfGroup?.ListAction;
+      //   return this.isActionAddable(object, listActionOfFunction, 2);
+      return true;
     }
     if (this.isGroup(object)) {
       if (!object.GroupID) return true;
@@ -358,8 +363,8 @@ export class SystemStructureComponent implements OnInit {
 
   // Sự kiện được gọi khi click vào tool box
   handleToolBox(object: any) {
-    if (this.toolBoxActive !== object.Code) this.toolBoxActive = object.Code;
-    else this.toolBoxActive = -1;
+    if (this.toolBoxActive !== object) this.toolBoxActive = object;
+    else this.toolBoxActive = null;
   }
 
   /**
@@ -368,8 +373,12 @@ export class SystemStructureComponent implements OnInit {
    * @param object Object cần handle
    */
   handleAction(actionHandle: ActionHandle, object: any) {
+    console.log(object);
     // Mở drawer
     this.childDrawer.toggle();
+
+    const drawercontent = document.querySelector('kendo-drawer-content') as HTMLElement;
+    drawercontent.style.pointerEvents = 'none';
 
     // Nếu là chỉnh sửa
     if (actionHandle.Code === 1) {
@@ -393,5 +402,17 @@ export class SystemStructureComponent implements OnInit {
   // Lấy danh sách các button sẽ hiển thị khi chọn item bất kỳ
   getListButtonAvailable() {
     return this.getListActionHandle(this.itemSelectedTreeList).filter(item => item.Code !== 1 && item.Code <= 7);
+  }
+
+  // Đóng drawer
+  closeDrawer() {
+    this.childDrawer.toggle();
+    const drawercontent = document.querySelector('kendo-drawer-content') as HTMLElement;
+    drawercontent.style.pointerEvents = 'all';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
   }
 }

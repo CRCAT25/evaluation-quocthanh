@@ -19,8 +19,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class TextInputComponent implements OnInit {
   @Input() label: string = 'Textbox';
   @Input() placeholder: string = '';
-  @Input() widthBlock: number = 450;
-  @Input() widthTextBox: number = 300;
+  @Input() widthBlock: number = 400;
+  @Input() widthTextBox: number = 400;
   @Input() heightTextBox: number = 30;
   @Input() bgColor: string = '#fff';
   @Input() color: string = '#000';

@@ -1,10 +1,8 @@
-<div class="component-text-input">
-    <kendo-label [ngStyle]="{
-    'width.px': widthBlock}" [text]="label">
+<div class="component-text-input" [ngStyle]="{
+    'width.px': widthBlock}">
 
-        <kendo-textbox 
-            [ngClass]="{'readonly': readOnly}"
-            [ngStyle]="{
+    <ng-content select=".text-container"></ng-content>
+    <kendo-textbox [ngClass]="{'readonly': readOnly}" [ngStyle]="{
             'width.px': widthTextBox,
             'height.px': heightTextBox,
             'color': color,
@@ -15,12 +13,7 @@
             'padding-left.px': paddingLeft,
             'padding-right.px': paddingRight,
             'box-shadow': boxShadow,
-            'fontSize.px':size}"
-            [placeholder]="placeholder"
-            [(value)]="valueTextBox"
-            (blur)="sendValueTextBox()"
-            (keydown)="onKeyDown($event)"
-            [disabled]="disabled">
-        </kendo-textbox>
-    </kendo-label>
+            'fontSize.px':size}" [placeholder]="placeholder" [(value)]="valueTextBox" (blur)="sendValueTextBox()"
+        (keydown)="onKeyDown($event)" [disabled]="disabled">
+    </kendo-textbox>
 </div>

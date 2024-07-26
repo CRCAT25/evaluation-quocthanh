@@ -4,19 +4,49 @@
             <div class="drawer-custom-container">
                 <!-- Header của drawer -->
                 <div class="header-drawer">
-                    <div class="" (click)="drawer.toggle()">click me</div>
+                    <ng-container *ngIf="itemSelectedTreeList">
+                        <span *ngIf="isGroup(itemSelectedTreeList)">Thông tin module</span>
+                        <span *ngIf="isFunction(itemSelectedTreeList)">Thông tin tính năng</span>
+                        <span *ngIf="isAction(itemSelectedTreeList)">Thông tin chức năng</span>
+                    </ng-container>
+                    <ng-container *ngIf="!itemSelectedTreeList">
+                        <span>Thông tin module</span>
+                    </ng-container>
                 </div>
 
                 <!-- Content của drawer -->
-                <div class="content-drawer"></div>
+                <div class="content-drawer">
+                    <!-- <ng-container *ngIf="itemSelectedTreeList"> -->
+                    <component-text-input [widthBlock]="400">
+                        <div class="text-container module-container">
+                            <div class="block-1">
+                                <span class="title-name" style="font-weight: 600;">Tên module</span>
+                                <span class="nessessary">(*)</span>
+                                <span class="bar"></span>
+                                <span class="code" style="color: #1a6634; font-weight: 600;">{{itemSelectedTreeList.Code}}</span>
+                            </div>
+                            <div class="block-2">
+                                <input type="checkbox" #checked kendoCheckBox [checked]="true" />
+                                <kendo-label class="k-checkbox-label" [for]="checked">
+                                    <span style="font-weight: 600;">Hiển thị lên phần mềm</span>
+                                    <span class="nessessary">(*)</span>
+                                </kendo-label>
+                            </div>
+                        </div>
+                    </component-text-input>
+                    <!-- </ng-container> -->
+                </div>
 
                 <!-- Footer của drawer -->
-                <div class="footer-drawer"></div>
+                <div class="footer-drawer">
+                    <component-button [nameButton]="'Đóng'" [type]="'default'"
+                        (click)="closeDrawer()"></component-button>
+                </div>
             </div>
         </ng-template>
     </kendo-drawer>
 
-    <kendo-drawer-content>
+    <kendo-drawer-content #drawerContent>
         <div class="app-system-structure">
             <!-- Header1 -->
             <div class="header-1">
@@ -28,11 +58,13 @@
                 <!-- Button -->
                 <div class="button-group">
                     <ng-container *ngIf="!itemSelectedTreeList">
-                        <component-button type="success" (click)="handleAction(listActionHandle[2], null)" [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
+                        <component-button type="success" (click)="handleAction(listActionHandle[2], null)"
+                            [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
                     </ng-container>
                     <ng-container *ngIf="itemSelectedTreeList">
                         <ng-container *ngFor="let button of getListButtonAvailable()">
-                            <component-button type="success" (click)="handleAction(button, itemSelectedTreeList)" [imageDirection]="button.Icon" [nameButton]="button.Name" />
+                            <component-button type="success" (click)="handleAction(button, itemSelectedTreeList)"
+                                [imageDirection]="button.Icon" [nameButton]="button.Name" />
                         </ng-container>
                     </ng-container>
                 </div>
@@ -62,14 +94,14 @@
             <!-- Body -->
             <div class="list-sys-structure-container">
                 <kendo-treelist 
-                    [data]="listSysStructure" 
-                    [fetchChildren]="fetchChildren" 
-                    [hasChildren]="hasChildren"
-                    [initiallyExpanded]="initiallyExpanded" 
-                    [loading]="isLoading" 
-                    (selectedItemsChange)="onClickItemTreeList($event)"
-                    kendoTreeListSelectable
-                    kendoTreeListExpandable>
+                [data]="listSysStructure" 
+                [fetchChildren]="fetchChildren" 
+                [hasChildren]="hasChildren"
+                [initiallyExpanded]="initiallyExpanded" 
+                [loading]="isLoading"
+                (selectedItemsChange)="onClickItemTreeList($event)" 
+                kendoTreeListSelectable 
+                kendoTreeListExpandable>
 
                     <kendo-treelist-column [expandable]="isExpanded">
                         <ng-template kendoTreeListCellTemplate let-dataItem>
@@ -95,20 +127,20 @@
                     <kendo-treelist-column [width]="54">
                         <ng-template kendoTreeListCellTemplate let-dataItem>
                             <div class="column-2">
-                                <div class="button-tool"
-                                    [ngClass]="{'button-tool-active' : toolBoxActive === dataItem.Code}"
+                                <div class="button-tool" [ngClass]="{'button-tool-active' : toolBoxActive === dataItem}"
                                     (click)="handleToolBox(dataItem)">
                                     <span class="k-icon k-font-icon k-i-more-horizontal"></span>
                                 </div>
 
-                                <div class="list-action" *ngIf="toolBoxActive === dataItem.Code">
-                                    <div class="action" (click)="handleAction(action, dataItem)"
-                                        *ngFor="let action of getListActionHandle(dataItem)">
-                                        <div class="icon">
-                                            <img [src]="action.Icon">
+                                <div class="list-action" *ngIf="toolBoxActive === dataItem">
+                                    <ng-container *ngFor="let action of getListActionHandle(dataItem)">
+                                        <div class="action" (click)="handleAction(action, dataItem)">
+                                            <div class="icon">
+                                                <img [src]="action.Icon">
+                                            </div>
+                                            <div class="name">{{action.Name}}</div>
                                         </div>
-                                        <div class="name">{{action.Name}}</div>
-                                    </div>
+                                    </ng-container>
                                 </div>
                             </div>
                         </ng-template>
