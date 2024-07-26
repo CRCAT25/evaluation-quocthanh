@@ -58,73 +58,180 @@
 
             .content-drawer {
                 color: #000 !important;
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
 
-                .name-module,
-                .group-parent,
-                .id-module,
-                .api-package,
-                .font-icon,
-                .type-data,
-                .orderby{
-                    .text-container{
-                        font-weight: 600;
+                .module-container,
+                .function-container,
+                .action-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                }
+
+                .module-container {
+
+                    .name-module,
+                    .group-parent,
+                    .id-module,
+                    .api-package,
+                    .font-icon,
+                    .type-data,
+                    .orderby {
+                        .text-container {
+                            font-weight: 600;
+                        }
+                    }
+
+                    .name-module {
+                        .text-container {
+                            display: flex;
+                            justify-content: space-between;
+
+                            .block-1,
+                            .block-2 {
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+
+                                .nessessary {
+                                    color: rgb(206, 0, 0);
+                                }
+                            }
+
+                            .block-1 {
+                                .bar {
+                                    width: 2px;
+                                    height: 75%;
+                                    background-color: #000;
+                                }
+                            }
+
+                            .block-2 {
+                                flex-direction: row-reverse;
+
+                                .k-checkbox:checked,
+                                .k-checkbox.k-checked {
+                                    background-color: #1a6634;
+                                    border-color: #1a6634;
+                                }
+
+                                .k-checkbox:focus,
+                                .k-checkbox.k-focus {
+                                    box-shadow: none;
+                                }
+                            }
+                        }
                     }
                 }
 
-                .name-module {
+                .function-container {
 
-                    .text-container {
-                        display: flex;
-                        justify-content: space-between;
+                    .name-module,
+                    .module-parent,
+                    .dll-package,
+                    .font-icon,
+                    .type-data,
+                    .orderby {
+                        .text-container {
+                            font-weight: 600;
+                        }
+                    }
 
-                        .block-1,
-                        .block-2 {
+                    .name-function {
+                        .text-container {
                             display: flex;
-                            align-items: center;
                             gap: 4px;
+                            align-items: center;
+
+                            .bar {
+                                width: 2px;
+                                height: 15px;
+                                background-color: #000;
+                            }
 
                             .nessessary {
                                 color: rgb(206, 0, 0);
                             }
                         }
+                    }
 
-                        .block-1 {
-                            .bar {
-                                width: 2px;
-                                height: 75%;
-                                background-color: #000;
+                    component-text-area {
+                        kendo-label {
+                            font-size: 13px;
+                            font-weight: 600;
+                        }
+                    }
+                }
+
+                .action-container {
+
+                    .name-action,
+                    .module-parent,
+                    .function-parent,
+                    .action-parent,
+                    .type-data {
+                        .text-container {
+                            font-weight: 600;
+                        }
+                    }
+
+                    .name-action {
+                        .text-container {
+                            display: flex;
+                            justify-content: space-between;
+
+                            .block-1,
+                            .block-2 {
+                                display: flex;
+                                align-items: center;
+                                gap: 4px;
+
+                                .nessessary {
+                                    color: rgb(206, 0, 0);
+                                }
+                            }
+
+                            .block-1 {
+                                .bar {
+                                    width: 2px;
+                                    height: 75%;
+                                    background-color: #000;
+                                }
+                            }
+
+                            .block-2 {
+                                flex-direction: row-reverse;
+
+                                .k-checkbox:checked,
+                                .k-checkbox.k-checked {
+                                    background-color: #1a6634;
+                                    border-color: #1a6634;
+                                }
+
+                                .k-checkbox:focus,
+                                .k-checkbox.k-focus {
+                                    box-shadow: none;
+                                }
                             }
                         }
+                    }
 
-                        .block-2 {
-                            flex-direction: row-reverse;
-
-                            .k-checkbox:checked,
-                            .k-checkbox.k-checked {
-                                background-color: #1a6634;
-                                border-color: #1a6634;
-                            }
-
-                            .k-checkbox:focus,
-                            .k-checkbox.k-focus {
-                                box-shadow: none;
-                            }
+                    component-text-area {
+                        kendo-label {
+                            font-size: 13px;
+                            font-weight: 600;
                         }
                     }
                 }
             }
 
-            .footer-drawer{
+            .footer-drawer {
                 height: 60px;
                 display: flex;
                 align-items: center;
                 gap: 10px;
 
-                .button-close{
-                    .component-button{
+                .button-close {
+                    .component-button {
                         text-align: center;
                         width: 110px;
                         display: flex;
@@ -132,7 +239,7 @@
                         box-shadow: $box-shadow-blue;
                         height: 34px;
 
-                        .component-button_name{
+                        .component-button_name {
                             font-size: 13px !important;
                             text-transform: uppercase;
                             font-weight: 600 !important;
@@ -142,13 +249,13 @@
                 }
 
                 .button-update,
-                .button-delete{
-                    .component-button{
+                .button-delete {
+                    .component-button {
                         width: 110px;
                         display: flex;
                         justify-content: center;
 
-                        .component-button_name{
+                        .component-button_name {
                             font-size: 13px !important;
                             text-transform: uppercase;
                             font-weight: 600 !important;

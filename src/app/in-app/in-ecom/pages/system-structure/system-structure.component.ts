@@ -411,6 +411,21 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
     drawercontent.style.pointerEvents = 'all';
   }
 
+  // Kiểm tra xem có thể hiện nút xóa khi xem chi tiết của từng item hay không
+  hasButtonDeleteDrawer(){
+    const obj = this.itemSelectedTreeList;
+    if(this.isGroup(obj) && !obj.ListFunctions && !obj.ListGroup){
+      return true;
+    }
+    if(this.isFunction(obj) && !obj.ListAction){
+      return true;
+    }
+    if(this.isAction(obj) && !obj.ListAction){
+      return true;
+    }
+    return false;
+  }
+
   ngOnDestroy(): void {
     this.destroy.next();
     this.destroy.complete();

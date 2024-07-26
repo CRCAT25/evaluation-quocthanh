@@ -17,6 +17,7 @@ import { ButtonComponent } from './shared/components/button/button.component';
 import { PagerGridDirective } from './shared/directives/pagergrid.directive';
 import { TextInputComponent } from './shared/components/text-input/text-input.component';
 import { SearchBarComponent } from './shared/components/search-bar/search-bar.component';
+import { TextAreaComponent } from './shared/components/text-area/text-area.component';
 
 
 
@@ -30,7 +31,8 @@ import { SearchBarComponent } from './shared/components/search-bar/search-bar.co
     PagerGridDirective,
     TextInputComponent,
     SearchBarComponent,
-    TextDropdownComponent
+    TextDropdownComponent,
+    TextAreaComponent
   ],
   imports: [
     PEcomRoutingModule,

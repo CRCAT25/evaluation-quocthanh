@@ -1,0 +1,31 @@
+::ng-deep{
+    component-text-area{
+        display: inline-block;
+        .box-text-area{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            
+            label, kendo-textarea{
+                display: block;
+            }
+            label{
+                text-wrap: nowrap;
+            }
+            kendo-textarea{
+                box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 10px;
+                padding: 7px;
+            }
+            textarea{
+                height: 100%;
+            }
+
+            .readonly{
+                background-color: #d4d4d4 !important;
+                pointer-events: none;
+                cursor: pointer;
+            }
+        }
+    }
+
+}
