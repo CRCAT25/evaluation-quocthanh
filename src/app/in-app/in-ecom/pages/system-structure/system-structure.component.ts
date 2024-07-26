@@ -6,6 +6,9 @@ import { listDataTemp } from '../../shared/services/datatemp';
 import { DTOAction } from '../../shared/dtos/DTOAction.dto';
 import { DTOFunction } from '../../shared/dtos/DTOFunction';
 import { DrawerComponent, DrawerContentComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
+import { TextInputComponent } from '../../shared/components/text-input/text-input.component';
+import { TextDropdownComponent } from '../../shared/components/text-dropdown/text-dropdown.component';
+import { TextAreaComponent } from '../../shared/components/text-area/text-area.component';
 
 interface ActionHandle {
   Code: number
@@ -128,6 +131,29 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
 
   @ViewChild('drawer') childDrawer!: DrawerComponent;
   @ViewChild('drawerContent') childDrawerContent!: DrawerContentComponent;
+  // Thuộc module
+  @ViewChild('nameModule') childNameModule!: TextInputComponent;
+  @ViewChild('groupParentModule') childGroupParentModule!: TextDropdownComponent;
+  @ViewChild('idModule') childIdModule!: TextInputComponent;
+  @ViewChild('apiPackage') childApiPackage!: TextInputComponent;
+  @ViewChild('fontIconModule') childFontIconModule!: TextInputComponent;
+  @ViewChild('orderByModule') childOrderByModule!: TextInputComponent;
+  // Thuộc function
+  @ViewChild('nameFunction') childNameFunction!: TextInputComponent;
+  @ViewChild('moduleParentFunction') childModuleParentFunction!: TextDropdownComponent;
+  @ViewChild('dllpackage') childDllpackage!: TextInputComponent;
+  @ViewChild('fontIconFunction') childFontIconFunction!: TextInputComponent;
+  @ViewChild('typeDataFunction') childTypeDataFunction!: TextInputComponent;
+  @ViewChild('orderByFunction') childOrderByFunction!: TextInputComponent;
+  @ViewChild('settingFunction') childSettingFunction!: TextAreaComponent;
+  // Thuộc action
+  @ViewChild('nameAction') childNameAction!: TextInputComponent;
+  @ViewChild('moduleParentAction') childModuleParentAction!: TextDropdownComponent;
+  @ViewChild('functionParentAction') childFunctionParentAction!: TextDropdownComponent;
+  @ViewChild('actionParent') childActionParent!: TextDropdownComponent;
+  @ViewChild('typeDataAction') childTypeDataAction!: TextInputComponent;
+  @ViewChild('settingAction') childSettingAction!: TextAreaComponent;
+
 
   constructor() { }
 
@@ -179,42 +205,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   }
 
   // Fetch data ra list
-  // fetchChildren = (parent?: any): any[] => {
-  //   if (!parent) return this.listSysStructure;
-  //   let items: any[] = [];
-  //   // Xử lý các mục con dựa trên loại danh sách con
-  //   const processChildren = (children: any[] | undefined) => {
-  //     if (children) {
-  //       for (const child of children) {
-  //         // Thêm mục con vào danh sách items
-  //         items.push(child);
-  //         // Đệ quy xử lý danh sách con
-  //         if (child.ListGroup) {
-  //           items.push(...this.fetchChildren(child.ListGroup));
-  //         }
-  //         if (child.ListFunctions) {
-  //           items.push(...this.fetchChildren(child.ListFunctions))
-  //         }
-  //         if (child.ListAction) {
-  //           items.push(...this.fetchChildren(child.ListAction))
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   // Xử lý danh sách con của mục hiện tại
-  //   processChildren(parent.ListGroup);
-  //   processChildren(parent.ListFunctions);
-  //   processChildren(parent.ListAction);
-
-  //   return items;
-  // }
-  // Hàm kiểm tra có child hay không
-  // public hasChildren = (item: any): boolean => {
-  //   return (item.ListFunctions?.length > 0 || item.ListGroup?.length > 0 || item.ListAction?.length > 0)
-  // };
-
-  public fetchChildren = (item?: any): any[] => {
+  fetchChildren = (item?: any): any[] => {
     if (item && (item.ListGroup || item.ListFunctions || item.ListAction)) {
       let children: any[] = [];
       if (this.hasListValue(item.ListGroup)) {
@@ -239,7 +230,8 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
     return children && children.length > 0;
   };
 
-  public hasListValue(value: any): boolean {
+  // Kiểm tra xem list có data hay không
+  hasListValue(value: any): boolean {
     return !(value === undefined || value === null || value === <any>[] || value.length === 0);
   }
 
@@ -373,10 +365,10 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
    * @param object Object cần handle
    */
   handleAction(actionHandle: ActionHandle, object: any) {
-    console.log(object);
     // Mở drawer
     this.childDrawer.toggle();
 
+    // Disable content đằng sau
     const drawercontent = document.querySelector('kendo-drawer-content') as HTMLElement;
     drawercontent.style.pointerEvents = 'none';
 

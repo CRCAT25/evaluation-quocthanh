@@ -20,7 +20,7 @@
                     <div class="module-container" *ngIf="isGroup(itemSelectedTreeList)">
                         <!-- Tên module -->
                         <div class="name-module">
-                            <component-text-input [widthBlock]="400">
+                            <component-text-input #nameModule [widthBlock]="400">
                                 <div class="text-container">
                                     <div class="block-1">
                                         <span class="title-name" style="font-weight: 600;">Tên module</span>
@@ -42,7 +42,7 @@
 
                         <!-- Module cha -->
                         <div class="group-parent">
-                            <component-text-dropdown [widthTextBox]="400">
+                            <component-text-dropdown #groupParentModule [widthTextBox]="400">
                                 <div class="text-container">
                                     Module cha
                                 </div>
@@ -51,35 +51,35 @@
 
                         <!-- Mã module -->
                         <div class="id-module">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #idModule [widthTextBox]="200">
                                 <div class="text-container">Mã module</div>
                             </component-text-input>
                         </div>
 
                         <!-- API Package -->
                         <div class="api-package">
-                            <component-text-input [readOnly]="true" [widthTextBox]="400">
+                            <component-text-input #apiPackage [readOnly]="true" [widthTextBox]="400">
                                 <div class="text-container">API Package</div>
                             </component-text-input>
                         </div>
 
                         <!-- Font icon -->
                         <div class="font-icon">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #fontIconModule [widthTextBox]="200">
                                 <div class="text-container">Font icon</div>
                             </component-text-input>
                         </div>
 
                         <!-- Loại data -->
                         <div class="type-data">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #typeDataModule [widthTextBox]="200">
                                 <div class="text-container">Loại data</div>
                             </component-text-input>
                         </div>
 
                         <!-- Thứ tự hiển thị -->
                         <div class="orderby">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #orderByModule [widthTextBox]="200">
                                 <div class="text-container">Thứ tự hiển thị</div>
                             </component-text-input>
                         </div>
@@ -89,7 +89,7 @@
                     <div class="function-container" *ngIf="isFunction(itemSelectedTreeList)">
                         <!-- Tên tính năng -->
                         <div class="name-function">
-                            <component-text-input [widthBlock]="400">
+                            <component-text-input #nameFunction [widthBlock]="400">
                                 <div class="text-container">
                                     <span class="title-name" style="font-weight: 600;">Tên tính năng</span>
                                     <span class="nessessary">(*)</span>
@@ -102,41 +102,41 @@
 
                         <!-- Module cha -->
                         <div class="module-parent">
-                            <component-text-dropdown [widthTextBox]="400">
+                            <component-text-dropdown #moduleParentFunction [widthTextBox]="400">
                                 <div class="text-container"> Module cha</div>
                             </component-text-dropdown>
                         </div>
 
                         <!-- DLL Package -->
                         <div class="dll-package">
-                            <component-text-input [widthTextBox]="400">
+                            <component-text-input #dllpackage [widthTextBox]="400">
                                 <div class="text-container">DLLPackage</div>
                             </component-text-input>
                         </div>
 
                         <!-- Font icon -->
                         <div class="font-icon">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #fontIconFunction [widthTextBox]="200">
                                 <div class="text-container">Font icon</div>
                             </component-text-input>
                         </div>
 
                         <!-- Loại data -->
                         <div class="type-data">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #typeDataFunction [widthTextBox]="200">
                                 <div class="text-container">Loại data</div>
                             </component-text-input>
                         </div>
 
                         <!-- Thứ tự hiển thị -->
                         <div class="orderby">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #orderByFunction [widthTextBox]="200">
                                 <div class="text-container">Thứ tự hiển thị</div>
                             </component-text-input>
                         </div>
 
                         <!-- Thiết lập thông số phân quyền -->
-                        <component-text-area [label]="'Thiết lập thông số phân quyền'" [height]="250"
+                        <component-text-area #settingFunction [label]="'Thiết lập thông số phân quyền'" [height]="250"
                             [width]="400"></component-text-area>
                     </div>
 
@@ -144,7 +144,7 @@
                     <div class="action-container" *ngIf="isAction(itemSelectedTreeList)">
                         <!-- Tên chức năng -->
                         <div class="name-action">
-                            <component-text-input [widthBlock]="400">
+                            <component-text-input #nameAction [widthBlock]="400">
                                 <div class="text-container">
                                     <div class="block-1">
                                         <span class="title-name" style="font-weight: 600;">Tên chức năng</span>
@@ -166,34 +166,34 @@
 
                         <!-- Module cha -->
                         <div class="module-parent">
-                            <component-text-dropdown [widthTextBox]="400">
+                            <component-text-dropdown #moduleParentAction [widthTextBox]="400">
                                 <div class="text-container"> Module cha</div>
                             </component-text-dropdown>
                         </div>
 
                         <!-- Tính năng cha -->
                         <div class="function-parent">
-                            <component-text-dropdown [widthTextBox]="400">
+                            <component-text-dropdown #functionParentAction [widthTextBox]="400">
                                 <div class="text-container"> Tính năng cha</div>
                             </component-text-dropdown>
                         </div>
 
                         <!-- Chức năng cha -->
                         <div class="action-parent">
-                            <component-text-dropdown [widthTextBox]="400">
+                            <component-text-dropdown #actionParent [widthTextBox]="400">
                                 <div class="text-container"> Chức năng cha</div>
                             </component-text-dropdown>
                         </div>
 
                         <!-- Loại data -->
                         <div class="type-data">
-                            <component-text-input [widthTextBox]="200">
+                            <component-text-input #typeDataAction [widthTextBox]="200">
                                 <div class="text-container">Loại data</div>
                             </component-text-input>
                         </div>
 
                         <!-- Thiết lập thông số phân quyền -->
-                        <component-text-area [label]="'Thiết lập thông số phân quyền'" [height]="250"
+                        <component-text-area #settingAction [label]="'Thiết lập thông số phân quyền'" [height]="250"
                             [width]="400"></component-text-area>
                     </div>
                 </div>
