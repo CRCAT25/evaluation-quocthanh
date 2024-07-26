@@ -3,7 +3,9 @@
         <ng-template kendoDrawerTemplate>
             <div class="drawer-custom-container">
                 <!-- Header của drawer -->
-                <div class="header-drawer"> </div>
+                <div class="header-drawer">
+                    <div class="" (click)="drawer.toggle()">click me</div>
+                </div>
 
                 <!-- Content của drawer -->
                 <div class="content-drawer"></div>
@@ -25,28 +27,14 @@
                 </div>
                 <!-- Button -->
                 <div class="button-group">
-                    <!-- Thêm mới module -->
-                    <component-button type="success" [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
-
-                    <!-- Thêm mới module con -->
-                    <component-button type="success" [imageDirection]="imageIconGroup"
-                        nameButton="Thêm mới module con" />
-
-                    <!-- Thêm mới tính năng -->
-                    <component-button type="success" [imageDirection]="imageIconFunction"
-                        nameButton="Thêm mới tính năng" />
-
-                    <!-- Thêm mới tính năng -->
-                    <component-button type="success" [imageDirection]="imageIconFunction"
-                        nameButton="Thêm mới tính năng con" />
-
-                    <!-- Thêm mới chức năng -->
-                    <component-button type="success" [imageDirection]="imageIconAction"
-                        nameButton="Thêm mới chức năng" />
-
-                    <!-- Thêm mới chức năng con -->
-                    <component-button type="success" [imageDirection]="imageIconAction"
-                        nameButton="Thêm mới chức năng con" />
+                    <ng-container *ngIf="!itemSelectedTreeList">
+                        <component-button type="success" [imageDirection]="imageIconGroup" nameButton="Thêm mới module" />
+                    </ng-container>
+                    <ng-container *ngIf="itemSelectedTreeList">
+                        <ng-container *ngFor="let button of getListButtonAvailable()">
+                            <component-button type="success" [imageDirection]="button.Icon" [nameButton]="button.Name" />
+                        </ng-container>
+                    </ng-container>
                 </div>
             </div>
 
@@ -73,8 +61,14 @@
 
             <!-- Body -->
             <div class="list-sys-structure-container">
-                <kendo-treelist [data]="listSysStructure" [fetchChildren]="fetchChildren"
-                    [hasChildren]="hasChildren" [initiallyExpanded]="initiallyExpanded" [loading]="isLoading"
+                <kendo-treelist 
+                    [data]="listSysStructure" 
+                    [fetchChildren]="fetchChildren" 
+                    [hasChildren]="hasChildren"
+                    [initiallyExpanded]="initiallyExpanded" 
+                    [loading]="isLoading" 
+                    (selectedItemsChange)="selectItemTreeList($event)"
+                    kendoTreeListSelectable
                     kendoTreeListExpandable>
 
                     <kendo-treelist-column [expandable]="isExpanded">

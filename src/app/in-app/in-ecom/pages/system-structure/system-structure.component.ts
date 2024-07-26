@@ -7,6 +7,7 @@ import { listDataTemp } from '../../shared/services/datatemp';
 import { DTOAction } from '../../shared/dtos/DTOAction.dto';
 import { DTOFunction } from '../../shared/dtos/DTOFunction';
 import { DrawerComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
+import { ColumnBase, SelectableSettings, SelectionChangeEvent, SelectionItem } from '@progress/kendo-angular-treelist';
 
 interface ActionHandle {
   Code: number
@@ -54,12 +55,12 @@ export class SystemStructureComponent implements OnInit {
   isLoading: boolean = true;
   // Trạng thái mở rộng tree khi mới khởi tạo
   initiallyExpanded: boolean = true;
-  // Field định danh item trong tree list
-  idField: string = 'Code';
   // Có thể mở rộng từng item hay không
   isExpanded: boolean = true;
   // ToolBox nào đang được active
   toolBoxActive: number = -1;
+  // Item đang được chọn trên tree list
+  itemSelectedTreeList: any;
 
 
   // Danh sách breadcrumb
@@ -140,10 +141,8 @@ export class SystemStructureComponent implements OnInit {
     this.isLoading = true;
     const data: any = listDataTemp;
     if (data.StatusCode == 0) {
-      setTimeout(() => {
-        this.listSysStructure = data.ObjectReturn;
-        this.isLoading = false;
-      }, 100)
+      this.listSysStructure = data.ObjectReturn;
+      this.isLoading = false;
     }
   }
 
@@ -181,42 +180,69 @@ export class SystemStructureComponent implements OnInit {
   }
 
   // Fetch data ra list
-  fetchChildren = (parent?: any): any[] => {
-    if (!parent) return this.listSysStructure;
-    let items: any[] = [];
-    // Xử lý các mục con dựa trên loại danh sách con
-    const processChildren = (children: any[] | undefined) => {
-      if (children) {
-        for (const child of children) {
-          // Thêm mục con vào danh sách items
-          items.push(child);
-          // Đệ quy xử lý danh sách con
-          if (child.ListGroup) {
-            items.push(...this.fetchChildren(child.ListGroup));
-          }
-          if (child.ListFunctions) {
-            items.push(...this.fetchChildren(child.ListFunctions))
-          }
-          if (child.ListAction) {
-            items.push(...this.fetchChildren(child.ListAction))
-          }
-        }
+  // fetchChildren = (parent?: any): any[] => {
+  //   if (!parent) return this.listSysStructure;
+  //   let items: any[] = [];
+  //   // Xử lý các mục con dựa trên loại danh sách con
+  //   const processChildren = (children: any[] | undefined) => {
+  //     if (children) {
+  //       for (const child of children) {
+  //         // Thêm mục con vào danh sách items
+  //         items.push(child);
+  //         // Đệ quy xử lý danh sách con
+  //         if (child.ListGroup) {
+  //           items.push(...this.fetchChildren(child.ListGroup));
+  //         }
+  //         if (child.ListFunctions) {
+  //           items.push(...this.fetchChildren(child.ListFunctions))
+  //         }
+  //         if (child.ListAction) {
+  //           items.push(...this.fetchChildren(child.ListAction))
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   // Xử lý danh sách con của mục hiện tại
+  //   processChildren(parent.ListGroup);
+  //   processChildren(parent.ListFunctions);
+  //   processChildren(parent.ListAction);
+
+  //   return items;
+  // }
+  // Hàm kiểm tra có child hay không
+  // public hasChildren = (item: any): boolean => {
+  //   return (item.ListFunctions?.length > 0 || item.ListGroup?.length > 0 || item.ListAction?.length > 0)
+  // };
+
+  public fetchChildren = (item?: any): any[] => {
+    if (item && (item.ListGroup || item.ListFunctions || item.ListAction)) {
+      let children: any[] = [];
+      if (this.hasListValue(item.ListGroup)) {
+        children.push(...item.ListGroup)
       }
+
+      if (this.hasListValue(item.ListFunctions)) {
+        children.push(...item.ListFunctions)
+      }
+
+      if (this.hasListValue(item.ListAction)) {
+        children.push(...item.ListAction)
+      }
+      return children;
     }
-
-    // Xử lý danh sách con của mục hiện tại
-    processChildren(parent.ListGroup);
-    processChildren(parent.ListFunctions);
-    processChildren(parent.ListAction);
-
-    return items;
-  }
+    return item ? [] : this.listSysStructure;
+  };
 
   // Kiểm tra xem item đó có item con hay không
   hasChildren = (item: any): boolean => {
     const children = this.fetchChildren(item);
     return children && children.length > 0;
   };
+
+  public hasListValue(value: any): boolean {
+    return !(value === undefined || value === null || value === <any>[] || value.length === 0);
+  }
 
   /**
    * Hàm trả về đúng trường cần thiết của object đó
@@ -334,7 +360,8 @@ export class SystemStructureComponent implements OnInit {
 
   // Sự kiện được gọi khi click vào tool box
   handleToolBox(object: any) {
-    this.toolBoxActive = object.Code;
+    if (this.toolBoxActive !== object.Code) this.toolBoxActive = object.Code;
+    else this.toolBoxActive = -1;
   }
 
   /**
@@ -343,11 +370,13 @@ export class SystemStructureComponent implements OnInit {
    * @param object Object cần handle
    */
   handleAction(actionHandle: ActionHandle, object: any) {
+    // Mở drawer
+    this.childDrawer.toggle();
+
     // Nếu là chỉnh sửa
     if (actionHandle.Code === 1) {
-      this.childDrawer.toggle();
+      console.log(actionHandle);
     }
-    console.log(actionHandle);
   }
 
   // Sự kiện khi click ra ngoài màn hình
@@ -356,5 +385,16 @@ export class SystemStructureComponent implements OnInit {
     if (!(event.target as HTMLElement).closest('.button-tool')) {
       this.toolBoxActive = -1;
     }
+  }
+
+  // Sự kiện được gọi khi chọn item bất kỳ trên tree list
+  selectItemTreeList(item: any) {
+    this.itemSelectedTreeList = item[0].itemKey;
+    console.log(this.itemSelectedTreeList);
+  }
+
+  // Lấy danh sách các button sẽ hiển thị khi chọn item bất kỳ
+  getListButtonAvailable() {
+    return this.getListActionHandle(this.itemSelectedTreeList).filter(item => item.Code !== 1 && item.Code <= 7);
   }
 }

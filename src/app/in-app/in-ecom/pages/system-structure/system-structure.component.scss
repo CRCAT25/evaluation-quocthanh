@@ -9,12 +9,24 @@
         content: "\e014";
     }
 
+    .k-grid td.k-selected,
+    .k-grid .k-table-row.k-selected>td,
+    .k-grid .k-table-td.k-selected,
+    .k-grid .k-table-row.k-selected>.k-table-td {
+        background-color: #1a6634 !important;
+        color: #fff !important;
+    }
+
     app-system-structure {
         background-color: #EDEFF3 !important;
         height: calc(100vh - 50px);
 
-        kendo-drawer-content{
+        kendo-drawer-content {
             height: calc(100vh - 50px);
+        }
+
+        .k-overlay {
+            pointer-events: none;
         }
 
         .app-system-structure {
@@ -116,7 +128,7 @@
                 bottom: 0;
                 height: calc(100vh - 50px - 60px - 90px - 10px);
                 overflow-y: auto;
-
+                
                 th.k-header,
                 .k-grid-header {
                     display: none;
@@ -126,6 +138,10 @@
                     width: 100%;
                     border-spacing: 0 4px;
                     background-color: #EDEFF3;
+                    
+                    .k-treelist-toggle{
+                        padding: 4px 8px !important;
+                    }
 
                     tr.k-table-row {
                         height: 58px;
@@ -148,6 +164,7 @@
                     .column-1 {
                         display: flex;
                         align-items: center;
+                        padding-left: 10px;
 
                         .block-1 {
                             display: flex;
@@ -162,59 +179,61 @@
                         }
                     }
 
-                    .column-2{
+                    .column-2 {
                         position: relative;
-                        .button-tool{
+
+                        .button-tool {
                             width: 30px;
                             height: 30px;
-                            border-radius: 4px;
+                            border-radius: 3px;
                             background-color: #fff;
                             cursor: pointer;
                             display: flex;
                             justify-content: center;
                             align-items: center;
-                            color: #BDC2D2;
+                            color: #575757;
                             box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
                             border: 1px solid #BDC2D2;
 
-                            &:hover{
+                            &:hover {
                                 background-color: #BDC2D2;
                                 color: #fff;
                                 transition: 0.3s;
                             }
                         }
 
-                        .button-tool-active{
+                        .button-tool-active {
                             background-color: #BDC2D2;
                             border-radius: 0 4px 4px 0;
                             color: #fff;
+                            border: 1px solid #ffffff;
                         }
 
-                        .list-action{
+                        .list-action {
                             position: absolute;
                             left: -206px;
-                            top: -1px;
+                            top: 0;
                             background-color: #BDC2D2;
                             border: 1px solid #fff;
 
-                            .action{
+                            .action {
                                 display: flex;
                                 padding: 8px;
                                 color: #fff;
                                 cursor: pointer;
 
-                                .icon{
+                                .icon {
                                     width: 25px;
                                     display: flex;
                                     align-items: center;
                                 }
 
-                                .name{
+                                .name {
                                     text-wrap: nowrap;
                                     width: 164px;
                                 }
 
-                                &:hover{
+                                &:hover {
                                     background-color: #959DB3;
                                 }
                             }
