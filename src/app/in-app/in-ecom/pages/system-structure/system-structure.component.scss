@@ -33,6 +33,11 @@
         background-color: #EDEFF3 !important;
         height: calc(100vh - 50px);
 
+        .nessessary{
+            color: rgb(206, 0, 0);
+            padding: 0 5px;
+        }
+
         kendo-drawer-content {
             height: calc(100vh - 50px);
         }
@@ -91,10 +96,6 @@
                                 display: flex;
                                 align-items: center;
                                 gap: 4px;
-
-                                .nessessary {
-                                    color: rgb(206, 0, 0);
-                                }
                             }
 
                             .block-1 {
@@ -238,6 +239,7 @@
                         justify-content: center;
                         box-shadow: $box-shadow-blue;
                         height: 36px;
+                        border: 1px solid #1a6634;
 
                         .component-button_name {
                             font-size: 12px !important;

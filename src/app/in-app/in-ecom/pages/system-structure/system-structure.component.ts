@@ -1,14 +1,18 @@
-import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
 import { ReplaySubject } from 'rxjs';
 import { DTOGroup } from '../../shared/dtos/DTOGroup';
-import { listDataTemp } from '../../shared/services/datatemp';
 import { DTOAction } from '../../shared/dtos/DTOAction.dto';
 import { DTOFunction } from '../../shared/dtos/DTOFunction';
 import { DrawerComponent, DrawerContentComponent, DrawerMode, DrawerPosition } from '@progress/kendo-angular-layout';
 import { TextInputComponent } from '../../shared/components/text-input/text-input.component';
 import { TextDropdownComponent } from '../../shared/components/text-dropdown/text-dropdown.component';
 import { TextAreaComponent } from '../../shared/components/text-area/text-area.component';
+import { SystemService } from '../../shared/services/system.service';
+import { takeUntil } from 'rxjs/operators';
+import { DTOResponse } from 'src/app/in-lib/dto/dto.response';
+import { NotiService } from 'src/app/in-lib/service/noti.service';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 
 interface ActionHandle {
   Code: number
@@ -62,6 +66,12 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   toolBoxActive: any;
   // Item đang được chọn trên tree list
   itemSelectedTreeList: any;
+  // Giá trị default của dropdown module tree
+  defaultModuleTree: any = { Code: -1, Vietnamese: 'Không lựa chọn' };
+  // Giá trị được chọn từ dropdown module tree
+  itemSelectedModuleTree: DTOGroup;
+  // Hiển thị lên phần mềm của module
+  isVisibleModule: boolean;
 
 
   // Danh sách breadcrumb
@@ -128,6 +138,8 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
       Icon: this.imageIconDelete
     }
   ]
+  listModuleTree: DTOGroup[];
+
 
   @ViewChild('drawer') childDrawer!: DrawerComponent;
   @ViewChild('drawerContent') childDrawerContent!: DrawerContentComponent;
@@ -137,7 +149,9 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   @ViewChild('idModule') childIdModule!: TextInputComponent;
   @ViewChild('apiPackage') childApiPackage!: TextInputComponent;
   @ViewChild('fontIconModule') childFontIconModule!: TextInputComponent;
+  @ViewChild('typeDataModule') childTypeDataModule!: TextInputComponent;
   @ViewChild('orderByModule') childOrderByModule!: TextInputComponent;
+  @ViewChild('visibleModule') childVisibleModule!: InputsModule;
   // Thuộc function
   @ViewChild('nameFunction') childNameFunction!: TextInputComponent;
   @ViewChild('moduleParentFunction') childModuleParentFunction!: TextDropdownComponent;
@@ -155,7 +169,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   @ViewChild('settingAction') childSettingAction!: TextAreaComponent;
 
 
-  constructor() { }
+  constructor(private systemService: SystemService, private notiService: NotiService) { }
 
   ngOnInit(): void {
     this.getListOriginSysStructure();
@@ -164,11 +178,15 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   // Lấy danh sách cấu trúc hệ thống
   getListOriginSysStructure() {
     this.isLoading = true;
-    const data: any = listDataTemp;
-    if (data.StatusCode == 0) {
-      this.listSysStructure = data.ObjectReturn;
-      this.isLoading = false;
-    }
+    this.systemService.GetListSysStructureTree().pipe(takeUntil(this.destroy)).subscribe((res: DTOResponse) => {
+      if (res.StatusCode === 0) {
+        this.listSysStructure = res.ObjectReturn;
+        this.isLoading = false;
+      }
+      else {
+        this.notiService.Show('Lỗi trong quá trình lấy API: ' + res.ErrorString, 'error');
+      }
+    })
   }
 
   // Hàm dùng để nhận biết DTO là Group hay Function hay Action
@@ -303,7 +321,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
       if (!objAction.ListAction) {
         listAction.push(this.listActionHandle.find(action => action.Code === 10));
       }
-    } 
+    }
     // Đối với DTOFunction
     else if (dtoType === 'DTOFunction') {
       const objFunction: DTOFunction = object;
@@ -312,7 +330,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
       if (!objFunction.ListAction) {
         listAction.push(this.listActionHandle.find(action => action.Code === 9));
       }
-    } 
+    }
     // Đối với DTOGroup
     else if (dtoType === 'DTOGroup') {
       const objGroup: DTOGroup = object;
@@ -348,14 +366,18 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
   handleAction(actionHandle: ActionHandle, object: any) {
     // Mở drawer
     this.childDrawer.toggle();
-    
+
     // Disable content đằng sau
     const drawercontent = document.querySelector('kendo-drawer-content') as HTMLElement;
     drawercontent.style.pointerEvents = 'none';
-    
+
     // Nếu là chỉnh sửa
     if (actionHandle.Code === 1) {
       this.bindDataToDrawer(object);
+      if(this.identifyDTO(object) === 'DTOGroup'){
+        this.getListModuleTree(object);
+        this.isVisibleModule = object.IsVisible;
+      }
     }
   }
 
@@ -382,6 +404,7 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
     this.childDrawer.toggle();
     const drawercontent = document.querySelector('kendo-drawer-content') as HTMLElement;
     drawercontent.style.pointerEvents = 'all';
+    this.resetDrawer();
   }
 
   // Kiểm tra xem có thể hiện nút xóa khi xem chi tiết của từng item hay không
@@ -412,6 +435,67 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
     }
     if (this.identifyDTO(obj) === 'DTOFunction') {
       console.log(obj);
+      return;
+    }
+  }
+
+  // Lấy level hiện tại của module
+  getCurrentLevelModule() {
+    if (this.identifyDTO(this.itemSelectedTreeList) === 'DTOGroup' && this.itemSelectedTreeList.GroupID) {
+      return 1;
+    }
+    return 2;
+  }
+
+  // Lấy danh sách module tree
+  getListModuleTree(object: DTOGroup) {
+    this.systemService.GetListModuleTree(this.getCurrentLevelModule(), object).pipe(takeUntil(this.destroy)).subscribe((res: DTOResponse) => {
+      if (res.StatusCode === 0) {
+        this.listModuleTree = res.ObjectReturn;
+      }
+      else {
+        this.notiService.Show('Lỗi trong quá trình lấy APIGetListModuleTree: ' + res.ErrorString, 'error');
+      }
+    })
+  }
+
+  // Lấy giá trị được chọn từ dropdown module tree
+  getValueDropdownModuleTree(value: any) {
+    this.itemSelectedModuleTree = value;
+  }
+
+  // Reset toàn bộ value trong drawer
+  resetDrawer() {
+    this.itemSelectedModuleTree = null;
+    this.isVisibleModule = null;
+  }
+
+  // Cập nhật tùy đối tượng
+  optionUpdate() {
+    if (this.identifyDTO(this.itemSelectedTreeList) === 'DTOGroup') {
+      const itemSelected: DTOGroup = this.itemSelectedTreeList;
+      const objectUpdate: DTOGroup = {
+        Code: itemSelected.Code,
+        Vietnamese: this.childNameModule.valueTextBox,
+        Company: itemSelected.Company,
+        GroupID: this.itemSelectedModuleTree ? this.itemSelectedModuleTree.Code : itemSelected.GroupID,
+        ModuleID: this.childIdModule.valueTextBox,
+        ImageSetting: this.childFontIconModule.valueTextBox,
+        TypeData: Number(this.childTypeDataModule.valueTextBox),
+        OrderBy: Number(this.childOrderByModule.valueTextBox),
+        ListGroup: itemSelected.ListGroup,
+        ListFunctions: itemSelected.ListFunctions,
+        IsVisible: this.isVisibleModule
+      };
+      // console.log(objectUpdate);
+      this.systemService.UpdateModule(objectUpdate).pipe(takeUntil(this.destroy)).subscribe((res: DTOResponse) => {
+        if (res.StatusCode === 0) {
+          this.notiService.Show('Cập nhật module thành công', 'success');
+        }
+        else {
+          this.notiService.Show('Lỗi trong quá trình cập nhật module: ' + res.ErrorString, 'error');
+        }
+      })
       return;
     }
   }

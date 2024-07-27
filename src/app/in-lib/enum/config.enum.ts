@@ -1,5 +1,8 @@
 export class EnumConfig {
-    static GetListProduct: string = 'http://test.lapson.vn/api/product/GetProduct'
+    static GetListProduct: string = 'http://test.lapson.vn/api/product/GetProduct';
+    static GetListSysStructureTree: string = 'http://172.16.10.86:75/qc/api/sys/GetListSysStructureTree';
+    static GetListModuleTree: string = 'http://172.16.10.86:75/qc/api/sys/GetListModuleTree';
+    static UpdateModule: string = 'http://172.16.10.86:75/qc/api/sys/UpdateModule';
 }
 /**
  * Đây là mẫu một module sẽ có 1 file enum riêng. 
