@@ -491,6 +491,8 @@ export class SystemStructureComponent implements OnInit, OnDestroy {
       this.systemService.UpdateModule(objectUpdate).pipe(takeUntil(this.destroy)).subscribe((res: DTOResponse) => {
         if (res.StatusCode === 0) {
           this.notiService.Show('Cập nhật module thành công', 'success');
+          this.closeDrawer();
+          this.getListOriginSysStructure();
         }
         else {
           this.notiService.Show('Lỗi trong quá trình cập nhật module: ' + res.ErrorString, 'error');
